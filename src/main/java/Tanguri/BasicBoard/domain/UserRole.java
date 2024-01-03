@@ -1,4 +1,5 @@
 package Tanguri.BasicBoard.domain;
 
-public class UserRole {
+public enum UserRole {
+    BRONZE,SILVER,GOLD,BLACKLIST,ADMIN;
 }
