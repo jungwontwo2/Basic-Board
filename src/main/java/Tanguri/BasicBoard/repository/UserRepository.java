@@ -7,6 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,5 +40,13 @@ public class UserRepository {
         }catch (NoResultException e){
             return null;
         }
+    }
+
+    public Optional<User> findByLoginId(String loginId){
+        return findAll().stream().filter(m->m.getLoginId().equals(loginId)).findAny();
+    }
+
+    public List<User> findAll(){
+        return em.createQuery("select m from User m",User.class).getResultList();
     }
 }

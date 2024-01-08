@@ -18,7 +18,7 @@ public class HomeController {
     @GetMapping(value = {"", "/"})
     public String home() {
         //model.addAttribute("contents", contentService.getAllContents());
-        return "home";
+        return "home/home";
     }
 
 }
