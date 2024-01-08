@@ -1,6 +1,6 @@
 package Tanguri.BasicBoard.repository;
 
-import Tanguri.BasicBoard.domain.Content;
+import Tanguri.BasicBoard.domain.entity.Content;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,19 +10,19 @@ import java.util.Map;
 
 @Repository
 public class ContentRepository {
-    private static Map<Integer, Content> contents = new HashMap<>();
-    private static int sequence = 0;
+    private static Map<Long, Content> contents = new HashMap<>();
+    private static Long sequence = 0L;
 
     public void save(Content content){
         content.setId(++sequence);
         contents.put(content.getId(),content);
     }
 
-    public void edit(int id,Content content){
+    public void edit(Long id,Content content){
         contents.put(id,content);
     }
 
-    public void delete(int id){
+    public void delete(Long id){
         contents.remove(id);
     }
 
@@ -30,7 +30,7 @@ public class ContentRepository {
         return new ArrayList<>(contents.values());
     }
 
-    public Content findById(int id){
+    public Content findById(Long id){
         return contents.get(id);
     }
 }

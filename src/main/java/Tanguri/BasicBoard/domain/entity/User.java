@@ -1,14 +1,13 @@
 package Tanguri.BasicBoard.domain.entity;
 
-import Tanguri.BasicBoard.domain.UserRole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import Tanguri.BasicBoard.domain.dto.UserDto;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -17,11 +16,19 @@ import lombok.NoArgsConstructor;
 @Getter
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;            // DB에서 구분할 아이디
 
     private String loginId;     //로그인할 때 사용하는 아이디
     private String password;    //비밀번호
     private String nickname;    //닉네임
 
-    private UserRole userRole;  //권한
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    private List<Content> contents;
+
+    public User(String loginId, String password, String nickname) {
+        this.loginId=loginId;
+        this.password = password;
+        this.nickname = nickname;
+    }
 }

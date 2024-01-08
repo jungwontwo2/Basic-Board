@@ -1,11 +1,10 @@
 package Tanguri.BasicBoard.service;
 
-import Tanguri.BasicBoard.domain.Content;
+import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.repository.ContentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,19 +19,16 @@ public class ContentService {
         contentRepository.save(content);
     }
 
-    public void editContent(int id,String texts,String password){
+    public void editContent(Long id,String texts,String password){
         Content content = contentRepository.findById(id);
         if (!content.getPassword().equals(password)) {
             return;
         }
         content.setTexts(texts);
-        LocalDateTime now = LocalDateTime.now();
-        String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        content.setUpdateDate(formattedDate);
         contentRepository.edit(id,content);
     }
 
-    public void deleteContent(int id, String password) {
+    public void deleteContent(Long id, String password) {
         Content content = contentRepository.findById(id);
         if (!content.getPassword().equals(password)) {
             return;
@@ -44,7 +40,7 @@ public class ContentService {
         return contentRepository.findAll();
     }
 
-    public Content getContent(int id){
+    public Content getContent(Long id){
         return contentRepository.findById(id);
     }
 }
