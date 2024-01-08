@@ -4,6 +4,7 @@ import Tanguri.BasicBoard.domain.dto.JoinUserDto;
 import Tanguri.BasicBoard.domain.dto.LoginUserDto;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.repository.UserRepository;
+import Tanguri.BasicBoard.service.UserService;
 import jakarta.servlet.http.HttpServlet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     //회원가입 누름
     @GetMapping("/users/join")
@@ -35,8 +36,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "/users/addMemberForm";
         }
-        User userEntity = JoinUserDto.toEntity(user);
-        userRepository.save(userEntity);
+        userService.saveUser(user);
         return "redirect:/";
     }
 
