@@ -42,9 +42,13 @@ public class SessionManager {
     }
 
     private Cookie findCookie(HttpServletRequest request, String cookieName) {
+        System.out.println(request.getCookies());
         if(request.getCookies()==null){
             return null;
         }
-        return Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals(cookieName)).findAny().orElse(null);
+        return Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName()
+                        .equals(cookieName)).findAny().
+                orElse(null);
     }
 }
