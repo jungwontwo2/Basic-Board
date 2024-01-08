@@ -38,6 +38,13 @@
       <div class="field-error" th:errors="*{password}" />
     </div>
     <div>
+      <label for="passwordCheck">비밀번호</label>
+      <input type="password" id="passwordCheck" th:field="*{passwordCheck}"
+             class="form-control"
+             th:errorclass="field-error">
+      <div class="field-error" th:errors="*{passwordCheck}" />
+    </div>
+    <div>
       <label for="name">닉네임</label>
       <input type="text" id="name" th:field="*{nickname}" class="form-control"
              th:errorclass="field-error">

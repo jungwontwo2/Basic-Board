@@ -1,6 +1,5 @@
 package Tanguri.BasicBoard.domain.entity;
 
-import Tanguri.BasicBoard.domain.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
