@@ -79,7 +79,7 @@ public class UserController {
     @GetMapping("/")
     public String homeLogin(HttpServletRequest request, Model model) {
         //세션이 없으면 home
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         if (session == null) {
             return "home/home";
         }

@@ -13,7 +13,7 @@ public class DataInit {
 
     //테스트용 데이터 추가
     @PostConstruct
-    public void init(){
+    public void Userinit(){
         User user = new User("asdf","asdfasdf","asdf");
         userRepository.save(user);
         System.out.println("Init User Complete");
