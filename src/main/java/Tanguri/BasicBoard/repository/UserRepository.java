@@ -34,7 +34,7 @@ public class UserRepository {
 
     public User findByNickname(String nickname){
         try{
-            return em.createQuery("select m from Member m where m.nickname = :nickname",User.class)
+            return em.createQuery("select m from User m where m.nickname = :nickname",User.class)
                     .setParameter("nickname",nickname)
                     .getSingleResult();
         }catch (NoResultException e){

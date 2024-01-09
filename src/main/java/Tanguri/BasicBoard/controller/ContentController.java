@@ -1,6 +1,9 @@
 package Tanguri.BasicBoard.controller;
 
+import Tanguri.BasicBoard.domain.SessionConst;
+import Tanguri.BasicBoard.domain.dto.ContentDto;
 import Tanguri.BasicBoard.domain.entity.Content;
+import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.ContentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -8,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,8 +27,8 @@ public class ContentController {
     }
     //글 등록
     @PostMapping("/content/write")
-    public String writeContent(Content content) {
-        contentService.writeContent(content);
+    public String writeContent(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user) {
+        contentService.writeContent(contentDto,user);
         return "redirect:/";
     }
 
@@ -38,7 +42,7 @@ public class ContentController {
     //글 수정
     @PostMapping("/content/{id}")
     public String editContent(@PathVariable Long id, Content content) {
-        contentService.editContent(id, content.getTexts(), content.getPassword());
+//        contentService.editContent(id, content.getTexts(), content.getPassword());
         return "redirect:/";
     }
 

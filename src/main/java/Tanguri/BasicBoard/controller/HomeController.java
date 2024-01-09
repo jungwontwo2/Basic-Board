@@ -29,7 +29,7 @@ public class HomeController {
             request.setAttribute("redirectUrl","/users/login");
             return "/common/messageRedirect";
         }
-        return "greeting";
+        return "/content/greeting";
     }
 
 }

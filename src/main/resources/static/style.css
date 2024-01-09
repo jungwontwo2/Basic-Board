@@ -76,7 +76,13 @@ section.notice {
   padding: 0;
   font-size: 16px;
 }
-
+.write-btn{
+  background: #555;
+  color: #fff;
+  height: 40px;
+  float: right;
+  font-size: 16px;
+}
 .board-table {
   font-size: 13px;
   width: 100%;
@@ -176,7 +182,11 @@ section.notice {
   border-color: #373737;
   color: #fff;
 }
-
+.btn-dark{
+  background: #555;
+  color: #fff;
+  height: 40px;
+}
 /* reset */
 
 * {

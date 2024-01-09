@@ -1,10 +1,12 @@
 package Tanguri.BasicBoard.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Entity
+@Builder
 public class Content {
 
     @Id

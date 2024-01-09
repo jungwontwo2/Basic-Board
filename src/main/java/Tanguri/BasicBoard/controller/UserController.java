@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Slf4j
 @Controller
@@ -76,7 +77,7 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/")
+    //@GetMapping("/")
     public String homeLogin(HttpServletRequest request, Model model) {
         //세션이 없으면 home
         HttpSession session = request.getSession(false);
@@ -87,8 +88,17 @@ public class UserController {
         if (loginUser == null) {
             return "home/home";
         }
-        model.addAttribute("member", loginUser);
+        model.addAttribute("user", loginUser);
         //System.out.println(loginUser);
+        return "home/home-login";
+    }
+
+    @GetMapping("/")
+    public String loginSpring(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) User loginUser,Model model){
+        if(loginUser==null){
+            return "home/home";
+        }
+        model.addAttribute("user",loginUser);
         return "home/home-login";
     }
 
