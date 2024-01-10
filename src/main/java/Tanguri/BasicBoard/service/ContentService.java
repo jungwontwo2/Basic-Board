@@ -6,12 +6,14 @@ import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.repository.ContentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,20 +26,39 @@ public class ContentService {
         contentRepository.save(content);
     }
 
+    public Page<ContentDto> paging(Pageable pageable){
+        int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
+        int pageLimit = 5;//한페이지에 보여줄 글 개수
+        System.out.println("zz");
+        Page<Content> contents = contentRepository.findAll(PageRequest.of(page, pageLimit));
+        System.out.println(contents);
+        Page<ContentDto> contentsDto = contents.map(content -> new ContentDto(content));
+        System.out.println(contentsDto);
+        return contentsDto;
+    }
     public void editContent(Long id,ContentDto contentDto){
-        Content content = contentRepository.findById(id);
+        Optional<Content> sample = contentRepository.findById(id);
+        if(sample.isEmpty()){
+            return;
+        }
+        Content content = sample.get();
         if (!content.getPassword().equals(contentDto.getPassword())) {
             return;
         }
-        contentRepository.edit(id,content);
+        content.setTitle(contentDto.getTitle());
+        content.setTexts(contentDto.getTexts());
     }
 
     public void deleteContent(Long id, String password) {
-        Content content = contentRepository.findById(id);
+        Optional<Content> sample = contentRepository.findById(id);
+        if(sample.isEmpty()){
+            return;
+        }
+        Content content = sample.get();
         if (!content.getPassword().equals(password)) {
             return;
         }
-        contentRepository.delete(id);
+        contentRepository.delete(content);
     }
 
     public List<Content> getAllContents(){
@@ -45,6 +66,7 @@ public class ContentService {
     }
 
     public Content getContent(Long id){
-        return contentRepository.findById(id);
+        Optional<Content> sample = contentRepository.findById(id);
+        return sample.orElseGet(sample::get);
     }
 }

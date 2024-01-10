@@ -22,14 +22,18 @@ public class DataInit {
         System.out.println("Init User Complete");
 
         User user2 = userRepository.findByNickname("asdf");
-        Content content = Content.builder()
-                .title("1")
-                .texts("1")
-                .user(user)
-                .writer(user.getNickname())
-                .password(user.getPassword())
-                .build();
-        contentRepository.save(content);
+        for (int i = 0; i < 20; i++) {
+            Content content = Content.builder()
+                    .title(Integer.toString(i+1))
+                    .texts(Integer.toString(i+1))
+                    .user(user)
+                    .writer(user.getNickname())
+                    .password(user.getPassword())
+                    .build();
+            contentRepository.save(content);
+        }
+
+
         System.out.println("Init content Complete");
     }
 

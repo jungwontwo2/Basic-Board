@@ -4,7 +4,7 @@ nav {
     font-weight: bold;
     background-color: orange;
     padding-top: 25px;
-    height: 50px;
+    height: 80px;
 }
 
 button {
@@ -74,13 +74,6 @@ section.notice {
   bottom: 0;
   width: 108px;
   padding: 0;
-  font-size: 16px;
-}
-.write-btn{
-  background: #555;
-  color: #fff;
-  height: 40px;
-  float: right;
   font-size: 16px;
 }
 .board-table {
@@ -165,7 +158,13 @@ section.notice {
   background: #555;
   color: #fff;
 }
-
+.write-btn{
+  background: #555;
+  color: #fff;
+  height: 40px;
+  float: right;
+  font-size: 16px;
+}
 .btn-dark:hover, .btn-dark:focus {
   background: #373737;
   border-color: #373737;
@@ -213,3 +212,11 @@ section.notice {
   width: 1px;
   height: 1px;
 }
+.pages{
+    text-align:center;
+}
+textarea {
+    width: 100%;
+    height: 25em;
+    resize: none;
+  }

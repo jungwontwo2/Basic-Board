@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @Data
 public class ContentDto {
 
+    private Long id;
+
     @NotEmpty
     private String title;
     @NotEmpty
     private String texts;
 
     private String password;
+    private String writer;
 
     public static Content toEntity(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user){
         Content content = Content.builder()
@@ -30,4 +33,15 @@ public class ContentDto {
         System.out.println(content);
         return content;
     }
+    public ContentDto() {
+
+    }
+    public ContentDto(Content content){
+        this.password=content.getPassword();
+        this.title=content.getTitle();
+        this.texts=content.getTexts();
+        this.id=content.getId();
+        this.writer=content.getWriter();
+    }
+
 }

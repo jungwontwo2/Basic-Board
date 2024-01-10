@@ -73,7 +73,7 @@ public class UserController {
         //쿠키 하나 생성 key:LOGIN_MEMBER(loginMember) , value:JESSIONID=12309ASDHFFKJH13290F9E UUID값
         //그 쿠키값인 JESSIONID를 key값으로 가지고 value값으로 loginUser를 가지도록 세션스토어에 저장한다
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginUser);
-
+        System.out.println("로그인 성공");
         return "redirect:/";
     }
 
