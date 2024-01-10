@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
@@ -24,13 +25,14 @@ public class ContentService {
     public void writeContent(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user){
         Content content = ContentDto.toEntity(contentDto,user);
         contentRepository.save(content);
+        System.out.println(content);
     }
 
     public Page<ContentDto> paging(Pageable pageable){
         int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
         int pageLimit = 5;//한페이지에 보여줄 글 개수
         System.out.println("zz");
-        Page<Content> contents = contentRepository.findAll(PageRequest.of(page, pageLimit));
+        Page<Content> contents = contentRepository.findAll(PageRequest.of(page, pageLimit, Sort.Direction.DESC,"id"));
         System.out.println(contents);
         Page<ContentDto> contentsDto = contents.map(content -> new ContentDto(content));
         System.out.println(contentsDto);

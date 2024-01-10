@@ -6,10 +6,16 @@ import Tanguri.BasicBoard.domain.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ContentDto {
 
     private Long id;
@@ -30,11 +36,7 @@ public class ContentDto {
                 .writer(user.getNickname())
                 .password(user.getPassword())
                 .build();
-        System.out.println(content);
         return content;
-    }
-    public ContentDto() {
-
     }
     public ContentDto(Content content){
         this.password=content.getPassword();

@@ -23,18 +23,18 @@ public class ContentController {
 
     @GetMapping("/boards/greeting")
     public String greetingsBoards(HttpServletRequest request, @PageableDefault(page = 1) Pageable pageable, Model model){
-        HttpSession session = request.getSession(false);
-        if(session==null){
-            request.setAttribute("msg","로그인 후 사용가능합니다.");
-            request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
-        }
-        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        if (loginUser == null) {
-            request.setAttribute("msg","로그인 후 사용가능합니다.");
-            request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
-        }
+//        HttpSession session = request.getSession(false);
+//        if(session==null){
+//            request.setAttribute("msg","로그인 후 사용가능합니다.");
+//            request.setAttribute("redirectUrl","/users/login");
+//            return "/common/messageRedirect";
+//        }
+//        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
+//        if (loginUser == null) {
+//            request.setAttribute("msg","로그인 후 사용가능합니다.");
+//            request.setAttribute("redirectUrl","/users/login");
+//            return "/common/messageRedirect";
+//        }
         Page<ContentDto> contentDtos = contentService.paging(pageable);
         /**
          * blockLimit : page 개수 설정
@@ -59,14 +59,16 @@ public class ContentController {
     @PostMapping("/boards/greeting/write")
     public String writeContent(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user) {
         contentService.writeContent(contentDto,user);
-        return "redirect:/";
+        return "redirect:/boards/greeting";
     }
 
     //글 보기 화면
-    @GetMapping("/content/{id}")
+    @GetMapping("/boards/greeting/{id}")
     public String showContent(@PathVariable Long id, Model model) {
-        model.addAttribute(contentService.getContent(id));
-        return "content-page";
+        Content content = contentService.getContent(id);
+        ContentDto contentDto = Content.toDto(content);
+        model.addAttribute("content",contentDto);
+        return "/content/content-page";
     }
 
     //글 수정

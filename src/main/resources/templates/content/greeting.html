@@ -42,8 +42,12 @@
         </thead>
         <tbody>
         <tr th:each="contentDto: ${contentDtos}">
-            <td th:text="${contentDto.id}"></td>
-            <td th:text="${contentDto.title}"></td>
+            <td>
+              <a th:text="${contentDto.id}" th:href="@{|/boards/greeting/${contentDto.id}|}"></a>
+            </td>
+            <td>
+              <a th:text="${contentDto.title}" th:href="@{|/boards/greeting/${contentDto.id}|}"></a>
+            </td>
             <td th:text="${contentDto.writer}"></td>
         </tr>
         </tbody>
