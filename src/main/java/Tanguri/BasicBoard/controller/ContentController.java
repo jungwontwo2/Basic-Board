@@ -2,6 +2,7 @@ package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.ContentDto;
+import Tanguri.BasicBoard.domain.dto.ContentEditDto;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.ContentService;
@@ -73,14 +74,20 @@ public class ContentController {
 
     //글 수정
     @GetMapping("/boards/greeting/edit/{id}")
-    public String editContent(@PathVariable Long id,@ModelAttribute("content")ContentDto contentDto,HttpServletRequest request) {
+    public String editContent(@PathVariable Long id,@RequestParam String password, HttpServletRequest request,Model model) {
         Content content = contentService.getContent(id);
-        if(!content.getPassword().equals(contentDto.getPassword())){
+        if(!content.getPassword().equals(password)){
             request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
             String redirectUrl = "/boards/greeting/"+id.toString();
             request.setAttribute("redirectUrl",redirectUrl);
             return "/common/messageRedirect";
         }
+        ContentEditDto contentEditDto = Content.toEditDto(content);
+        model.addAttribute("content",contentEditDto);
+//        ContentEditDto contentEditDto = new ContentEditDto();
+//        contentEditDto.setTitle(contentDto.getTitle());
+//        contentEditDto.setTexts(contentDto.getTexts());
+//        model.addAttribute("editContentDto",contentEditDto);
         //contentService.editContent(id, content.getTexts(), content.getPassword());
         return "/content/edit-page";
     }

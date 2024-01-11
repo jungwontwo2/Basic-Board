@@ -1,6 +1,7 @@
 package Tanguri.BasicBoard.domain.entity;
 
 import Tanguri.BasicBoard.domain.dto.ContentDto;
+import Tanguri.BasicBoard.domain.dto.ContentEditDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,5 +37,12 @@ public class Content {
                 .writer(content.getWriter())
                 .build();
         return contentDto;
+    }
+    public static ContentEditDto toEditDto(Content content){
+        ContentEditDto contentEditDto = ContentEditDto.builder()
+                .title(content.getTitle())
+                .texts(content.getTexts())
+                .build();
+        return contentEditDto;
     }
 }
