@@ -91,6 +91,11 @@ public class ContentController {
         //contentService.editContent(id, content.getTexts(), content.getPassword());
         return "/content/edit-page";
     }
+    @PostMapping("/boards/greeting/edit/{id}")
+    public String editContent(@PathVariable Long id,@ModelAttribute("content")ContentEditDto contentEditDto){
+        contentService.editContent(id, contentEditDto);
+        return "redirect:/boards/greeting";
+    }
 
     //글 삭제
     @PostMapping("/content/delete/{id}")

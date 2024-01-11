@@ -16,16 +16,20 @@
 <!--        <label for="title">글 제목 : </label>-->
 <!--        <input type="text" id="title" name="title" th:field="*{title}" placeholder="제목을 입력하세요" width="400px">-->
         <div th:text="|제목: *{title}|"></div>
-        <input type="password" th:field="*{password}" placeholder="비밀번호를 입력하세요" width="400px">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" th:field="*{password}" placeholder="비밀번호를 입력하세요" width="400px">
         <br><br>
         <h3>내용</h3>
         <div class="texts" th:text="*{texts}"></div>
       </div>
-      <button>수정</button>
-      <form th:object="${content}" th:action="@{|/boards/greeting/delete/${content.id}|}">
-        <button>삭제</button>
-      </form>
-      <button th:formaction="@{|/boards/greeting/|}" >뒤로가기</button>
+      <div>
+        <button>수정</button>
+        <form th:object="${content}" th:action="@{|/boards/greeting/delete/${content.id}|}">
+          <button>삭제</button>
+        </form>
+        <button th:formaction="@{|/boards/greeting/|}" >뒤로가기</button>
+      </div>
+
     </form>
   </div>
 </div>

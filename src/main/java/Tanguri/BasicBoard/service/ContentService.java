@@ -2,6 +2,7 @@ package Tanguri.BasicBoard.service;
 
 import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.ContentDto;
+import Tanguri.BasicBoard.domain.dto.ContentEditDto;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.repository.ContentRepository;
@@ -38,17 +39,12 @@ public class ContentService {
         System.out.println(contentsDto);
         return contentsDto;
     }
-    public void editContent(Long id,ContentDto contentDto){
-        Optional<Content> sample = contentRepository.findById(id);
-        if(sample.isEmpty()){
-            return;
-        }
-        Content content = sample.get();
-        if (!content.getPassword().equals(contentDto.getPassword())) {
-            return;
-        }
-        content.setTitle(contentDto.getTitle());
-        content.setTexts(contentDto.getTexts());
+    public void editContent(Long id, ContentEditDto contentEditDto){
+        Optional<Content> byId = contentRepository.findById(id);
+        Content content = byId.get();
+        content.setTitle(contentEditDto.getTitle());
+        content.setTexts(contentEditDto.getTexts());
+        contentRepository.save(content);
     }
 
     public void deleteContent(Long id, String password) {
