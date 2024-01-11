@@ -33,6 +33,7 @@ public class Content {
                 .id(content.getId())
                 .title(content.getTitle())
                 .texts(content.getTexts())
+                .writer(content.getWriter())
                 .build();
         return contentDto;
     }

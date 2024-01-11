@@ -10,18 +10,21 @@
 <div>
   <br/>
   <div align="center">
-    <form th:action="@{|/boards/greeting/edit/${id}|}" method="post" th:object="${content}">
+    <form th:object="${content}">
       <div class="form-group" align="left">
-        <label for="title">글 제목 : </label>
-        <input type="text" id="title" name="title" th:field="*{title}" placeholder="제목을 입력하세요" width="400px">
+        <div th:text="|작성자 : ${content.writer}|"></div>
+<!--        <label for="title">글 제목 : </label>-->
+<!--        <input type="text" id="title" name="title" th:field="*{title}" placeholder="제목을 입력하세요" width="400px">-->
+        <div th:text="|제목: *{title}|"></div>
         <label for="password">비밀번호 : </label>
         <input type="password" id="password" name="password" th:field="*{password}" placeholder="비밀번호를 입력하세요" width="400px">
-        <br/><br/>
-        <label for="texts">글 내용 : </label>
-        <br/><br/>
-        <textarea id="texts" name="texts" th:field="*{texts}"></textarea>
+        <br><br>
+        <h3>내용</h3>
+        <div class="texts" th:text="*{texts}"></div>
       </div>
-      <button type="submit">수정</button>
+      <button th:onclick="@{|boards/greeting/edit/${content.id}|">수정</button>
+      <button th:onclick="@{|boards/greeting/delete/${content.id}|">삭제</button>
+
     </form>
   </div>
 </div>
