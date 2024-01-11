@@ -72,10 +72,17 @@ public class ContentController {
     }
 
     //글 수정
-    @PostMapping("/content/{id}")
-    public String editContent(@PathVariable Long id, Content content) {
-//        contentService.editContent(id, content.getTexts(), content.getPassword());
-        return "redirect:/";
+    @GetMapping("/boards/greeting/edit/{id}")
+    public String editContent(@PathVariable Long id,@ModelAttribute("content")ContentDto contentDto,HttpServletRequest request) {
+        Content content = contentService.getContent(id);
+        if(!content.getPassword().equals(contentDto.getPassword())){
+            request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
+            String redirectUrl = "/boards/greeting/"+id.toString();
+            request.setAttribute("redirectUrl",redirectUrl);
+            return "/common/messageRedirect";
+        }
+        //contentService.editContent(id, content.getTexts(), content.getPassword());
+        return "/content/edit-page";
     }
 
     //글 삭제
