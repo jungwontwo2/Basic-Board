@@ -10,7 +10,7 @@
 <div>
   <br/>
   <div align="center">
-    <form th:object="${content}" th:action="@{|/boards/greeting/edit/${content.id}|}">
+    <form th:object="${content}" th:action="@{|/boards/greeting/editPage/${content.id}|}"method="post">
       <div class="form-group" align="left">
         <div th:text="|작성자 : ${content.writer}|"></div>
 <!--        <label for="title">글 제목 : </label>-->
@@ -27,7 +27,7 @@
         <form th:object="${content}" th:action="@{|/boards/greeting/delete/${content.id}|}">
           <button>삭제</button>
         </form>
-        <button th:formaction="@{|/boards/greeting/|}" >뒤로가기</button>
+        <button th:action="@{|/boards/greeting/|}" >뒤로가기</button>
       </div>
 
     </form>

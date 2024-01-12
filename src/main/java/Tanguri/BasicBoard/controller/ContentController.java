@@ -24,18 +24,18 @@ public class ContentController {
 
     @GetMapping("/boards/greeting")
     public String greetingsBoards(HttpServletRequest request, @PageableDefault(page = 1) Pageable pageable, Model model){
-//        HttpSession session = request.getSession(false);
-//        if(session==null){
-//            request.setAttribute("msg","로그인 후 사용가능합니다.");
-//            request.setAttribute("redirectUrl","/users/login");
-//            return "/common/messageRedirect";
-//        }
-//        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
-//        if (loginUser == null) {
-//            request.setAttribute("msg","로그인 후 사용가능합니다.");
-//            request.setAttribute("redirectUrl","/users/login");
-//            return "/common/messageRedirect";
-//        }
+        HttpSession session = request.getSession(false);
+        if(session==null){
+            request.setAttribute("msg","로그인 후 사용가능합니다.");
+            request.setAttribute("redirectUrl","/users/login");
+            return "/common/messageRedirect";
+        }
+        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        if (loginUser == null) {
+            request.setAttribute("msg","로그인 후 사용가능합니다.");
+            request.setAttribute("redirectUrl","/users/login");
+            return "/common/messageRedirect";
+        }
         Page<ContentDto> contentDtos = contentService.paging(pageable);
         /**
          * blockLimit : page 개수 설정
@@ -74,7 +74,7 @@ public class ContentController {
 
     //글 수정
     @GetMapping("/boards/greeting/edit/{id}")
-    public String editContent(@PathVariable Long id,@RequestParam String password, HttpServletRequest request,Model model) {
+    public String getEditPage(@PathVariable Long id,@RequestParam String password, HttpServletRequest request,Model model) {
         Content content = contentService.getContent(id);
         if(!content.getPassword().equals(password)){
             request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
@@ -92,9 +92,20 @@ public class ContentController {
         return "/content/edit-page";
     }
     @PostMapping("/boards/greeting/edit/{id}")
-    public String editContent(@PathVariable Long id,@ModelAttribute("content")ContentEditDto contentEditDto){
-        contentService.editContent(id, contentEditDto);
+    public String editConent(@PathVariable Long id,@ModelAttribute("content")ContentEditDto contentEditDto){
+        contentService.editContent(id,contentEditDto);
         return "redirect:/boards/greeting";
+    }
+
+
+    @PostMapping("/boards/greeting/editPage/{id}")
+    public String editContent(@PathVariable Long id,@ModelAttribute("content")ContentEditDto contentEditDto){
+        Content content = contentService.getContent(id);
+        ContentEditDto contentEditDto1 = Content.toEditDto(content);
+        contentEditDto.setTitle(contentEditDto1.getTitle());
+        contentEditDto.setTexts(contentEditDto1.getTexts());
+//        contentService.editContent(id, contentEditDto);
+        return "/content/edit-page";
     }
 
     //글 삭제

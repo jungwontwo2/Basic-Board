@@ -10,7 +10,7 @@
 <div>
   <br/>
   <div align="center">
-    <form th:object="${content}" method="post">
+    <form th:object="${content}" th:action="@{|/boards/greeting/edit/${content.id}|}" method="post">
       <div class="form-group" align="left">
         <label for="title">글 제목 : </label>
         <input  type="text" id="title" name="title" th:field="*{title}" placeholder="제목을 입력하세요" width="400px">
