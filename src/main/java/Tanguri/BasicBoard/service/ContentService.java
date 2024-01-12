@@ -32,7 +32,7 @@ public class ContentService {
     public Page<ContentDto> paging(Pageable pageable){
         int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
         int pageLimit = 5;//한페이지에 보여줄 글 개수
-        System.out.println("zz");
+        //System.out.println("zz");
         Page<Content> contents = contentRepository.findAll(PageRequest.of(page, pageLimit, Sort.Direction.DESC,"id"));
         System.out.println(contents);
         Page<ContentDto> contentsDto = contents.map(content -> new ContentDto(content));
@@ -47,15 +47,12 @@ public class ContentService {
         contentRepository.save(content);
     }
 
-    public void deleteContent(Long id, String password) {
+    public void deleteContent(Long id) {
         Optional<Content> sample = contentRepository.findById(id);
         if(sample.isEmpty()){
             return;
         }
         Content content = sample.get();
-        if (!content.getPassword().equals(password)) {
-            return;
-        }
         contentRepository.delete(content);
     }
 

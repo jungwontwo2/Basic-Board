@@ -10,11 +10,11 @@
 <div>
   <br/>
   <div align="center">
-    <form th:object="${content}" th:action="@{|/boards/greeting/editPage/${content.id}|}"method="post">
+    <form th:object="${content}" method="post">
       <div class="form-group" align="left">
         <div th:text="|작성자 : ${content.writer}|"></div>
-<!--        <label for="title">글 제목 : </label>-->
-<!--        <input type="text" id="title" name="title" th:field="*{title}" placeholder="제목을 입력하세요" width="400px">-->
+        <!--        <label for="title">글 제목 : </label>-->
+        <!--        <input type="text" id="title" name="title" th:field="*{title}" placeholder="제목을 입력하세요" width="400px">-->
         <div th:text="|제목: *{title}|"></div>
         <label for="password">비밀번호</label>
         <input type="password" id="password" th:field="*{password}" placeholder="비밀번호를 입력하세요" width="400px">
@@ -22,16 +22,53 @@
         <h3>내용</h3>
         <div class="texts" th:text="*{texts}"></div>
       </div>
-      <div>
-        <button>수정</button>
-        <form th:object="${content}" th:action="@{|/boards/greeting/delete/${content.id}|}">
-          <button>삭제</button>
-        </form>
-        <button th:action="@{|/boards/greeting/|}" >뒤로가기</button>
-      </div>
+      <div class="select-btn">
+        <button th:formaction="@{|/boards/greeting/editPage/${content.id}|}">수정</button>
+        <button th:formaction="@{|/boards/greeting/delete/${content.id}|}">삭제</button>
+        <button>
+          <a th:href="@{|/boards/greeting|}">뒤로가기</a>
+        </button>
 
+      </div>
     </form>
   </div>
 </div>
 </body>
 </html>
+<!-- 스크립트 추가 -->
+<script>
+    function confirmAndSubmit() {
+        var password = prompt("비밀번호를 입력하세요:");
+
+        // 입력받은 비밀번호를 hidden 필드에 설정
+        document.getElementById("password").value = password;
+
+        // 삭제 폼을 제출
+        document.forms[1].submit();
+    }
+</script>
+<!--    <form th:object="${content}" th:action="@{|/boards/greeting/editPage/${content.id}|}" method="post">-->
+<!--      <div class="form-group" align="left">-->
+<!--        <div th:text="|작성자 : ${content.writer}|"></div>-->
+<!--&lt;!&ndash;        <label for="title">글 제목 : </label>&ndash;&gt;-->
+<!--&lt;!&ndash;        <input type="text" id="title" name="title" th:field="*{title}" placeholder="제목을 입력하세요" width="400px">&ndash;&gt;-->
+<!--        <div th:text="|제목: *{title}|"></div>-->
+<!--        <label for="password">비밀번호</label>-->
+<!--        <input type="password" id="password" th:field="*{password}" placeholder="비밀번호를 입력하세요" width="400px">-->
+<!--        <br><br>-->
+<!--        <h3>내용</h3>-->
+<!--        <div class="texts" th:text="*{texts}"></div>-->
+<!--      </div>-->
+<!--    </form>-->
+<!--      <div class="select-btn">-->
+<!--        <button>수정</button>-->
+<!--        <form th:object="${content}" th:action="@{|/boards/greeting/delete/${content.id}|}" method="post">-->
+<!--          <button th:onclick="confirmAndSubmit()">삭제</button>-->
+<!--        </form>-->
+<!--        <form th:action="@{|/boards/greeting|}">-->
+<!--          <button class="select-btn2">뒤로가기</button>-->
+<!--        </form>-->
+
+<!--  </div>-->
+<!--</div>-->
+

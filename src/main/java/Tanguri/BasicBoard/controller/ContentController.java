@@ -23,19 +23,20 @@ public class ContentController {
     private final ContentService contentService;
 
     @GetMapping("/boards/greeting")
-    public String greetingsBoards(HttpServletRequest request, @PageableDefault(page = 1) Pageable pageable, Model model){
-        HttpSession session = request.getSession(false);
-        if(session==null){
-            request.setAttribute("msg","로그인 후 사용가능합니다.");
-            request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
-        }
-        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        if (loginUser == null) {
-            request.setAttribute("msg","로그인 후 사용가능합니다.");
-            request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
-        }
+    public String greetingsBoards(@PageableDefault(page = 1) Pageable pageable, Model model){
+//    public String greetingsBoards(HttpServletRequest request, @PageableDefault(page = 1) Pageable pageable, Model model){
+//        HttpSession session = request.getSession(false);
+//        if(session==null){
+//            request.setAttribute("msg","로그인 후 사용가능합니다.");
+//            request.setAttribute("redirectUrl","/users/login");
+//            return "/common/messageRedirect";
+//        }
+//        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
+//        if (loginUser == null) {
+//            request.setAttribute("msg","로그인 후 사용가능합니다.");
+//            request.setAttribute("redirectUrl","/users/login");
+//            return "/common/messageRedirect";
+//        }
         Page<ContentDto> contentDtos = contentService.paging(pageable);
         /**
          * blockLimit : page 개수 설정
@@ -51,67 +52,97 @@ public class ContentController {
         model.addAttribute("endPage", endPage);
         return "/content/greeting";
     }
-    //글쓰기 화면 ㄱㄱ
-    @GetMapping("/boards/greeting/write")
-    public String writePage(@ModelAttribute(name = "content")ContentDto contentDto){
-        return "/content/write-page";
-    }
-    //글 등록
-    @PostMapping("/boards/greeting/write")
-    public String writeContent(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user) {
-        contentService.writeContent(contentDto,user);
-        return "redirect:/boards/greeting";
-    }
 
     //글 보기 화면
     @GetMapping("/boards/greeting/{id}")
-    public String showContent(@PathVariable Long id, Model model) {
+    public String showContent(@PathVariable Long id, Model model){
         Content content = contentService.getContent(id);
         ContentDto contentDto = Content.toDto(content);
         model.addAttribute("content",contentDto);
         return "/content/content-page";
     }
-
-    //글 수정
-    @GetMapping("/boards/greeting/edit/{id}")
-    public String getEditPage(@PathVariable Long id,@RequestParam String password, HttpServletRequest request,Model model) {
-        Content content = contentService.getContent(id);
-        if(!content.getPassword().equals(password)){
-            request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
-            String redirectUrl = "/boards/greeting/"+id.toString();
-            request.setAttribute("redirectUrl",redirectUrl);
+    //글쓰기 화면 ㄱㄱ
+    @GetMapping("/boards/greeting/write")
+    public String writePage(HttpServletRequest request,@ModelAttribute(name = "content")ContentDto contentDto,@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user){
+        HttpSession session = request.getSession(false);
+        if(session==null){
+            request.setAttribute("msg","로그인 후 사용가능합니다.");
+            request.setAttribute("redirectUrl","/users/login");
             return "/common/messageRedirect";
         }
-        ContentEditDto contentEditDto = Content.toEditDto(content);
-        model.addAttribute("content",contentEditDto);
-//        ContentEditDto contentEditDto = new ContentEditDto();
-//        contentEditDto.setTitle(contentDto.getTitle());
-//        contentEditDto.setTexts(contentDto.getTexts());
-//        model.addAttribute("editContentDto",contentEditDto);
-        //contentService.editContent(id, content.getTexts(), content.getPassword());
-        return "/content/edit-page";
+        return "/content/write-page";
     }
+    //글 등록
+    @PostMapping("/boards/greeting/write")
+    public String writeContent(HttpServletRequest request,ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user) {
+        HttpSession session = request.getSession(false);
+        if(session==null){
+            request.setAttribute("msg","로그인 후 사용가능합니다.");
+            request.setAttribute("redirectUrl","/users/login");
+            return "/common/messageRedirect";
+        }
+        contentService.writeContent(contentDto,user);
+        return "redirect:/boards/greeting";
+    }
+
+    //글 수정
+//    @GetMapping("/boards/greeting/edit/{id}")
+//    public String getEditPage(@PathVariable Long id,@RequestParam String password, HttpServletRequest request,Model model) {
+//        Content content = contentService.getContent(id);
+//        if(!content.getPassword().equals(password)){
+//            request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
+//            String redirectUrl = "/boards/greeting/"+id.toString();
+//            request.setAttribute("redirectUrl",redirectUrl);
+//            return "/common/messageRedirect";
+//        }
+//        ContentEditDto contentEditDto = Content.toEditDto(content);
+//        model.addAttribute("content",contentEditDto);
+////        ContentEditDto contentEditDto = new ContentEditDto();
+////        contentEditDto.setTitle(contentDto.getTitle());
+////        contentEditDto.setTexts(contentDto.getTexts());
+////        model.addAttribute("editContentDto",contentEditDto);
+//        //contentService.editContent(id, content.getTexts(), content.getPassword());
+//        return "/content/edit-page";
+//    }
+    //글 수정하기
+    //글 수정하기
     @PostMapping("/boards/greeting/edit/{id}")
     public String editConent(@PathVariable Long id,@ModelAttribute("content")ContentEditDto contentEditDto){
         contentService.editContent(id,contentEditDto);
         return "redirect:/boards/greeting";
     }
 
-
+    //글 수정페이지 가져오기
     @PostMapping("/boards/greeting/editPage/{id}")
-    public String editContent(@PathVariable Long id,@ModelAttribute("content")ContentEditDto contentEditDto){
+    public String editContent(@PathVariable Long id,@ModelAttribute("content")ContentEditDto contentEditDto,HttpServletRequest request){
         Content content = contentService.getContent(id);
+        if(!content.getPassword().equals(contentEditDto.getPassword())){
+            request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
+            String redirectUrl = "/boards/greeting/"+id.toString();
+            request.setAttribute("redirectUrl",redirectUrl);
+            return "/common/messageRedirect";
+        }
         ContentEditDto contentEditDto1 = Content.toEditDto(content);
         contentEditDto.setTitle(contentEditDto1.getTitle());
         contentEditDto.setTexts(contentEditDto1.getTexts());
-//        contentService.editContent(id, contentEditDto);
+        //contentService.editContent(id, contentEditDto);
         return "/content/edit-page";
     }
 
     //글 삭제
-    @PostMapping("/content/delete/{id}")
-    public String deleteContent(@PathVariable Long id,Content content){
-        contentService.deleteContent(id, content.getPassword());
-        return"redirect:/";
+    @PostMapping("/boards/greeting/delete/{id}")
+    public String deleteContent(@PathVariable Long id,@ModelAttribute("content") ContentEditDto contentEditDto,HttpServletRequest request){
+        Content content = contentService.getContent(id);
+        System.out.println(content.getPassword());
+        System.out.println(contentEditDto.getPassword());
+        if(!content.getPassword().equals(contentEditDto.getPassword())){
+            request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
+            String redirectUrl = "/boards/greeting/"+id.toString();
+            request.setAttribute("redirectUrl",redirectUrl);
+            return "/common/messageRedirect";
+        }
+        contentService.deleteContent(id);
+        System.out.println("delete complete");
+        return"redirect:/boards/greeting";
     }
 }

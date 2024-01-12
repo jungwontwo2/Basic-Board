@@ -20,7 +20,7 @@
         <textarea id="texts" name="texts" th:field="*{texts}"></textarea>
       </div>
       <button type="submit">수정완료</button>
-      <button type="submit">취소</button>
+      <button th:action="@{|/boards/greeting/|}"type="submit">취소</button>
       <button type="submit">뒤로가기</button>
     </form>
   </div>

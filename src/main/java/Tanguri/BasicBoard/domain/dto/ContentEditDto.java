@@ -10,4 +10,5 @@ public class ContentEditDto {
     private Long id;
     private String title;
     private String texts;
+    private String password;
 }

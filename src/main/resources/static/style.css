@@ -233,3 +233,10 @@ textarea {
 .password{
     align:right;
 }
+.select-btn{
+    display:flex;
+    justify-content:center;
+}
+.select-btn2{
+    padding:5px;
+}
