@@ -34,10 +34,15 @@ public class ContentService {
         int pageLimit = 5;//한페이지에 보여줄 글 개수
         //System.out.println("zz");
         Page<Content> contents = contentRepository.findAll(PageRequest.of(page, pageLimit, Sort.Direction.DESC,"id"));
-        System.out.println(contents);
         Page<ContentDto> contentsDto = contents.map(content -> new ContentDto(content));
-        System.out.println(contentsDto);
         return contentsDto;
+    }
+    public Page<ContentDto> pagingByUserId(Pageable pageable,String writer){
+        int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
+        int pageLimit = 5;//한페이지에 보여줄 글 개수
+        Page<Content> contents = contentRepository.findByWriter(PageRequest.of(page, pageLimit, Sort.Direction.DESC,"id"), writer);
+        Page<ContentDto> contentDtos = contents.map(content -> new ContentDto(content));
+        return contentDtos;
     }
     public void editContent(Long id, ContentEditDto contentEditDto){
         Optional<Content> byId = contentRepository.findById(id);

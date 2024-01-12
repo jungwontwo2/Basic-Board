@@ -1,10 +1,13 @@
 package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.SessionConst;
+import Tanguri.BasicBoard.domain.dto.ContentDto;
 import Tanguri.BasicBoard.domain.dto.JoinUserDto;
 import Tanguri.BasicBoard.domain.dto.LoginUserDto;
+import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.repository.UserRepository;
+import Tanguri.BasicBoard.service.ContentService;
 import Tanguri.BasicBoard.service.LoginService;
 import Tanguri.BasicBoard.service.UserService;
 import Tanguri.BasicBoard.session.SessionManager;
@@ -14,6 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +29,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -30,7 +38,8 @@ public class UserController {
 
     private final LoginService loginService;
     private final UserService userService;
-    private final SessionManager sessionManager;
+
+    private final ContentService contentService;
 
     //회원가입 누름
     @GetMapping("/users/join")
@@ -111,5 +120,26 @@ public class UserController {
             System.out.println("session deleted");
         }
         return "redirect:/";
+    }
+
+    @GetMapping("users/my")
+    public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletRequest request,
+                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user,
+                         Model model){
+        HttpSession session = request.getSession(false);
+        if(session==null){
+            request.setAttribute("msg","로그인 후 사용가능합니다.");
+            request.setAttribute("redirectUrl","/users/login");
+            return "/common/messageRedirect";
+        }
+        Page<ContentDto> contentDtos = contentService.pagingByUserId(pageable, user.getNickname());
+        int blockLimit = 3;
+        int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+        int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
+
+        model.addAttribute("contentDtos", contentDtos);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        return "/users/user-info";
     }
 }

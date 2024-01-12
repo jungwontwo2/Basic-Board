@@ -19,4 +19,5 @@ import java.util.Map;
 @Transactional
 public interface ContentRepository extends JpaRepository<Content, Long> {
 //    Page<Content> findAll(Pageable pageable);
+    Page<Content> findByWriter(Pageable pageable,String writer);
 }
