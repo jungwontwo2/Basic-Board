@@ -22,34 +22,59 @@ public class ContentController {
 
     private final ContentService contentService;
 
+//    @GetMapping("/boards/greeting")
+//    public String greetingsBoards(@PageableDefault(page = 1) Pageable pageable, Model model){
+////    public String greetingsBoards(HttpServletRequest request, @PageableDefault(page = 1) Pageable pageable, Model model){
+////        HttpSession session = request.getSession(false);
+////        if(session==null){
+////            request.setAttribute("msg","로그인 후 사용가능합니다.");
+////            request.setAttribute("redirectUrl","/users/login");
+////            return "/common/messageRedirect";
+////        }
+////        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
+////        if (loginUser == null) {
+////            request.setAttribute("msg","로그인 후 사용가능합니다.");
+////            request.setAttribute("redirectUrl","/users/login");
+////            return "/common/messageRedirect";
+////        }
+//        Page<ContentDto> contentDtos = contentService.paging(pageable);
+//        /**
+//         * blockLimit : page 개수 설정
+//         * 현재 사용자가 선택한 페이지 앞 뒤로 3페이지씩만 보여준다.
+//         * ex : 현재 사용자가 4페이지라면 2, 3, (4), 5, 6
+//         */
+//        int blockLimit = 3;
+//        int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+//        int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
+//
+//        model.addAttribute("contentDtos", contentDtos);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("endPage", endPage);
+//        return "/content/greeting";
+//    }
     @GetMapping("/boards/greeting")
-    public String greetingsBoards(@PageableDefault(page = 1) Pageable pageable, Model model){
-//    public String greetingsBoards(HttpServletRequest request, @PageableDefault(page = 1) Pageable pageable, Model model){
-//        HttpSession session = request.getSession(false);
-//        if(session==null){
-//            request.setAttribute("msg","로그인 후 사용가능합니다.");
-//            request.setAttribute("redirectUrl","/users/login");
-//            return "/common/messageRedirect";
-//        }
-//        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
-//        if (loginUser == null) {
-//            request.setAttribute("msg","로그인 후 사용가능합니다.");
-//            request.setAttribute("redirectUrl","/users/login");
-//            return "/common/messageRedirect";
-//        }
-        Page<ContentDto> contentDtos = contentService.paging(pageable);
-        /**
-         * blockLimit : page 개수 설정
-         * 현재 사용자가 선택한 페이지 앞 뒤로 3페이지씩만 보여준다.
-         * ex : 현재 사용자가 4페이지라면 2, 3, (4), 5, 6
-         */
-        int blockLimit = 3;
-        int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
-        int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
+    public String greetingBoardsSearchword(@PageableDefault(page = 1) Pageable pageable,
+                                           @RequestParam(name = "searchWord",required = false)String searchWord, Model model){
+        if(searchWord==null){
+            Page<ContentDto> contentDtos = contentService.paging(pageable);
+            int blockLimit = 3;
+            int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
 
-        model.addAttribute("contentDtos", contentDtos);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
+            model.addAttribute("contentDtos", contentDtos);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        }
+        else {
+            Page<ContentDto> contentDtos = contentService.getBoardListBySearchword(pageable, searchWord);
+            int blockLimit = 3;
+            int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
+
+            model.addAttribute("contentDtos", contentDtos);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        }
         return "/content/greeting";
     }
 
@@ -133,8 +158,6 @@ public class ContentController {
     @PostMapping("/boards/greeting/delete/{id}")
     public String deleteContent(@PathVariable Long id,@ModelAttribute("content") ContentEditDto contentEditDto,HttpServletRequest request){
         Content content = contentService.getContent(id);
-        System.out.println(content.getPassword());
-        System.out.println(contentEditDto.getPassword());
         if(!content.getPassword().equals(contentEditDto.getPassword())){
             request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
             String redirectUrl = "/boards/greeting/"+id.toString();

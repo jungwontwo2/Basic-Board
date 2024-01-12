@@ -20,4 +20,5 @@ import java.util.Map;
 public interface ContentRepository extends JpaRepository<Content, Long> {
 //    Page<Content> findAll(Pageable pageable);
     Page<Content> findByWriter(Pageable pageable,String writer);
+    Page<Content> findByTitleContaining(Pageable pageable,String searchword);
 }
