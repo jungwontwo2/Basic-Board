@@ -1,5 +1,6 @@
 첫 화면
-![image](https://github.com/jungwontwo2/Basic-Board/assets/65643842/1b89c84a-81bb-49bf-8687-6d7b52d737f9)
+![image](https://github.com/jungwontwo2/Basic-Board/assets/65643842/d369bdc0-8853-4c80-a69e-cdeb6aa533d2)
+
 
 회원가입 페이지
 
