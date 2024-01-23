@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="/style.css">
   <title>게시판</title>
-  <nav>글 쓰기 화면</nav>
+  <nav>게시글</nav>
 </head>
 <body>
 <div>
@@ -23,10 +23,10 @@
         <div class="texts" th:text="*{texts}"></div>
       </div>
       <div class="select-btn">
-        <button th:formaction="@{|/boards/greeting/editPage/${content.id}|}">수정</button>
-        <button th:formaction="@{|/boards/greeting/delete/${content.id}|}">삭제</button>
+        <button th:formaction="@{|/boards/free/editPage/${content.id}|}">수정</button>
+        <button th:formaction="@{|/boards/free/delete/${content.id}|}">삭제</button>
         <button>
-          <a th:href="@{|/boards/greeting|}">뒤로가기</a>
+          <a th:href="@{|/boards/free|}">뒤로가기</a>
         </button>
 
       </div>

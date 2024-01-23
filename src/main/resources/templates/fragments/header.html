@@ -1,68 +1,68 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head">
-  <meta charset="utf-8">
-  <title>게시판</title>
-  <!-- Bootstrap 5.2.3 Version -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head th:fragment="head">-->
+<!--  <meta charset="utf-8">-->
+<!--  <title>게시판</title>-->
+<!--  &lt;!&ndash; Bootstrap 5.2.3 Version &ndash;&gt;-->
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">-->
 
-  <!-- My CSS -->
-  <link rel="stylesheet" href="/css/custom.css">
-</head>
+<!--  &lt;!&ndash; My CSS &ndash;&gt;-->
+<!--  <link rel="stylesheet" href="/css/custom.css">-->
+<!--</head>-->
 
-<body>
+<!--<body>-->
 
-<div th:fragment="header (pageName)">
+<!--<div th:fragment="header (pageName)">-->
 
-  <!-- Bootstrap 5.2.3 Version -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<!--  &lt;!&ndash; Bootstrap 5.2.3 Version &ndash;&gt;-->
+<!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>-->
 
-  <nav class="navbar navbar-expand-lg" style="background-color: limegreen; margin-bottom: 60px;">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">Basic Board</a>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-<!--            <a class="nav-link active" aria-current="page" href="/">홈</a>-->
-            <a th:if="${pageName == 'home'}" class="nav-link active" aria-current="page" href="/">Home</a>
-            <a th:unless="${pageName == 'home'}" class="nav-link" aria-current="page" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/boards/greeting">가입인사</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/boards/free">자유게시판</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/boards/free">골드게시판</a>
-          </li>
-        </ul>
-      </div>
-      <div class="justify-content-between" id="navbarNav" style="padding: 5px 30px">
-
-        <!-- 로그인 안 했을때 -->
-        <ul class="navbar-nav">
-          <li class="nav-item">
-              <button class="btn nav-btn" onclick="location.href = '/users/login'">로그인</button>
-          </li>
-          <li class="nav-item">
-            <button class="btn nav-btn" onclick="location.href = '/users/join'">회원가입</button>
-          </li>
-        </ul>
-
-<!--        &lt;!&ndash; 로그인 했을때 &ndash;&gt;-->
+<!--  <nav class="navbar navbar-expand-lg" style="background-color: limegreen; margin-bottom: 60px;">-->
+<!--    <div class="container-fluid">-->
+<!--      <a class="navbar-brand" href="/">Basic Board</a>-->
+<!--      <div class="collapse navbar-collapse" id="navbarNavDropdown">-->
 <!--        <ul class="navbar-nav">-->
 <!--          <li class="nav-item">-->
-<!--            <button class="btn nav-btn" onclick="location.href = '/admin'">권한 수정</button>-->
+<!--&lt;!&ndash;            <a class="nav-link active" aria-current="page" href="/">홈</a>&ndash;&gt;-->
+<!--            <a th:if="${pageName == 'home'}" class="nav-link active" aria-current="page" href="/">Home</a>-->
+<!--            <a th:unless="${pageName == 'home'}" class="nav-link" aria-current="page" href="/">Home</a>-->
 <!--          </li>-->
 <!--          <li class="nav-item">-->
-<!--            <button class="btn nav-btn" onclick="location.href = '/posts/my-feed/post'">마이 피드</button>-->
+<!--            <a class="nav-link" href="/boards/greeting">자유게시판</a>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="/boards/free">자유게시판</a>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="/boards/free">골드게시판</a>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--      <div class="justify-content-between" id="navbarNav" style="padding: 5px 30px">-->
+
+<!--        &lt;!&ndash; 로그인 안 했을때 &ndash;&gt;-->
+<!--        <ul class="navbar-nav">-->
+<!--          <li class="nav-item">-->
+<!--              <button class="btn nav-btn" onclick="location.href = '/users/login'">로그인</button>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <button class="btn nav-btn" onclick="location.href = '/users/join'">회원가입</button>-->
 <!--          </li>-->
 <!--        </ul>-->
 
-      </div>
-    </div>
-  </nav>
-</div>
+<!--&lt;!&ndash;        &lt;!&ndash; 로그인 했을때 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <ul class="navbar-nav">&ndash;&gt;-->
+<!--&lt;!&ndash;          <li class="nav-item">&ndash;&gt;-->
+<!--&lt;!&ndash;            <button class="btn nav-btn" onclick="location.href = '/admin'">권한 수정</button>&ndash;&gt;-->
+<!--&lt;!&ndash;          </li>&ndash;&gt;-->
+<!--&lt;!&ndash;          <li class="nav-item">&ndash;&gt;-->
+<!--&lt;!&ndash;            <button class="btn nav-btn" onclick="location.href = '/posts/my-feed/post'">마이 피드</button>&ndash;&gt;-->
+<!--&lt;!&ndash;          </li>&ndash;&gt;-->
+<!--&lt;!&ndash;        </ul>&ndash;&gt;-->
 
-</body>
+<!--      </div>-->
+<!--    </div>-->
+<!--  </nav>-->
+<!--</div>-->
+
+<!--</body>-->

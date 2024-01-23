@@ -10,7 +10,7 @@
 <div>
   <br/>
   <div align="center">
-    <form th:object="${content}" th:action="@{|/boards/greeting/edit/${content.id}|}" method="post">
+    <form th:object="${content}" th:action="@{|/boards/free/edit/${content.id}|}" method="post">
       <div class="form-group" align="left">
         <label for="title">글 제목 : </label>
         <input  type="text" id="title" name="title" th:field="*{title}" placeholder="제목을 입력하세요" width="400px">
@@ -20,7 +20,7 @@
         <textarea id="texts" name="texts" th:field="*{texts}"></textarea>
       </div>
       <button type="submit">수정완료</button>
-      <button th:action="@{|/boards/greeting/|}"type="submit">취소</button>
+      <button th:action="@{|/boards/free/|}"type="submit">취소</button>
     </form>
   </div>
 </div>

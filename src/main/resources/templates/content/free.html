@@ -2,14 +2,14 @@
 <html lang="ko" xmlns:th="http//www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>가입인사 페이지</title>
+    <title>자유게시판 페이지</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <section class="notice">
   <div class="page-title">
     <div class="container">
-      <h3>가입인사</h3>
+      <h3>자유게시판</h3>
     </div>
   </div>
 
@@ -17,14 +17,14 @@
   <div id="board-search">
     <div class="container">
       <div class="search-window">
-        <form action="/boards/greeting" method="get">
+        <form action="/boards/free" method="get">
           <div class="search-wrap">
             <label for="search" class="blind">공지사항 내용 검색</label>
             <input id="search" type="text" name="searchWord" placeholder="검색어를 입력해주세요." value="">
             <button type="submit" class="btn btn-dark">검색</button>
           </div>
         </form>
-          <button th:onclick="|location.href='@{/boards/greeting/write}'|" class="btn btn-dark write-btn">글쓰기</button>
+          <button th:onclick="|location.href='@{/boards/free/write}'|" class="btn btn-dark write-btn">글쓰기</button>
       </div>
     </div>
   </div>
@@ -43,10 +43,10 @@
         <tbody>
         <tr th:each="contentDto: ${contentDtos}">
             <td>
-              <a th:text="${contentDto.id}" th:href="@{|/boards/greeting/${contentDto.id}|}"></a>
+              <a th:text="${contentDto.id}" th:href="@{|/boards/free/${contentDto.id}|}"></a>
             </td>
             <td>
-              <a th:text="${contentDto.title}" th:href="@{|/boards/greeting/${contentDto.id}|}"></a>
+              <a th:text="${contentDto.title}" th:href="@{|/boards/free/${contentDto.id}|}"></a>
             </td>
             <td th:text="${contentDto.writer}"></td>
         </tr>
@@ -54,10 +54,10 @@
       </table>
       <div class="pages">
       <!-- 첫번째 페이지로 이동 -->
-      <a th:href="@{/boards/greeting(page=1)}">처음 </a>
+      <a th:href="@{/boards/free(page=1)}">처음 </a>
 
       <!-- 이전 링크 활성화 비활성화 -->
-      <a th:href="${contentDtos.first} ? '#' : @{/boards/greeting(page=${contentDtos.number})}"> 이전 </a>
+      <a th:href="${contentDtos.first} ? '#' : @{/boards/free(page=${contentDtos.number})}"> 이전 </a>
 
       <!-- 페이지 번호 링크(현재 페이지는 숫자만)
               for(int page=startPage; page<=endPage; page++)-->
@@ -67,15 +67,15 @@
             <span th:if="${page == contentDtos.number + 1}" th:text="${page}"></span>
         <!-- 현재페이지 링크 X, 다른 페이지번호에는 링크를 보여준다 -->
             <span th:unless="${page == contentDtos.number + 1}">
-        <a th:href="@{/boards/greeting(page=${page})}" th:text="${page}"></a>
+        <a th:href="@{/boards/free(page=${page})}" th:text="${page}"></a>
             </span>
         </span>
 
       <!-- 다음 링크 활성화 비활성화 -->
-      <a th:href="${contentDtos.last} ? '#' : @{/boards/greeting(page=${contentDtos.number + 2})}"> 다음 </a>
+      <a th:href="${contentDtos.last} ? '#' : @{/boards/free(page=${contentDtos.number + 2})}"> 다음 </a>
 
       <!-- 마지막 페이지로 이동 -->
-      <a th:href="@{/boards/greeting(page=${contentDtos.totalPages})}"> 마지막 </a>
+      <a th:href="@{/boards/free(page=${contentDtos.totalPages})}"> 마지막 </a>
       </div>
     </div>
   </div>

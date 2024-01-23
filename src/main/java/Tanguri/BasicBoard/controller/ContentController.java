@@ -52,7 +52,7 @@ public class ContentController {
 //        model.addAttribute("endPage", endPage);
 //        return "/content/greeting";
 //    }
-    @GetMapping("/boards/greeting")
+    @GetMapping("/boards/free")
     public String greetingBoardsSearchword(@PageableDefault(page = 1) Pageable pageable,
                                            @RequestParam(name = "searchWord",required = false)String searchWord, Model model){
         if(searchWord==null){
@@ -75,11 +75,11 @@ public class ContentController {
             model.addAttribute("startPage", startPage);
             model.addAttribute("endPage", endPage);
         }
-        return "/content/greeting";
+        return "/content/free";
     }
 
     //글 보기 화면
-    @GetMapping("/boards/greeting/{id}")
+    @GetMapping("/boards/free/{id}")
     public String showContent(@PathVariable Long id, Model model){
         Content content = contentService.getContent(id);
         ContentDto contentDto = Content.toDto(content);
@@ -87,7 +87,7 @@ public class ContentController {
         return "/content/content-page";
     }
     //글쓰기 화면 ㄱㄱ
-    @GetMapping("/boards/greeting/write")
+    @GetMapping("/boards/free/write")
     public String writePage(HttpServletRequest request,@ModelAttribute(name = "content")ContentDto contentDto,@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user){
         HttpSession session = request.getSession(false);
         if(session==null){
@@ -98,7 +98,7 @@ public class ContentController {
         return "/content/write-page";
     }
     //글 등록
-    @PostMapping("/boards/greeting/write")
+    @PostMapping("/boards/free/write")
     public String writeContent(HttpServletRequest request,ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user) {
         HttpSession session = request.getSession(false);
         if(session==null){
@@ -107,7 +107,7 @@ public class ContentController {
             return "/common/messageRedirect";
         }
         contentService.writeContent(contentDto,user);
-        return "redirect:/boards/greeting";
+        return "redirect:/boards/free";
     }
 
     //글 수정
@@ -131,19 +131,19 @@ public class ContentController {
 //    }
     //글 수정하기
     //글 수정하기
-    @PostMapping("/boards/greeting/edit/{id}")
+    @PostMapping("/boards/free/edit/{id}")
     public String editConent(@PathVariable Long id,@ModelAttribute("content")ContentEditDto contentEditDto){
         contentService.editContent(id,contentEditDto);
-        return "redirect:/boards/greeting";
+        return "redirect:/boards/free";
     }
 
     //글 수정페이지 가져오기
-    @PostMapping("/boards/greeting/editPage/{id}")
+    @PostMapping("/boards/free/editPage/{id}")
     public String editContent(@PathVariable Long id,@ModelAttribute("content")ContentEditDto contentEditDto,HttpServletRequest request){
         Content content = contentService.getContent(id);
         if(!content.getPassword().equals(contentEditDto.getPassword())){
             request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
-            String redirectUrl = "/boards/greeting/"+id.toString();
+            String redirectUrl = "/boards/free/"+id.toString();
             request.setAttribute("redirectUrl",redirectUrl);
             return "/common/messageRedirect";
         }
@@ -155,17 +155,17 @@ public class ContentController {
     }
 
     //글 삭제
-    @PostMapping("/boards/greeting/delete/{id}")
+    @PostMapping("/boards/free/delete/{id}")
     public String deleteContent(@PathVariable Long id,@ModelAttribute("content") ContentEditDto contentEditDto,HttpServletRequest request){
         Content content = contentService.getContent(id);
         if(!content.getPassword().equals(contentEditDto.getPassword())){
             request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
-            String redirectUrl = "/boards/greeting/"+id.toString();
+            String redirectUrl = "/boards/free/"+id.toString();
             request.setAttribute("redirectUrl",redirectUrl);
             return "/common/messageRedirect";
         }
         contentService.deleteContent(id);
         System.out.println("delete complete");
-        return"redirect:/boards/greeting";
+        return"redirect:/boards/free";
     }
 }
