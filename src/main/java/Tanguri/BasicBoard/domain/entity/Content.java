@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Content {
+public class Content extends BaseEntity{
 
     @Id
     @Column(name = "content_id")
