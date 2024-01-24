@@ -1,10 +1,12 @@
 package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.SessionConst;
+import Tanguri.BasicBoard.domain.dto.CommentResponseDto;
 import Tanguri.BasicBoard.domain.dto.ContentDto;
 import Tanguri.BasicBoard.domain.dto.ContentEditDto;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
+import Tanguri.BasicBoard.service.CommentService;
 import Tanguri.BasicBoard.service.ContentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -16,11 +18,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class ContentController {
 
     private final ContentService contentService;
+    private final CommentService commentService;
 
 //    @GetMapping("/boards/greeting")
 //    public String greetingsBoards(@PageableDefault(page = 1) Pageable pageable, Model model){
@@ -83,7 +88,12 @@ public class ContentController {
     public String showContent(@PathVariable Long id, Model model){
         Content content = contentService.getContent(id);
         ContentDto contentDto = Content.toDto(content);
+        List<CommentResponseDto> commentResponseDtos = commentService.commentDtoList(id);
+        for (CommentResponseDto commentResponseDto : commentResponseDtos) {
+            System.out.println(commentResponseDto.getCreatedAt());
+        }
         model.addAttribute("content",contentDto);
+        model.addAttribute("comments",commentResponseDtos);
         return "/content/content-page";
     }
     //글쓰기 화면 ㄱㄱ

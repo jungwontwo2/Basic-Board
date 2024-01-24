@@ -1,6 +1,7 @@
 package Tanguri.BasicBoard.domain.dto;
 
 import Tanguri.BasicBoard.domain.SessionConst;
+import Tanguri.BasicBoard.domain.entity.Comment;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.SessionAttribute;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -28,7 +31,7 @@ public class ContentDto {
     private String password;
     private String writer;
 
-    private String comment;
+    private List<Comment> comments;
 
     public static Content toEntity(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user){
         Content content = Content.builder()
@@ -46,6 +49,7 @@ public class ContentDto {
         this.texts=content.getTexts();
         this.id=content.getId();
         this.writer=content.getWriter();
+        this.comments=content.getComments();
     }
 
 }

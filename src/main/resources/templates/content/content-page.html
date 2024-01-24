@@ -19,18 +19,39 @@
         <br><br>
         <h3>내용</h3>
         <div class="texts" th:text="*{texts}"></div>
+        <!-- Comments -->
+        <br>
+        <div class="card my-4" th:if="${comments.size()} != 0">
+          <h4 class="card-header">댓글</h4>
+          <div class="comment">
+            <div th:each="comment : ${comments}">
+              <div class="media mb-4">
+                <div class="media-body">
+                  <h5 class="mt-0" th:text="${comment.getNickname()}">User Name</h5>
+                  <p th:text="${comment.getComment()}" th:id="'comment-' + ${comment.getId()}">Comment content</p>
+                  <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>
+                  <!--            <div th:if="${comment.getEmail() == #authentication.principal.username}">-->
+                  <!--              <button class="btn btn-sm btn-outline-warning" th:attr="data-id=${comment.getId()}" onclick="editComment(this)">Edit</button>-->
+                  <!--              <a th:href="@{/board/{id}/comment/{commentId}/remove(id=${id}, commentId=${comment.getId()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this comment?')">Delete</a>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+         <!-- Comments Form -->
         <h3>댓글 작성</h3>
         <textarea name="comment" class="comment"></textarea>
         <button th:formaction="@{|/boards/free/${content.id}/comment|}" class="select-btn">Submit</button>
       </div>
-      <div class="select-btn">
-        <button th:formaction="@{|/boards/free/editPage/${content.id}|}">수정</button>
-        <button th:formaction="@{|/boards/free/delete/${content.id}|}">삭제</button>
-        <button>
-          <a th:href="@{|/boards/free|}">뒤로가기</a>
-        </button>
-      </div>
-    </form>
+        <div class="select-btn">
+          <button th:formaction="@{|/boards/free/editPage/${content.id}|}">수정</button>
+          <button th:formaction="@{|/boards/free/delete/${content.id}|}">삭제</button>
+          <button>
+            <a th:href="@{|/boards/free|}">뒤로가기</a>
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 </body>

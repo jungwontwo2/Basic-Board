@@ -48,7 +48,8 @@ public class CommentService {
         //findByContent를 통해서 content를 넣어 해당 게시물의 댓글들을 comments에 넣는다.
         List<Comment> comments = commentRepository.findByContent(content);
         //해당 댓글들은 entity이기 때문에 CommentResponseDto로 바꿔준다(comment를 넣으면 commentResponseDto로 변환시켜줌).
-        return comments.stream().map(comment -> CommentResponseDto.builder().comment(comment).build()).collect(Collectors.toList());
+        List<CommentResponseDto> collect = comments.stream().map(comment -> new CommentResponseDto(comment)).toList();
+        return collect;
     }
 
     public void updateComment(CommentResponseDto commentResponseDto, Long commentId){

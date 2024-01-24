@@ -5,6 +5,8 @@ import Tanguri.BasicBoard.domain.dto.ContentEditDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
@@ -26,6 +28,10 @@ public class Content extends BaseEntity{
 
     private String writer;
     private String password;
+
+    @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OrderBy("id asc")
+    private List<Comment> comments;
 
     public static ContentDto toDto(Content content){
         ContentDto contentDto = ContentDto.builder()

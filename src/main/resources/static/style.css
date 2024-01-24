@@ -227,8 +227,8 @@ textarea {
     border-width: thin;
     border-color: black;
     border-style: solid;
-    width: 750px;
-    height: 400px;
+    width: flex;
+    height: flex;
 }
 .password{
     align:right;
@@ -247,6 +247,6 @@ textarea {
     border-width: thin;
     border-color: rgba(0,202,249,0.8);
     border-style: solid;
-    width: 750px;
-    height: 200px;
+    width: flex;
+    height: auto;
 }
