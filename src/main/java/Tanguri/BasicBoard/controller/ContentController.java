@@ -134,7 +134,7 @@ public class ContentController {
     @PostMapping("/boards/free/edit/{id}")
     public String editConent(@PathVariable Long id,@ModelAttribute("content")ContentEditDto contentEditDto){
         contentService.editContent(id,contentEditDto);
-        return "redirect:/boards/free";
+        return "redirect:/boards/free/"+id;
     }
 
     //글 수정페이지 가져오기

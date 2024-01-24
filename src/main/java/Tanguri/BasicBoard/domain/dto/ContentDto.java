@@ -28,6 +28,8 @@ public class ContentDto {
     private String password;
     private String writer;
 
+    private String comment;
+
     public static Content toEntity(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user){
         Content content = Content.builder()
                 .title(contentDto.title)

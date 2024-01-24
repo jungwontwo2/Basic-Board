@@ -3,11 +3,9 @@ package Tanguri.BasicBoard.domain.entity;
 import Tanguri.BasicBoard.domain.dto.ContentDto;
 import Tanguri.BasicBoard.domain.dto.ContentEditDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @AllArgsConstructor

@@ -21,7 +21,6 @@ public class DataInit {
         userRepository.save(user);
         System.out.println("Init User Complete");
 
-        User user2 = userRepository.findByNickname("asdf");
         for (int i = 0; i < 20; i++) {
             Content content = Content.builder()
                     .title(Integer.toString(i+1))

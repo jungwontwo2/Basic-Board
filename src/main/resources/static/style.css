@@ -222,13 +222,13 @@ textarea {
   }
 .texts{
     padding: 20px;
-    margin-top:30px;
-    margin-bottom: 30px;
-    border-width: medium;
+    margin-top:20px;
+    margin-bottom: 20px;
+    border-width: thin;
     border-color: black;
     border-style: solid;
     width: 750px;
-    height: 500px;
+    height: 400px;
 }
 .password{
     align:right;
@@ -239,4 +239,14 @@ textarea {
 }
 .select-btn2{
     padding:5px;
+}
+.comment{
+    padding: 20px;
+    margin-top:20px;
+    margin-bottom: 20px;
+    border-width: thin;
+    border-color: rgba(0,202,249,0.8);
+    border-style: solid;
+    width: 750px;
+    height: 200px;
 }
