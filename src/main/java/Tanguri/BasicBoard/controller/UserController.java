@@ -128,7 +128,7 @@ public class UserController {
                          Model model){
         HttpSession session = request.getSession(false);
         if(session==null){
-            request.setAttribute("msg","로그인 후 사용가능합니다.");
+            request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
             return "/common/messageRedirect";
         }

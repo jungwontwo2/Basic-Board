@@ -91,7 +91,7 @@ public class ContentController {
     public String writePage(HttpServletRequest request,@ModelAttribute(name = "content")ContentDto contentDto,@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user){
         HttpSession session = request.getSession(false);
         if(session==null){
-            request.setAttribute("msg","로그인 후 사용가능합니다.");
+            request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
             return "/common/messageRedirect";
         }
@@ -102,7 +102,7 @@ public class ContentController {
     public String writeContent(HttpServletRequest request,ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user) {
         HttpSession session = request.getSession(false);
         if(session==null){
-            request.setAttribute("msg","로그인 후 사용가능합니다.");
+            request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
             return "/common/messageRedirect";
         }
