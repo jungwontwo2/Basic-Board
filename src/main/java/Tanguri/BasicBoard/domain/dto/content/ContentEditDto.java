@@ -1,4 +1,4 @@
-package Tanguri.BasicBoard.domain.dto;
+package Tanguri.BasicBoard.domain.dto.content;
 
 import lombok.Builder;
 import lombok.Data;

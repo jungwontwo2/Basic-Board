@@ -1,7 +1,7 @@
 package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.SessionConst;
-import Tanguri.BasicBoard.domain.dto.CommentRequestDto;
+import Tanguri.BasicBoard.domain.dto.comment.CommentRequestDto;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;

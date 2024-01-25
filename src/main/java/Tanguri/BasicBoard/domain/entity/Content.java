@@ -1,7 +1,7 @@
 package Tanguri.BasicBoard.domain.entity;
 
-import Tanguri.BasicBoard.domain.dto.ContentDto;
-import Tanguri.BasicBoard.domain.dto.ContentEditDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package Tanguri.BasicBoard.domain.dto;
+package Tanguri.BasicBoard.domain.dto.comment;
 
 import Tanguri.BasicBoard.domain.entity.Comment;
 import lombok.AllArgsConstructor;
@@ -18,6 +18,7 @@ public class CommentResponseDto {
     private Long id;
     private String comment;
     private String nickname;
+    private String imageUrl;
 
 
     //CommentEntity를 넣었을 때 Dto로 바꿔주는 역할
@@ -28,5 +29,6 @@ public class CommentResponseDto {
         this.id = comment.getId();
         this.comment = comment.getComment();
         this.nickname = comment.getUser().getNickname();
+        this.imageUrl=comment.getUser().getImage().getUrl();
     }
 }

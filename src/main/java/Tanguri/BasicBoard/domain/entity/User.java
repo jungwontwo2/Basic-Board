@@ -22,8 +22,11 @@ public class User {
     private String password;    //비밀번호
     private String nickname;    //닉네임
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)    //사용자가 쓴 게시물
     private List<Content> contents;
+
+    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+    private Image image;
 
     public User(String loginId, String password, String nickname) {
         this.loginId=loginId;

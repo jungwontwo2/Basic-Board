@@ -1,9 +1,9 @@
 package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.SessionConst;
-import Tanguri.BasicBoard.domain.dto.ContentDto;
-import Tanguri.BasicBoard.domain.dto.JoinUserDto;
-import Tanguri.BasicBoard.domain.dto.LoginUserDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentDto;
+import Tanguri.BasicBoard.domain.dto.user.JoinUserDto;
+import Tanguri.BasicBoard.domain.dto.user.LoginUserDto;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.ContentService;
 import Tanguri.BasicBoard.service.LoginService;
@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -77,7 +75,7 @@ public class UserController {
         //쿠키 하나 생성 key:LOGIN_MEMBER(loginMember) , value:JESSIONID=12309ASDHFFKJH13290F9E UUID값
         //그 쿠키값인 JESSIONID를 key값으로 가지고 value값으로 loginUser를 가지도록 세션스토어에 저장한다
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginUser);
-        System.out.println("로그인 성공");
+        System.out.println("loginsuccess");
         return "redirect:/";
     }
 
@@ -100,8 +98,10 @@ public class UserController {
     @GetMapping("/")
     public String loginSpring(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) User loginUser,Model model){
         if(loginUser==null){
+            System.out.println("error here");
             return "home/home";
         }
+        System.out.println("error2");
         model.addAttribute("user",loginUser);
         return "home/home-login";
     }

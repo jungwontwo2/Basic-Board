@@ -1,13 +1,15 @@
-package Tanguri.BasicBoard.domain.dto;
+package Tanguri.BasicBoard.domain.dto.user;
 
 import Tanguri.BasicBoard.domain.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
 @Data
+@AllArgsConstructor
 public class JoinUserDto {
 
     @NotBlank(message = "아이디를 입력하세요")
@@ -33,7 +35,7 @@ public class JoinUserDto {
 
     public static User toEntity(JoinUserDto userDto) {
         User user = new User(userDto.loginId,userDto.password,userDto.nickname);
-        System.out.println("userDto->Entity 하이");
+        System.out.println("userDto->Entity success");
         // 기타 필요한 필드 복사 작업 수행
         return user;
     }

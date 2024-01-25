@@ -1,9 +1,9 @@
 package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.SessionConst;
-import Tanguri.BasicBoard.domain.dto.CommentResponseDto;
-import Tanguri.BasicBoard.domain.dto.ContentDto;
-import Tanguri.BasicBoard.domain.dto.ContentEditDto;
+import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.CommentService;

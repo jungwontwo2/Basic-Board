@@ -1,7 +1,7 @@
 package Tanguri.BasicBoard.service;
 
-import Tanguri.BasicBoard.domain.dto.CommentRequestDto;
-import Tanguri.BasicBoard.domain.dto.CommentResponseDto;
+import Tanguri.BasicBoard.domain.dto.comment.CommentRequestDto;
+import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
 import Tanguri.BasicBoard.domain.entity.Comment;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

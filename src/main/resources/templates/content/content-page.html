@@ -27,6 +27,7 @@
             <div th:each="comment : ${comments}">
               <div class="media mb-4">
                 <div class="media-body">
+                  <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50" height="50">
                   <h5 class="mt-0" th:text="${comment.getNickname()}">User Name</h5>
                   <p th:text="${comment.getComment()}" th:id="'comment-' + ${comment.getId()}">Comment content</p>
                   <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>

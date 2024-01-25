@@ -1,4 +1,4 @@
-package Tanguri.BasicBoard.domain.dto;
+package Tanguri.BasicBoard.domain.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

@@ -19,7 +19,12 @@ spring:
 server:
   port: 8080
   servlet:
+    session:
+      tracking-modes: cookie
     encoding:
       force-response: true
   tomcat:
     uri-encoding: UTF-8
+file:
+  profileImagePath: C:/Temp/profileImageUpload/
+  boardImagePath: C:/Temp/boardImageUpload/
