@@ -134,7 +134,7 @@ public class UserController {
         Page<ContentDto> contentDtos = contentService.pagingByUserId(pageable, user.getNickname());
 
         ImageResponseDto image = imageService.findImage(user.getLoginId());
-        System.out.println(image.getUrl());
+        //System.out.println(image.getUrl());
         model.addAttribute("image",image);
 
         int blockLimit = 3;
@@ -158,7 +158,7 @@ public class UserController {
             request.setAttribute("redirectUrl","/users/login");
             return "/common/messageRedirect";
         }
-        Image image = user.getImage();
+        ImageResponseDto image = imageService.findImage(user.getLoginId());
 
         model.addAttribute("user",user);
         model.addAttribute("image",image);

@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>프로필사진 수정</title>
     <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 <body>
 <div class="page-title">
@@ -14,13 +15,12 @@
     </div>
 </div>
     <div class="image-edit">
-
-      <img th:src="${image.getUrl()}" alt="User image" width="250" height="500">
+      <img th:src="${image.getUrl()}" alt="User image" width="300" height="500">
         <form th:action="@{/image/upload}" th:method="post" enctype="multipart/form-data" class="mt-2">
-            <div class="mb-3">
-                <input type="file" class="form-control" name="file" accept="image/*" required>
+            <div class="mb-3 mx-5">
+                <input type="file" class="custom-file-input" name="file" accept="image/*" required>
             </div>
-            <button type="submit" class="btn btn-primary">Update Profile Picture</button>
+            <button type="submit" class="btn btn-primary btn-lg">저장</button>
         </form>
     </div>
   </div>
