@@ -132,6 +132,8 @@ public class UserController {
         int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
         int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
 
+        model.addAttribute("user",user);
+
         model.addAttribute("contentDtos", contentDtos);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);

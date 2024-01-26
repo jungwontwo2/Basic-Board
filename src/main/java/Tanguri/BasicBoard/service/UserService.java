@@ -16,13 +16,13 @@ public class UserService {
     private final ImageRepository imageRepository;
 
     @Transactional
-    public void saveUser(JoinUserDto user){
-        User joinuser = JoinUserDto.toEntity(user);
+    public void saveUser(JoinUserDto userDto){
+        User user = JoinUserDto.toEntity(userDto);
         Image image = Image.builder()
                 .url("/profileImages/anonymous.png")
-                .user(joinuser)
+                .user(user)
                 .build();
-        userRepository.save(joinuser);
+        userRepository.save(user);
         imageRepository.save(image);
     }
 }

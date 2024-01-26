@@ -2,14 +2,14 @@
 <html lang="ko" xmlns:th="http//www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>자유게시판 페이지</title>
+  <title>내 정보</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <section class="notice">
   <div class="page-title">
     <div class="container">
-      <h3>자유게시판</h3>
+      <h3>내 정보</h3>
     </div>
   </div>
 
@@ -17,20 +17,11 @@
   <div id="board-search">
     <div class="container">
       <div class="search-window">
-        <form action="">
-          <div class="search-wrap">
-            내 정보
-          </div>
-        </form>
+        <h3> 내가 쓴 게시글 </h3>
         <button th:onclick="|location.href='@{/boards/free/write}'|" class="btn btn-dark write-btn">글쓰기</button>
       </div>
-    </div>
-  </div>
-
-  <!-- board list area -->
-  <div id="board-list">
-    <div class="container">
-      <table class="board-table">
+        <img class="user-image" th:src="${user.getImage.getUrl()}" alt="User image" width="50" height="300">
+      <table class="board-table my">
         <thead>
         <tr>
           <th scope="col" class="th-num">번호</th>
@@ -50,12 +41,12 @@
         </tr>
         </tbody>
       </table>
-      <div class="pages">
+      <div class="pages my">
         <!-- 첫번째 페이지로 이동 -->
-        <a th:href="@{/boards/free(page=1)}">처음 </a>
+        <a th:href="@{/users/my(page=1)}">처음 </a>
 
         <!-- 이전 링크 활성화 비활성화 -->
-        <a th:href="${contentDtos.first} ? '#' : @{/boards/free(page=${contentDtos.number})}"> 이전 </a>
+        <a th:href="${contentDtos.first} ? '#' : @{/users/my(page=${contentDtos.number})}"> 이전 </a>
 
         <!-- 페이지 번호 링크(현재 페이지는 숫자만)
                 for(int page=startPage; page<=endPage; page++)-->
@@ -65,19 +56,24 @@
             <span th:if="${page == contentDtos.number + 1}" th:text="${page}"></span>
           <!-- 현재페이지 링크 X, 다른 페이지번호에는 링크를 보여준다 -->
             <span th:unless="${page == contentDtos.number + 1}">
-        <a th:href="@{/boards/free(page=${page})}" th:text="${page}"></a>
+        <a th:href="@{/users/my(page=${page})}" th:text="${page}"></a>
             </span>
         </span>
 
         <!-- 다음 링크 활성화 비활성화 -->
-        <a th:href="${contentDtos.last} ? '#' : @{/boards/free(page=${contentDtos.number + 2})}"> 다음 </a>
+        <a th:href="${contentDtos.last} ? '#' : @{/users/my(page=${contentDtos.number + 2})}"> 다음 </a>
 
         <!-- 마지막 페이지로 이동 -->
-        <a th:href="@{/boards/free(page=${contentDtos.totalPages})}"> 마지막 </a>
-      </div>
+        <a th:href="@{/users/my(page=${contentDtos.totalPages})}"> 마지막 </a>
+    </div>
+    </div>
+    <div class="edit-btn">
+      <button class="btn btn-dark edit" th:onclick="|location.href='@{/users/my/edit/image}'|">사진 수정</button>
+      <button class="btn btn-dark edit" th:onclick="|location.href='@{/users/my/edit/info}'|">정보 수정</button>
+      <button class="btn btn-dark edit" th:onclick="|location.href='@{/}'|">홈으로</button>
     </div>
   </div>
-
 </section>
+
 </body>
 </html>

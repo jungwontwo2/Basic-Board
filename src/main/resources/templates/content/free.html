@@ -24,7 +24,9 @@
             <button type="submit" class="btn btn-dark">검색</button>
           </div>
         </form>
+
           <button th:onclick="|location.href='@{/boards/free/write}'|" class="btn btn-dark write-btn">글쓰기</button>
+        <button class="btn btn-dark home" th:onclick="|location.href='@{/}'|" type="submit">홈으로</button>
       </div>
     </div>
   </div>
@@ -79,7 +81,6 @@
       </div>
     </div>
   </div>
-
 </section>
 </body>
 </html>

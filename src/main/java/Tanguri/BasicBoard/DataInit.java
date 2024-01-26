@@ -39,11 +39,8 @@ public class DataInit {
                     .writer(user.getNickname())
                     .password(user.getPassword())
                     .build();
-            System.out.println(content);
             contentRepository.save(content);
         }
-
-
         System.out.println("Init content Complete");
     }
 

@@ -89,9 +89,6 @@ public class ContentController {
         Content content = contentService.getContent(id);
         ContentDto contentDto = Content.toDto(content);
         List<CommentResponseDto> commentResponseDtos = commentService.commentDtoList(id);
-        for (CommentResponseDto commentResponseDto : commentResponseDtos) {
-            System.out.println(commentResponseDto.getCreatedAt());
-        }
         model.addAttribute("content",contentDto);
         model.addAttribute("comments",commentResponseDtos);
         return "/content/content-page";

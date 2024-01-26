@@ -82,7 +82,12 @@ section.notice {
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
 }
-
+.board-table.my{
+  font-size: 13px;
+  width: 75%;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
 .board-table a {
   color: #333;
   display: inline-block;
@@ -128,7 +133,7 @@ section.notice {
 
 .btn {
   display: inline-block;
-  padding: 0 30px;
+  padding: 0 10px;
   font-size: 15px;
   font-weight: 400;
   background: transparent;
@@ -152,11 +157,7 @@ section.notice {
   -ms-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
-}
 
-.btn-dark {
-  background: #555;
-  color: #fff;
 }
 .write-btn{
   background: #555;
@@ -164,18 +165,13 @@ section.notice {
   height: 40px;
   float: right;
   font-size: 16px;
+  margin: 5px;
 }
 .btn-dark:hover, .btn-dark:focus {
   background: #373737;
   border-color: #373737;
   color: #fff;
 }
-
-.btn-dark {
-  background: #555;
-  color: #fff;
-}
-
 .btn-dark:hover, .btn-dark:focus {
   background: #373737;
   border-color: #373737;
@@ -185,6 +181,13 @@ section.notice {
   background: #555;
   color: #fff;
   height: 40px;
+}
+.edit-btn{
+  text-align:center;
+}
+.edit{
+  margin: 50px 0px;
+  display :inline-block;
 }
 /* reset */
 
@@ -203,6 +206,10 @@ section.notice {
 .container {
   width: 1100px;
   margin: 0 auto;
+  overflow:hidden;
+}
+.user-image{
+  float: 40%;
 }
 .blind {
   position: absolute;
@@ -214,6 +221,9 @@ section.notice {
 }
 .pages{
     text-align:center;
+}
+.pages.my{
+    width:120%;
 }
 textarea {
     width: 100%;
@@ -249,4 +259,21 @@ textarea {
     border-style: solid;
     width: flex;
     height: auto;
+}
+.user-image{
+  float:left;
+  width:25%;
+}
+.user-content a{
+  float:right;
+  width:75%
+}
+.home{
+  background: #555;
+  color: #fff;
+  float: right;
+  margin: 5px;
+}
+.my-edit{
+
 }
