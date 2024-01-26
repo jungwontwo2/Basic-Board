@@ -21,7 +21,7 @@ import java.util.UUID;
 public class ImageService {
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
-    @Value("{file.path}")
+    @Value("${file.profileImagePath}")
     private String uploadFolder;
 
     public void upload(ImageUploadDto imageUploadDto,String loginId){
@@ -33,10 +33,8 @@ public class ImageService {
         String imageFileName = uuid + "_" + file.getOriginalFilename();
 
         File destinationFile = new File(uploadFolder + imageFileName);
-
         try {
             file.transferTo(destinationFile);
-
             Image image = imageRepository.findByUser(user);
             if(image!=null){
                 //이미지가 있으면 이미 존재하는 url 업데이트

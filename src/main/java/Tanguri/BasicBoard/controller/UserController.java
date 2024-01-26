@@ -2,10 +2,13 @@ package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
+import Tanguri.BasicBoard.domain.dto.image.ImageResponseDto;
 import Tanguri.BasicBoard.domain.dto.user.JoinUserDto;
 import Tanguri.BasicBoard.domain.dto.user.LoginUserDto;
+import Tanguri.BasicBoard.domain.entity.Image;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.ContentService;
+import Tanguri.BasicBoard.service.ImageService;
 import Tanguri.BasicBoard.service.LoginService;
 import Tanguri.BasicBoard.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,6 +36,7 @@ public class UserController {
     private final UserService userService;
 
     private final ContentService contentService;
+    private final ImageService imageService;
 
     //회원가입 누름
     @GetMapping("/users/join")
@@ -128,6 +132,11 @@ public class UserController {
             return "/common/messageRedirect";
         }
         Page<ContentDto> contentDtos = contentService.pagingByUserId(pageable, user.getNickname());
+
+        ImageResponseDto image = imageService.findImage(user.getLoginId());
+        System.out.println(image.getUrl());
+        model.addAttribute("image",image);
+
         int blockLimit = 3;
         int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
         int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
@@ -138,5 +147,21 @@ public class UserController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         return "/users/user-info";
+    }
+    @GetMapping("/users/my/edit/image")
+    public String editImagePage(HttpServletRequest request,
+                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user,Model model)
+    {
+        HttpSession session = request.getSession(false);
+        if(session==null){
+            request.setAttribute("msg","로그인 후 사용 가능합니다.");
+            request.setAttribute("redirectUrl","/users/login");
+            return "/common/messageRedirect";
+        }
+        Image image = user.getImage();
+
+        model.addAttribute("user",user);
+        model.addAttribute("image",image);
+        return "/users/image-edit";
     }
 }

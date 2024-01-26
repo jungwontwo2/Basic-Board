@@ -223,7 +223,7 @@ section.notice {
     text-align:center;
 }
 .pages.my{
-    width:120%;
+    width:95%;
 }
 textarea {
     width: 100%;
@@ -274,6 +274,7 @@ textarea {
   float: right;
   margin: 5px;
 }
-.my-edit{
-
+.image-edit{
+    text-align: center;
+    margin-top: 150px;
 }

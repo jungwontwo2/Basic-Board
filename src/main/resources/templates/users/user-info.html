@@ -18,9 +18,8 @@
     <div class="container">
       <div class="search-window">
         <h3> 내가 쓴 게시글 </h3>
-        <button th:onclick="|location.href='@{/boards/free/write}'|" class="btn btn-dark write-btn">글쓰기</button>
       </div>
-        <img class="user-image" th:src="${user.getImage.getUrl()}" alt="User image" width="50" height="300">
+        <img class="user-image" th:src="${image.getUrl()}" alt="User image" width="50" height="300">
       <table class="board-table my">
         <thead>
         <tr>

@@ -47,9 +47,7 @@
         <div class="select-btn">
           <button th:formaction="@{|/boards/free/editPage/${content.id}|}">수정</button>
           <button th:formaction="@{|/boards/free/delete/${content.id}|}">삭제</button>
-          <button>
-            <a th:href="@{|/boards/free|}">뒤로가기</a>
-          </button>
+          <button type="button" th:onclick="|location.href='@{/boards/free}'|">뒤로가기</button>
         </div>
       </form>
     </div>

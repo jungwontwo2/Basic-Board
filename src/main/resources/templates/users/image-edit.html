@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <title>프로필사진 수정</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="page-title">
+    <div class="container">
+        <h3>내 정보</h3>
+    </div>
+</div>
+    <div class="image-edit">
+
+      <img th:src="${image.getUrl()}" alt="User image" width="250" height="500">
+        <form th:action="@{/image/upload}" th:method="post" enctype="multipart/form-data" class="mt-2">
+            <div class="mb-3">
+                <input type="file" class="form-control" name="file" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Profile Picture</button>
+        </form>
+    </div>
+  </div>
+</body>
+</html>
