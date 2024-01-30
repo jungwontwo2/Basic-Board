@@ -31,6 +31,8 @@ public class CommentController {
             request.setAttribute("redirectUrl","/users/login");
             return "/common/messageRedirect";
         }
+        System.out.println(user.getNickname());
+        System.out.println(user.getId());
         commentService.writeComment(commentRequestDto,id,user.getNickname());
         return "redirect:/boards/free/"+id;
     }

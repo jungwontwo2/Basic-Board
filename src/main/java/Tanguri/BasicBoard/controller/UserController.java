@@ -3,9 +3,11 @@ package Tanguri.BasicBoard.controller;
 import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.image.ImageResponseDto;
+import Tanguri.BasicBoard.domain.dto.user.EditUserDto;
 import Tanguri.BasicBoard.domain.dto.user.JoinUserDto;
 import Tanguri.BasicBoard.domain.dto.user.LoginUserDto;
-import Tanguri.BasicBoard.domain.entity.Image;
+import Tanguri.BasicBoard.domain.dto.user.UserNicknameUpdateDto;
+import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.ContentService;
 import Tanguri.BasicBoard.service.ImageService;
@@ -26,6 +28,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -95,17 +99,17 @@ public class UserController {
             return "home/home";
         }
         model.addAttribute("user", loginUser);
-        //System.out.println(loginUser);
+
         return "home/home-login";
     }
 
     @GetMapping("/")
     public String loginSpring(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) User loginUser,Model model){
         if(loginUser==null){
-            System.out.println("error here");
+
             return "home/home";
         }
-        System.out.println("error2");
+
         model.addAttribute("user",loginUser);
         return "home/home-login";
     }
@@ -134,13 +138,12 @@ public class UserController {
         Page<ContentDto> contentDtos = contentService.pagingByUserId(pageable, user.getNickname());
 
         ImageResponseDto image = imageService.findImage(user.getLoginId());
-        //System.out.println(image.getUrl());
+
         model.addAttribute("image",image);
 
         int blockLimit = 3;
         int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
         int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
-
         model.addAttribute("user",user);
 
         model.addAttribute("contentDtos", contentDtos);
@@ -163,5 +166,48 @@ public class UserController {
         model.addAttribute("user",user);
         model.addAttribute("image",image);
         return "/users/image-edit";
+    }
+    @GetMapping("/users/my/edit/info")
+    public String getEditUserInfo(HttpServletRequest request,
+                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user,Model model)
+    {
+
+        HttpSession session = request.getSession(false);
+        if(session==null){
+            request.setAttribute("msg","로그인 후 사용 가능합니다.");
+            request.setAttribute("redirectUrl","/users/login");
+            return "/common/messageRedirect";
+        }
+        ImageResponseDto image = imageService.findImage(user.getLoginId());
+        EditUserDto userDto = userService.findMember(user.getLoginId());
+        model.addAttribute("image",image);
+        model.addAttribute("user", userDto);
+        return "/users/user-info-edit";
+    }
+    @PostMapping("/users/my/edit/info")
+    public String postEditUserInfo(HttpServletRequest request,
+                                   @Validated UserNicknameUpdateDto userNicknameUpdateDto, BindingResult bindingResult, Model model)
+    {
+        HttpSession session = request.getSession(false);
+        if(session==null){
+            request.setAttribute("msg","로그인 후 사용 가능합니다.");
+            request.setAttribute("redirectUrl","/users/login");
+            return "/common/messageRedirect";
+        }
+        boolean checkNicknameDuplication = userService.checkNicknameDuplication(userNicknameUpdateDto.getNickname());
+        if(checkNicknameDuplication){
+            bindingResult.rejectValue("nickname","nicknameValid","존재하는 닉네임입니다");
+        }
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult);
+            return "redirect:/users/my/edit/info";
+        }
+        User user = userService.updateUserNickname(userNicknameUpdateDto);
+        session.setAttribute(SessionConst.LOGIN_MEMBER,user);
+        System.out.println(user.getContents().size());
+        contentService.updateContentWriter(userNicknameUpdateDto.getNickname(),user);
+
+
+        return "redirect:/users/my";
     }
 }

@@ -49,4 +49,7 @@ public class Content extends BaseEntity{
                 .build();
         return contentEditDto;
     }
+    public void updateWriter(String writer){
+        this.writer=writer;
+    }
 }

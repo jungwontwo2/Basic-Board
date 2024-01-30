@@ -83,4 +83,19 @@ public class ContentService {
         Page<ContentDto> contentDtos = contents.map(content -> new ContentDto(content));
         return contentDtos;
     }
+    public List<Content> getBoardListById(Long id){
+        List<Content> allById = contentRepository.findAllById(id);
+        System.out.println(allById.size());
+        return allById;
+    }
+
+    public void updateContentWriter(String writer,User user){
+        List<Content> contents = user.getContents();
+        for (Content content : contents) {
+
+            content.updateWriter(writer);
+            contentRepository.save(content);
+            System.out.println(content.getWriter());
+        }
+    }
 }
