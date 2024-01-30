@@ -14,6 +14,7 @@ import java.util.List;
 public interface ContentRepository extends JpaRepository<Content, Long> {
 //    Page<Content> findAll(Pageable pageable);
     Page<Content> findByWriter(Pageable pageable,String writer);
+    Page<Content> findByUserId(Pageable pageable,Long id);
     Page<Content> findByTitleContaining(Pageable pageable,String searchword);
 
     List<Content> findAllById(Long id);

@@ -135,7 +135,7 @@ public class UserController {
             request.setAttribute("redirectUrl","/users/login");
             return "/common/messageRedirect";
         }
-        Page<ContentDto> contentDtos = contentService.pagingByUserId(pageable, user.getNickname());
+        Page<ContentDto> contentDtos = contentService.pagingByUserId(pageable, user.getId());
 
         ImageResponseDto image = imageService.findImage(user.getLoginId());
 
@@ -204,8 +204,8 @@ public class UserController {
         }
         User user = userService.updateUserNickname(userNicknameUpdateDto);
         session.setAttribute(SessionConst.LOGIN_MEMBER,user);
-        System.out.println(user.getContents().size());
-        contentService.updateContentWriter(userNicknameUpdateDto.getNickname(),user);
+        //System.out.println(user.getContents().size());
+        //contentService.updateContentWriter(userNicknameUpdateDto.getNickname(),user);
 
 
         return "redirect:/users/my";

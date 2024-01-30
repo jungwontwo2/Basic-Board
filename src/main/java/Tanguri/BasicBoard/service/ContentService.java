@@ -39,10 +39,10 @@ public class ContentService {
         return contentsDto;
     }
     //페이징(user가 쓴 글)
-    public Page<ContentDto> pagingByUserId(Pageable pageable,String writer){
+    public Page<ContentDto> pagingByUserId(Pageable pageable,Long id){
         int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
         int pageLimit = 5;//한페이지에 보여줄 글 개수
-        Page<Content> contents = contentRepository.findByWriter(PageRequest.of(page, pageLimit, Sort.Direction.DESC,"id"), writer);
+        Page<Content> contents = contentRepository.findByUserId(PageRequest.of(page, pageLimit, Sort.Direction.DESC,"id"), id);
         Page<ContentDto> contentDtos = contents.map(content -> new ContentDto(content));
         return contentDtos;
     }

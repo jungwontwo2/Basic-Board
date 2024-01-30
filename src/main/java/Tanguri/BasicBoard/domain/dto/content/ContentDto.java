@@ -46,7 +46,7 @@ public class ContentDto {
         this.title=content.getTitle();
         this.texts=content.getTexts();
         this.id=content.getId();
-        this.writer=content.getWriter();
+        this.writer=content.getUser().getNickname();
         this.comments=content.getComments();
     }
 
