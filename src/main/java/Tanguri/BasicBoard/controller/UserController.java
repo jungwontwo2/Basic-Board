@@ -186,7 +186,7 @@ public class UserController {
     }
     @PostMapping("/users/my/edit/info")
     public String postEditUserInfo(HttpServletRequest request,
-                                   @Validated UserNicknameUpdateDto userNicknameUpdateDto, BindingResult bindingResult, Model model)
+                                   @Validated @ModelAttribute("user") UserNicknameUpdateDto userNicknameUpdateDto, BindingResult bindingResult, Model model)
     {
         HttpSession session = request.getSession(false);
         if(session==null){
@@ -196,11 +196,13 @@ public class UserController {
         }
         boolean checkNicknameDuplication = userService.checkNicknameDuplication(userNicknameUpdateDto.getNickname());
         if(checkNicknameDuplication){
-            bindingResult.rejectValue("nickname","nicknameValid","존재하는 닉네임입니다");
+            bindingResult.rejectValue("nickname","nicknameDuplicate","존재하는 닉네임입니다");
         }
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult);
-            return "redirect:/users/my/edit/info";
+            ImageResponseDto image = imageService.findImage(userNicknameUpdateDto.getLoginId());
+            model.addAttribute("image",image);
+            return "/users/user-info-edit";
         }
         User user = userService.updateUserNickname(userNicknameUpdateDto);
         session.setAttribute(SessionConst.LOGIN_MEMBER,user);

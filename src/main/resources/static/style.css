@@ -6,7 +6,55 @@ nav {
     padding-top: 25px;
     height: 80px;
 }
+.nav-btn {
+    background-color: lightcyan;
+    font-weight: bold;
+    height: 40px;
+    width: 100px;
+    margin-left: 10px;
+    margin-right: 10px;
+      display: inline-block;
+      padding: 0 10px;
+      font-size: 15px;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      -ms-touch-action: manipulation;
+      touch-action: manipulation;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      border: 1px solid transparent;
+      text-transform: uppercase;
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      border-radius: 0;
+      -webkit-transition: all 0.3s;
+      -moz-transition: all 0.3s;
+      -ms-transition: all 0.3s;
+      -o-transition: all 0.3s;
+      transition: all 0.3s;
+}
+.nav-btn:hover, .nav-btn:focus, .nav-btn:active:focus {
+    background-color: cyan;
+    animation: jelly 0.5s;
+}
 
+@keyframes jelly {
+    25% {
+        transform: scale(0.9, 1.1);
+    }
+
+    50% {
+        transform: scale(1.1, 0.9);
+    }
+
+    75% {
+        transform: scale(0.95, 1.05);
+    }
+}
 button {
     height: 50px;
     width: 100px;
@@ -107,8 +155,14 @@ section.notice {
   text-align: center;
 }
 
-.board-table .th-date {
+.board-table .th-title {
   width: 200px;
+}
+.board-table .th-writer {
+  width: 100px;
+}
+.board-table .th-heart {
+  width: 100px;
 }
 
 .board-table th, .board-table td {

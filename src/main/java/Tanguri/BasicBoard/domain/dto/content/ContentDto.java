@@ -30,6 +30,9 @@ public class ContentDto {
     private String writer;
 
     private List<Comment> comments;
+    private Integer commentCnt;
+
+    private Integer heartCnt;
 
     public static Content toEntity(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user){
         Content content = Content.builder()
@@ -48,6 +51,8 @@ public class ContentDto {
         this.id=content.getId();
         this.writer=content.getUser().getNickname();
         this.comments=content.getComments();
+        this.commentCnt= content.getComments().size();
+        this.heartCnt=content.getHeartCnt();
     }
 
 }

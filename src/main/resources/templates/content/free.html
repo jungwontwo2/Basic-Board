@@ -3,15 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>자유게시판 페이지</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/custom.css">
   <link rel="stylesheet" href="/style.css">
+
 </head>
 <body>
-<section class="notice">
-  <div class="page-title">
-    <div class="container">
-      <h3>자유게시판</h3>
+<nav class="navbar navbar-expand-lg" style="background-color: limegreen; margin-bottom: 60px;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Basic Board</a>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <!--            <a class="nav-link active" aria-current="page" href="/">홈</a>-->
+          <a th:if="${pageName == 'home'}" class="nav-link active" aria-current="page" href="/">Home</a>
+          <a th:unless="${pageName == 'home'}" class="nav-link" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/boards/free">자유게시판</a>
+        </li>
+      </ul>
+    </div>
+    <div class="justify-content-between" id="navbarNav" style="padding: 5px 30px">
+
+      <!-- 로그인 안 했을때 -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <button th:onclick="|location.href='@{/boards/free/write}'|" class="nav-btn">글쓰기</button>
+        </li>
+      </ul>
     </div>
   </div>
+</nav>
+<!--<section class="notice">-->
+<!--  <div class="page-title">-->
+<!--    <div class="container">-->
+<!--      <h3>자유게시판</h3>-->
+<!--    </div>-->
+<!--  </div>-->
 
   <!-- board seach area -->
   <div id="board-search">
@@ -24,9 +53,6 @@
             <button type="submit" class="btn btn-dark">검색</button>
           </div>
         </form>
-
-          <button th:onclick="|location.href='@{/boards/free/write}'|" class="btn btn-dark write-btn">글쓰기</button>
-        <button class="btn btn-dark home" th:onclick="|location.href='@{/}'|" type="submit">홈으로</button>
       </div>
     </div>
   </div>
@@ -39,7 +65,8 @@
         <tr>
           <th scope="col" class="th-num">번호</th>
           <th scope="col" class="th-title">제목</th>
-          <th scope="col" class="th-date">작성자</th>
+          <th scope="col" class="th-writer">좋아요</th>
+          <th scope="col" class="th-heart">작성자</th>
         </tr>
         </thead>
         <tbody>
@@ -48,8 +75,9 @@
               <a th:text="${contentDto.id}" th:href="@{|/boards/free/${contentDto.id}|}"></a>
             </td>
             <td>
-              <a th:text="${contentDto.title}" th:href="@{|/boards/free/${contentDto.id}|}"></a>
+              <a th:text="|${contentDto.title} (${contentDto.commentCnt})|" th:href="@{|/boards/free/${contentDto.id}|}"></a>
             </td>
+            <td th:text="${contentDto.heartCnt}"></td>
             <td th:text="${contentDto.writer}"></td>
         </tr>
         </tbody>

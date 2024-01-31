@@ -19,9 +19,9 @@
     <div class="row ">
         <div class="col-4">
             <img th:src="${image.getUrl()}" alt="User image" width="300" height="300">
+            <label class="form-label mt-4 col-4">회원 정보 수정</label>
+            <button type="button" class="btn btn-outline-primary btn-sm col-4" onclick="location='/user/update/password'">비밀번호 변경</button>
         </div>
-        <label class="form-label mt-4 col-4">회원 정보 수정</label>
-        <button type="button" class="btn btn-outline-primary btn-sm col-4" onclick="location='/user/update/password'">비밀번호 변경</button>
         <form action="" th:action th:object="${user}" method="post" class="col-8">
             <div th:if="${#fields.hasGlobalErrors()}">
                 <p class="field-error" th:each="err : ${#fields.globalErrors()}"
@@ -34,8 +34,9 @@
             </div>
             <div class="col-8">
                 <label for="nickname">닉네임</label>
-                <input type="text" id="nickname" th:field="${user.nickname}" class="form-control"
+                <input type="text" id="nickname" th:field="*{nickname}" class="form-control"
                        th:errorclass="field-error">
+                <div class="field-error" th:errors="*{nickname}" />
             </div>
             <hr class="my-4 col-8">
             <div class="row">
