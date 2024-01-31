@@ -4,6 +4,8 @@ import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@DynamicInsert
 public class Content extends BaseEntity{
 
     @Id
@@ -33,6 +36,9 @@ public class Content extends BaseEntity{
     @OrderBy("id asc")
     private List<Comment> comments;
 
+    @Column(columnDefinition = "integer default 0")
+    private Integer heartCnt;
+
     public static ContentDto toDto(Content content){
         ContentDto contentDto = ContentDto.builder()
                 .id(content.getId())
@@ -51,5 +57,8 @@ public class Content extends BaseEntity{
     }
     public void updateWriter(String writer){
         this.writer=writer;
+    }
+    public void heartChange(Integer heartCnt){
+        this.heartCnt=heartCnt;
     }
 }

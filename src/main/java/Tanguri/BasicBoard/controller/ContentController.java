@@ -95,7 +95,7 @@ public class ContentController {
     }
     //글쓰기 화면 ㄱㄱ
     @GetMapping("/boards/free/write")
-    public String writePage(HttpServletRequest request,@ModelAttribute(name = "content")ContentDto contentDto,@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user){
+    public String writePage(HttpServletRequest request,@ModelAttribute(name = "content")ContentDto contentDto){
         HttpSession session = request.getSession(false);
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");

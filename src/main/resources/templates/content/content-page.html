@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
   <title>게시판</title>
   <nav>게시글</nav>
 </head>
@@ -19,6 +20,9 @@
         <br><br>
         <h3>내용</h3>
         <div class="texts" th:text="*{texts}"></div>
+        <div class="col" align="center">
+          <button th:formaction="@{|/heart/${content.id}|}" class="select-btn float-right" >좋아요</button>
+        </div>
         <!-- Comments -->
         <br>
         <div class="card my-4" th:if="${comments.size()} != 0">
@@ -27,10 +31,12 @@
             <div th:each="comment : ${comments}">
               <div class="media mb-4">
                 <div class="media-body">
-                  <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50" height="50">
+                  <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50"
+                       height="50">
                   <h5 class="mt-0" th:text="${comment.getNickname()}">User Name</h5>
                   <p th:text="${comment.getComment()}" th:id="'comment-' + ${comment.getId()}">Comment content</p>
-                  <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>
+                  <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment
+                    Date</small>
                   <!--            <div th:if="${comment.getEmail() == #authentication.principal.username}">-->
                   <!--              <button class="btn btn-sm btn-outline-warning" th:attr="data-id=${comment.getId()}" onclick="editComment(this)">Edit</button>-->
                   <!--              <a th:href="@{/board/{id}/comment/{commentId}/remove(id=${id}, commentId=${comment.getId()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this comment?')">Delete</a>-->
@@ -39,17 +45,22 @@
             </div>
           </div>
         </div>
-         <!-- Comments Form -->
+        <!-- Comments Form -->
         <h3>댓글 작성</h3>
         <textarea name="comment" class="comment"></textarea>
-        <button th:formaction="@{|/boards/free/${content.id}/comment|}" class="select-btn">Submit</button>
+        <div class="row select-btn">
+          <div class="col" align="left">
+            <button th:formaction="@{|/boards/free/${content.id}/comment|}" class="select-btn">Submit
+            </button>
+          </div>
+        </div>
       </div>
         <div class="select-btn">
           <button th:formaction="@{|/boards/free/editPage/${content.id}|}">수정</button>
           <button th:formaction="@{|/boards/free/delete/${content.id}|}">삭제</button>
           <button type="button" th:onclick="|location.href='@{/boards/free}'|">뒤로가기</button>
         </div>
-      </form>
+    </form>
     </div>
   </div>
 </div>
