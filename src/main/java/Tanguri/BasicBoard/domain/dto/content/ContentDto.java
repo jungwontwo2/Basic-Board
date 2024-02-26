@@ -21,9 +21,8 @@ public class ContentDto {
 
     private Long id;
 
-    @NotEmpty
     private String title;
-    @NotEmpty
+
     private String texts;
 
     private String password;
@@ -36,8 +35,8 @@ public class ContentDto {
 
     public static Content toEntity(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user){
         Content content = Content.builder()
-                .title(contentDto.title)
-                .texts(contentDto.texts)
+                .title(contentDto.getTitle())
+                .texts(contentDto.getTexts())
                 .user(user)
                 .writer(user.getNickname())
                 .password(user.getPassword())

@@ -64,12 +64,14 @@ public class UserController {
 
     //로그인 누름
     @GetMapping("users/login")
-    public String loginForm(@ModelAttribute("user") LoginUserDto user) {
+    public String loginForm(@ModelAttribute("user") LoginUserDto user,HttpServletRequest request,Model model) {
         return "/users/login";
     }
 
     @PostMapping("users/login")
-    public String login(@Validated @ModelAttribute("user") LoginUserDto user, BindingResult bindingResult, HttpServletRequest request) {
+    public String login(@Validated @ModelAttribute("user") LoginUserDto user,
+                        BindingResult bindingResult, HttpServletRequest request,
+                        Model model) {
         if (bindingResult.hasErrors()) {
             return "users/login";
         }

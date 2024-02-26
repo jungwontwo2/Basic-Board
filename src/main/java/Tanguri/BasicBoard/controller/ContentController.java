@@ -4,18 +4,22 @@ import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.CommentService;
 import Tanguri.BasicBoard.service.ContentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -95,7 +99,7 @@ public class ContentController {
     }
     //글쓰기 화면 ㄱㄱ
     @GetMapping("/boards/free/write")
-    public String writePage(HttpServletRequest request,@ModelAttribute(name = "content")ContentDto contentDto){
+    public String writePage(HttpServletRequest request,@ModelAttribute(name = "content")ContentWriteDto content){
         HttpSession session = request.getSession(false);
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
@@ -106,14 +110,29 @@ public class ContentController {
     }
     //글 등록
     @PostMapping("/boards/free/write")
-    public String writeContent(HttpServletRequest request,ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user) {
+    public String writeContent(ContentWriteDto content, HttpServletRequest request,
+                               @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user
+    , BindingResult bindingResult) {
         HttpSession session = request.getSession(false);
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
             return "/common/messageRedirect";
         }
-        contentService.writeContent(contentDto,user);
+        //BindingResult bindingresult = contentService.writeValid(content, bindingResult);
+        //System.out.println("bindingresult = " + bindingresult);
+        if(content.getTexts().isEmpty() || content.getTitle().isEmpty()){
+            request.setAttribute("msg","게시글의 제목이나 내용이 비어있습니다.");
+            request.setAttribute("redirectUrl","/boards/free");
+            return "common/messageRedirect.html";
+        }
+        if (bindingResult.hasErrors()) {
+            return "/users/addMemberForm";
+        }
+        System.out.println(content.getTitle());
+        System.out.println(content.getTexts());
+
+        contentService.writeContent(content,user);
         return "redirect:/boards/free";
     }
 

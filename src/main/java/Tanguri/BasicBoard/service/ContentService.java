@@ -3,6 +3,7 @@ package Tanguri.BasicBoard.service;
 import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.repository.ContentRepository;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.List;
@@ -23,9 +26,18 @@ public class ContentService {
 
     private final ContentRepository contentRepository;
 
+    public BindingResult writeValid(ContentWriteDto content,BindingResult bindingResult){
+        if(content.getTitle().isEmpty()){
+            bindingResult.addError(new FieldError("content","title","제목이 비어있습니다"));
+        }
+        else if(content.getTexts().isEmpty()){
+            bindingResult.addError(new FieldError("content","texts","내용이 비어있습니다."));
+        }
+        return bindingResult;
+    }
     //글 입력
-    public void writeContent(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user){
-        Content content = ContentDto.toEntity(contentDto,user);
+    public void writeContent(ContentWriteDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user){
+        Content content = ContentWriteDto.toEntity(contentDto,user);
         contentRepository.save(content);
         System.out.println(content);
     }
