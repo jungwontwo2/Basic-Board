@@ -8,6 +8,7 @@ import Tanguri.BasicBoard.repository.UserRepository;
 import Tanguri.BasicBoard.service.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -19,10 +20,12 @@ public class DataInit {
     private final UserRepository userRepository;
     private final ContentRepository contentRepository;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     //테스트용 데이터 추가
     @PostConstruct
     public void dataInit(){
-        JoinUserDto joinUserDto = new JoinUserDto("asdf", "asdfasdf", "asdfasdf", "Tanguri");
+        JoinUserDto joinUserDto = new JoinUserDto("asdf", bCryptPasswordEncoder.encode("asdfasdf"), "asdfasdf", "Tanguri");
         userService.saveUser(joinUserDto);
         //User user = JoinUserDto.toEntity(joinUserDto);
         //System.out.println(user.getImage().getUrl());
