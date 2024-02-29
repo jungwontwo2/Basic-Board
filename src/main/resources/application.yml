@@ -14,6 +14,9 @@ spring:
     database: mysql
     hibernate:
       ddl-auto: create
+  mustache:
+    servlet:
+      expose-request-attributes: true
 
 # ?? ?? ? ?? ??? ?? ??
 server:

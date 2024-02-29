@@ -23,13 +23,14 @@ public class SecurityConfig {
                 .anyRequest().authenticated()//나머지는 로그인 했으면 가능
         );
 
-//        http.formLogin((auth)-> auth.loginPage("/users/login")//로그인 페이지
-//                .loginProcessingUrl("/users/login")//포스트 보내면 어디로 가는지
-//                .permitAll());
+        http.formLogin((auth)-> auth.loginPage("/users/login")//로그인 페이지
+                .loginProcessingUrl("/users/login")//포스트 보내면 어디로 가는지
+                .usernameParameter("loginId")
+                .permitAll());
 
 
 
-        http.csrf((auth)->auth.disable());
+        //http.csrf((auth)->auth.disable());
 
         http.sessionManagement((auth)->auth.maximumSessions(1).maxSessionsPreventsLogin(true));//true: 새로운 로그인 차단 false: 기존 세션 하나 삭제
 
