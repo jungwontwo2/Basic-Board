@@ -2,11 +2,13 @@ package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.image.ImageUploadDto;
+import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.ImageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,7 +24,9 @@ public class ImageController {
 
     @PostMapping("/upload")
     public String upload(@ModelAttribute ImageUploadDto imageUploadDTO, HttpServletRequest request,
-                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) User user) {
+                         Authentication authentication) {
+        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+
         HttpSession session = request.getSession(false);
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
@@ -30,7 +34,7 @@ public class ImageController {
             return "/common/messageRedirect";
         }
 
-        imageService.upload(imageUploadDTO, user.getLoginId());
+        imageService.upload(imageUploadDTO, user.getUsername());
 
         return "redirect:/users/my";
     }

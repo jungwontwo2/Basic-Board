@@ -5,6 +5,7 @@ import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
+import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.CommentService;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -111,7 +113,7 @@ public class ContentController {
     //글 등록
     @PostMapping("/boards/free/write")
     public String writeContent(ContentWriteDto content, HttpServletRequest request,
-                               @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user
+                               Authentication authentication
     , BindingResult bindingResult) {
         HttpSession session = request.getSession(false);
         if(session==null){
@@ -131,6 +133,7 @@ public class ContentController {
         }
         System.out.println(content.getTitle());
         System.out.println(content.getTexts());
+        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
         contentService.writeContent(content,user);
         return "redirect:/boards/free";

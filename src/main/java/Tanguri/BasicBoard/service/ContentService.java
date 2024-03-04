@@ -4,6 +4,7 @@ import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
+import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.repository.ContentRepository;
@@ -36,7 +37,7 @@ public class ContentService {
         return bindingResult;
     }
     //글 입력
-    public void writeContent(ContentWriteDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user){
+    public void writeContent(ContentWriteDto contentDto, CustomUserDetails user){
         Content content = ContentWriteDto.toEntity(contentDto,user);
         contentRepository.save(content);
         System.out.println(content);
@@ -110,4 +111,14 @@ public class ContentService {
             System.out.println(content.getWriter());
         }
     }
+
+    public Page<ContentDto> pagingByLoginId(Pageable pageable, String loginId) {
+        int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
+        int pageLimit = 5;//한페이지에 보여줄 글 개수
+        Page<Content> contents = contentRepository.findByUserLoginId(PageRequest.of(page, pageLimit, Sort.Direction.DESC,"id"), loginId);
+        Page<ContentDto> contentDtos = contents.map(content -> new ContentDto(content));
+        return contentDtos;
+    }
+
+
 }

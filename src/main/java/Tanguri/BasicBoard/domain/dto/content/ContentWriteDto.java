@@ -1,6 +1,7 @@
 package Tanguri.BasicBoard.domain.dto.content;
 
 import Tanguri.BasicBoard.domain.SessionConst;
+import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
 import Tanguri.BasicBoard.domain.entity.Comment;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
@@ -25,13 +26,13 @@ public class ContentWriteDto {
     private String texts;
 
 
-    public static Content toEntity(ContentWriteDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER) User user){
+    public static Content toEntity(ContentWriteDto contentDto, CustomUserDetails user){
         System.out.println(contentDto.title);
         System.out.println(contentDto.texts);
         Content content = Content.builder()
                 .title(contentDto.getTitle())
                 .texts(contentDto.getTexts())
-                .user(user)
+                .user(user.getUserEntity())
                 .writer(user.getNickname())
                 .password(user.getPassword())
                 .build();
