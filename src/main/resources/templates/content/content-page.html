@@ -15,13 +15,14 @@
       <div class="form-group" align="left">
         <div th:text="|작성자 : ${content.writer}|"></div>
         <div th:text="|제목: *{title}|"></div>
+        <div th:text="|좋아요: *{heartCnt}|"></div>
         <label for="password">비밀번호</label>
         <input type="password" id="password" th:field="*{password}" placeholder="비밀번호를 입력하세요" width="400px">
         <br><br>
         <h3>내용</h3>
         <div class="texts" th:text="*{texts}"></div>
         <div class="col" align="center">
-          <button th:formaction="@{|/heart/${content.id}|}" class="select-btn float-right" >좋아요</button>
+          <button th:formaction="@{|/heart/${content.id}|}" class="select-btn float-right" th:text="좋아요" >좋아요</button>
         </div>
         <!-- Comments -->
         <br>

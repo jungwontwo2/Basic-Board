@@ -45,7 +45,7 @@ public class ContentService {
     //페이징(가입인사)
     public Page<ContentDto> paging(Pageable pageable){
         int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
-        int pageLimit = 5;//한페이지에 보여줄 글 개수
+        int pageLimit = 8;//한페이지에 보여줄 글 개수
         //System.out.println("zz");
         Page<Content> contents = contentRepository.findAll(PageRequest.of(page, pageLimit, Sort.Direction.DESC,"id"));
         Page<ContentDto> contentsDto = contents.map(content -> new ContentDto(content));

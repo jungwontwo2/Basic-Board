@@ -1,10 +1,14 @@
 package Tanguri.BasicBoard.config;
 
+import Tanguri.BasicBoard.service.CustomUserDetailsService;
+import Tanguri.BasicBoard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -15,10 +19,11 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig{
 
     private final AuthenticationFailureHandler CustomAuthFailureHandler;
 
+    private final CustomUserDetailsService userService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,5 +62,18 @@ public class SecurityConfig {
         return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .requestMatchers("/css/**", "style.css");
     }
+
+//    @Bean
+//    public AuthenticationManager authenticationManager(HttpSecurity http,
+//                                                       BCryptPasswordEncoder bCryptPasswordEncoder,
+//                                                       CustomUserDetailsService userService) throws Exception {
+//
+//        AuthenticationManagerBuilder sharedObject = http.getSharedObject(AuthenticationManagerBuilder.class);
+//        sharedObject
+//                .userDetailsService(userService) //사용자 정보 조회
+//                .passwordEncoder(bCryptPasswordEncoder);
+//
+//        return sharedObject.build();
+//    }
 
 }

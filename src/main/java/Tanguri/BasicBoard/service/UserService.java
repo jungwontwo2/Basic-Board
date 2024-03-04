@@ -37,7 +37,7 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findByLoginId(userDto.getLoginId());
         User updateUser = optionalUser.get();
         updateUser.updateNickname(userDto.getNickname());
-        userRepository.save(updateUser);
+        //userRepository.save(updateUser);
         return updateUser;
     }
     public EditUserDto findMember(String loginId){
