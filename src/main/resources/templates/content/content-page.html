@@ -21,7 +21,7 @@
         <h3>내용</h3>
         <div class="texts" th:text="*{texts}"></div>
         <div class="col" align="center">
-          <button th:formaction="@{|/heart/${content.id}|}" class="select-btn float-right" >좋아요</button>
+          <button th:formaction="@{|/heart/${content.id}|}" class="select-btn float-right" th:text="좋아요 ${content.heartCnt"} >좋아요</button>
         </div>
         <!-- Comments -->
         <br>

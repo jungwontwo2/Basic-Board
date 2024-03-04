@@ -45,6 +45,7 @@ public class Content extends BaseEntity{
                 .title(content.getTitle())
                 .texts(content.getTexts())
                 .writer(content.getUser().getNickname())
+                .heartCnt(content.getHeartCnt())
                 .build();
         return contentDto;
     }

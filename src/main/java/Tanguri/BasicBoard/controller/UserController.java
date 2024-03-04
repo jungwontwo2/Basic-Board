@@ -17,7 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +40,7 @@ public class UserController {
 
     private final ContentService contentService;
     private final ImageService imageService;
+
 
     //회원가입 누름
     @GetMapping("/users/join")
@@ -171,18 +175,18 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
         return "/common/messageRedirect";
     }
     CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+    EditUserDto member = userService.findMember(user.getUsername());
     String loginId = authentication.getName();
     Page<ContentDto> contentDtos = contentService.pagingByLoginId(pageable, loginId);
 
     ImageResponseDto image = imageService.findImage(loginId);
 
     model.addAttribute("image",image);
-
     int blockLimit = 3;
     int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
     int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
     model.addAttribute("user",user);
-
+    model.addAttribute("nickname",member.getNickname());
     model.addAttribute("contentDtos", contentDtos);
     model.addAttribute("startPage", startPage);
     model.addAttribute("endPage", endPage);
@@ -221,13 +225,15 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
 
         ImageResponseDto image = imageService.findImage(user.getUsername());
         EditUserDto userDto = userService.findMember(user.getUsername());
+        System.out.println("userDto.getNickname() = " + userDto.getNickname());
         model.addAttribute("image",image);
         model.addAttribute("user", userDto);
         return "/users/user-info-edit";
     }
     @PostMapping("/users/my/edit/info")
     public String postEditUserInfo(HttpServletRequest request,
-                                   @Validated @ModelAttribute("user") UserNicknameUpdateDto userNicknameUpdateDto, BindingResult bindingResult, Model model)
+                                   @Validated @ModelAttribute("user") UserNicknameUpdateDto userNicknameUpdateDto,
+                                   BindingResult bindingResult, Model model)
     {
         HttpSession session = request.getSession(false);
         if(session==null){
@@ -246,7 +252,9 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
             return "/users/user-info-edit";
         }
         User user = userService.updateUserNickname(userNicknameUpdateDto);
-        session.setAttribute(SessionConst.LOGIN_MEMBER,user);
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getNickname(), user.getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //session.setAttribute(SessionConst.LOGIN_MEMBER,user);
         //System.out.println(user.getContents().size());
         //contentService.updateContentWriter(userNicknameUpdateDto.getNickname(),user);
 

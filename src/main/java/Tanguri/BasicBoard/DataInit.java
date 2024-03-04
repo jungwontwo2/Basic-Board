@@ -25,7 +25,7 @@ public class DataInit {
     //테스트용 데이터 추가
     @PostConstruct
     public void dataInit(){
-        JoinUserDto joinUserDto = new JoinUserDto("asdf", bCryptPasswordEncoder.encode("asdfasdf"), "asdfasdf", "Tanguri");
+        JoinUserDto joinUserDto = new JoinUserDto("asdf", "asdfasdf", "asdfasdf", "Tanguri");
         userService.saveUser(joinUserDto);
         //User user = JoinUserDto.toEntity(joinUserDto);
         //System.out.println(user.getImage().getUrl());
