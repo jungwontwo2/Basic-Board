@@ -37,6 +37,9 @@
                    th:errorclass="field-error">
             <div class="field-error" th:errors="*{password}" />
         </div>
+        <span th:if ="${error!=null}">
+            <p id="valid" class="alert alert-danger" th:text="${exception}">th:text="${exception}"</p>
+        </span>
         <hr class="my-4">
         <div class="row">
             <div class="col">

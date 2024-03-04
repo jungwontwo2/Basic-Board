@@ -25,10 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -64,8 +61,20 @@ public class UserController {
     }
 
     //로그인 누름
+//    @GetMapping("users/login")
+//    public String loginForm(@ModelAttribute("user") LoginUserDto user,HttpServletRequest request,Model model) {
+//        return "/users/login";
+//    }
+
     @GetMapping("users/login")
-    public String loginForm(@ModelAttribute("user") LoginUserDto user,HttpServletRequest request,Model model) {
+    public String loginForm(@ModelAttribute("user") LoginUserDto user,@RequestParam(value = "error",required = false)String error,
+                            @RequestParam(value = "exception",required = false)String exception,
+                            Model model) {
+        System.out.println("error = " + error);
+        if(error!=null){
+            model.addAttribute("error", error);
+            model.addAttribute("exception", exception);
+        }
         return "/users/login";
     }
 
