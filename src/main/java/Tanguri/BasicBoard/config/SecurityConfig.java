@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .permitAll());
 
 
-        //http.csrf((auth)->auth.disable());
+        http.csrf((auth)->auth.disable());
 
         http.sessionManagement((auth) -> auth.maximumSessions(1).maxSessionsPreventsLogin(true));//true: 새로운 로그인 차단 false: 기존 세션 하나 삭제
 

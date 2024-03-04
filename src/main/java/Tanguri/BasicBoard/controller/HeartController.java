@@ -1,12 +1,14 @@
 package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.SessionConst;
+import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.HeartService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +21,7 @@ public class HeartController {
 
     private final HeartService heartService;
     @PostMapping("/heart/{id}")
-    public String giveHeart(HttpServletRequest request, @PathVariable Long id, @SessionAttribute(value = SessionConst.LOGIN_MEMBER,required = false) User user,
+    public String giveHeart(HttpServletRequest request, @PathVariable Long id, Authentication authentication,
                             Model model) throws Exception {
         HttpSession session = request.getSession(false);
         if(session==null){
@@ -27,8 +29,10 @@ public class HeartController {
             request.setAttribute("redirectUrl","/users/login");
             return "/common/messageRedirect";
         }
-        System.out.println(user.getLoginId());
-        heartService.addHeart(user.getLoginId(),id);
+        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+
+        System.out.println(user.getUsername());
+        heartService.addHeart(user.getUsername(),id);
         return "redirect:/boards/free/{id}";
     }
 

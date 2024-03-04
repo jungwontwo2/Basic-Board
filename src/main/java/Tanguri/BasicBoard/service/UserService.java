@@ -8,6 +8,7 @@ import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.repository.ImageRepository;
 import Tanguri.BasicBoard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +20,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Transactional
     public void saveUser(JoinUserDto userDto){
-        User user = JoinUserDto.toEntity(userDto);
+        User user = JoinUserDto.toEntity(userDto.getLoginId(),bCryptPasswordEncoder.encode(userDto.getPassword()),userDto.getNickname());
         Image image = Image.builder()
                 .url("/profileImages/anonymous.png")
                 .user(user)
