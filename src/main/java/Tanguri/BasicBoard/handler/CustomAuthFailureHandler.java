@@ -19,15 +19,18 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
 
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        org.springframework.security.core.AuthenticationException exception) throws IOException
+            , ServletException {
         String errorMessage;
 
-        if(exception instanceof BadCredentialsException) {
-            errorMessage = "아이디 또는 비밀번호가 맞지 않습니다. 다시 확인해주세요.";
-        } else if (exception instanceof InternalAuthenticationServiceException) {
-            errorMessage = "아이디가 또는 비밀번호가 맞지 않습니다. 다시 확인해주세요.";
-        } else if (exception instanceof UsernameNotFoundException) {
+        if(exception instanceof UsernameNotFoundException) {
             errorMessage = "존재하지 않는 계정입니다. 회원가입 후 로그인해주세요.";
+        } else if (exception instanceof InternalAuthenticationServiceException) {
+            errorMessage = "아이디 또는 비밀번호가 맞지 않습니다. 다시 확인해주세요.";
+        } else if (exception instanceof BadCredentialsException) {
+            errorMessage = "아이디 또는 비밀번호가 맞지 않습니다. 다시 확인해주세요.";
         } else if (exception instanceof AuthenticationCredentialsNotFoundException) {
             errorMessage = "인증 요청이 거부되었습니다. 관리자에게 문의하세요.";
         } else {

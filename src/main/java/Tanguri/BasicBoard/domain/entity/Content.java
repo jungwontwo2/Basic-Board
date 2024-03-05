@@ -39,6 +39,9 @@ public class Content extends BaseEntity{
     @Column(columnDefinition = "integer default 0")
     private Integer heartCnt;
 
+    @OneToMany(mappedBy = "content",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+    private List<BoardImage> boardImages;
+
     public static ContentDto toDto(Content content){
         System.out.println("content.getHeartCnt() = " + content.getHeartCnt());
         ContentDto contentDto = ContentDto.builder()

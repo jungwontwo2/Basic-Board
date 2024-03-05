@@ -33,6 +33,7 @@ public class ContentDto {
 
     private Integer heartCnt;
 
+
     public static Content toEntity(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user){
         Content content = Content.builder()
                 .title(contentDto.getTitle())

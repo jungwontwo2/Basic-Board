@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 @Transactional
 public interface ContentRepository extends JpaRepository<Content, Long> {
-//    Page<Content> findAll(Pageable pageable);
+    Page<Content> findAll(Pageable pageable);
     Page<Content> findByWriter(Pageable pageable,String writer);
     Page<Content> findByUserId(Pageable pageable,Long id);
     Page<Content> findByUserLoginId(Pageable pageable,String loginId);
