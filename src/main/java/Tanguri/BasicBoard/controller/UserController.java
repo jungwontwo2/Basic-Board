@@ -4,7 +4,6 @@ import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.image.ImageResponseDto;
 import Tanguri.BasicBoard.domain.dto.user.*;
-import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.ContentService;
 import Tanguri.BasicBoard.service.ImageService;
@@ -17,18 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -71,11 +64,11 @@ public class UserController {
 //    }
 
     @GetMapping("users/login")
-    public String loginForm(@ModelAttribute("user") LoginUserDto user,@RequestParam(value = "error",required = false)String error,
+    public String loginForm(@ModelAttribute("user") LoginUserDto user,@RequestParam(value = "templates/error",required = false)String error,
                             @RequestParam(value = "exception",required = false)String exception,
                             Model model) {
         if(error!=null){
-            model.addAttribute("error", error);
+            model.addAttribute("templates/error", error);
             model.addAttribute("exception", exception);
         }
         return "/users/login";
