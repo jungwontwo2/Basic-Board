@@ -4,11 +4,15 @@ import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
+import Tanguri.BasicBoard.domain.dto.image.BoardImageUploadDTO;
 import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
+import Tanguri.BasicBoard.domain.entity.BoardImage;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
+import Tanguri.BasicBoard.repository.BoardImageRepository;
 import Tanguri.BasicBoard.repository.ContentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,15 +21,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ContentService {
 
     private final ContentRepository contentRepository;
+
+    @Value("${file.boardImagePath}")
+    private String uploadFolder;
+
+    private final BoardImageRepository boardImageRepository;
 
     public BindingResult writeValid(ContentWriteDto content,BindingResult bindingResult){
         if(content.getTitle().isEmpty()){
@@ -37,10 +50,32 @@ public class ContentService {
         return bindingResult;
     }
     //글 입력
-    public void writeContent(ContentWriteDto contentDto, CustomUserDetails user){
-        Content content = ContentWriteDto.toEntity(contentDto,user);
-        contentRepository.save(content);
-        System.out.println(content);
+    public void writeContent(ContentWriteDto contentDto, CustomUserDetails user, BoardImageUploadDTO boardImageUploadDTO) {
+        Content content = ContentWriteDto.toEntity(contentDto, user);
+        contentRepository.save(content);//일단 게시물 자체에 대한 내용은 저장.(제목 내용 글쓴이)
+
+        //만약 이미지가 있는 상태로 등록된다면
+        if (boardImageUploadDTO.getFiles() != null && !boardImageUploadDTO.getFiles().isEmpty()) {
+            for (MultipartFile file : boardImageUploadDTO.getFiles()) {//iter를 돌려서
+                UUID uuid = UUID.randomUUID();//파일에 대해서 UUID 생성
+                String imageFileName = uuid + "_" + file.getOriginalFilename();//파일 이름을 uuid+파일의 원래 이름으로 변경
+
+                File destinationFile = new File(uploadFolder + imageFileName);//보드 이미지를 보드 이미지 저장 경로에 uuid붙인 이름으로 저장
+
+                try {//해당 경로로 파일 옮기기
+                    file.transferTo(destinationFile);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                BoardImage image = BoardImage.builder()
+                        .url("/boardImages/" + imageFileName)
+                        .content(content)
+                        .build();
+
+                boardImageRepository.save(image);
+            }
+        }
     }
     //페이징(가입인사)
     public Page<ContentDto> paging(Pageable pageable){

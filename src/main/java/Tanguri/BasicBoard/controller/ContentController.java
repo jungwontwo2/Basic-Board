@@ -5,6 +5,7 @@ import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
+import Tanguri.BasicBoard.domain.dto.image.BoardImageUploadDTO;
 import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
@@ -93,7 +94,7 @@ public class ContentController {
     @GetMapping("/boards/free/{id}")
     public String showContent(@PathVariable Long id, Model model){
         Content content = contentService.getContent(id);
-        ContentDto contentDto = Content.toDto(content);
+        ContentDto contentDto = ContentDto.builder().content(content).build();
         List<CommentResponseDto> commentResponseDtos = commentService.commentDtoList(id);
         model.addAttribute("content",contentDto);
         model.addAttribute("comments",commentResponseDtos);
@@ -113,8 +114,8 @@ public class ContentController {
     //글 등록
     @PostMapping("/boards/free/write")
     public String writeContent(ContentWriteDto content, HttpServletRequest request,
-                               Authentication authentication
-    , BindingResult bindingResult) {
+                               @ModelAttribute BoardImageUploadDTO boardImageUploadDTO,
+                               Authentication authentication, BindingResult bindingResult) {
         HttpSession session = request.getSession(false);
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
@@ -131,11 +132,9 @@ public class ContentController {
         if (bindingResult.hasErrors()) {
             return "/users/addMemberForm";
         }
-        System.out.println(content.getTitle());
-        System.out.println(content.getTexts());
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
-        contentService.writeContent(content,user);
+        contentService.writeContent(content,user,boardImageUploadDTO);
         return "redirect:/boards/free";
     }
 

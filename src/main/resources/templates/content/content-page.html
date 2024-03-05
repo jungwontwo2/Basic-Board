@@ -21,6 +21,14 @@
         <br><br>
         <h3>내용</h3>
         <div class="texts" th:text="*{texts}"></div>
+        <div class="mb-3" th:if="${content.imageUrls != null}">
+          <label class="form-label">이미지</label>
+          <div>
+            <th:block th:each="imageUrl : ${content.imageUrls}">
+              <img th:src="${imageUrl}" alt="Image" width="200px" height="200px">
+            </th:block>
+          </div>
+        </div>
         <div class="col" align="center">
           <button th:formaction="@{|/heart/${content.id}|}" class="select-btn float-right" th:text="좋아요" >좋아요</button>
         </div>
