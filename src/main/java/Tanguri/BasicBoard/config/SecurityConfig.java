@@ -41,7 +41,7 @@ public class SecurityConfig{
                 .usernameParameter("loginId")
                 .failureHandler(CustomAuthFailureHandler)
 //                .defaultSuccessUrl("/",true)
-                .defaultSuccessUrl("/",true)
+                .defaultSuccessUrl("/admin",true)
                 .permitAll());
 
 

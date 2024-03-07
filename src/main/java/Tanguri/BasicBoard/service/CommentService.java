@@ -2,6 +2,7 @@ package Tanguri.BasicBoard.service;
 
 import Tanguri.BasicBoard.domain.dto.comment.CommentRequestDto;
 import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.entity.Comment;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
@@ -9,6 +10,10 @@ import Tanguri.BasicBoard.repository.CommentRepository;
 import Tanguri.BasicBoard.repository.ContentRepository;
 import Tanguri.BasicBoard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +32,6 @@ public class CommentService {
         //사용자와 게시물을 찾음
         User user = userRepository.findByNickname(userNickname).orElse(null);
         Content content = contentRepository.findById(contentId).orElse(null);
-        System.out.println("parentId = " + parentId);
         //부모 댓글을 찾는 과정
         //일단 부모가 없다고 설정함
         Comment parentComment = null;
@@ -72,5 +76,14 @@ public class CommentService {
     }
     public void deleteComment(Long commentId){
         commentRepository.deleteById(commentId);
+    }
+
+    public Page<CommentResponseDto> paging(Pageable pageable) {
+        int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
+        int pageLimit = 8;//한페이지에 보여줄 글 개수
+        //System.out.println("zz");
+        Page<Comment> comments = commentRepository.findAll(PageRequest.of(page, pageLimit, Sort.Direction.DESC, "id"));
+        Page<CommentResponseDto> commentsDto = comments.map(comment -> new CommentResponseDto(comment));
+        return commentsDto;
     }
 }

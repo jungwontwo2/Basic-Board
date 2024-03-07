@@ -100,7 +100,6 @@ public class ContentController {
         List<CommentResponseDto> commentResponseDtos = commentService.commentDtoList(id);
         model.addAttribute("content",contentDto);
         model.addAttribute("comments",commentResponseDtos);
-        System.out.println("parentId = " + parentId);
         return "/content/content-page";
     }
     //글쓰기 화면 ㄱㄱ
