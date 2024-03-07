@@ -22,7 +22,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     //댓글작성
-    public Long writeComment(CommentRequestDto commentRequestDto, Long contentId, String userNickname){
+    public Long writeComment(CommentRequestDto commentRequestDto, Long contentId, String userNickname,String parentId){
         //사용자와 게시물을 찾음
         User user = userRepository.findByNickname(userNickname).orElse(null);
         Content content = contentRepository.findById(contentId).orElse(null);
