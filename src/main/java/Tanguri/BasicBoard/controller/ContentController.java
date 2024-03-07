@@ -92,12 +92,15 @@ public class ContentController {
 
     //글 보기 화면
     @GetMapping("/boards/free/{id}")
-    public String showContent(@PathVariable Long id, Model model){
+    public String showContent(@PathVariable Long id,
+                              @RequestParam(required = false,name = "parentId")Long parentId,
+                              Model model){
         Content content = contentService.getContent(id);
         ContentDto contentDto = ContentDto.builder().content(content).build();
         List<CommentResponseDto> commentResponseDtos = commentService.commentDtoList(id);
         model.addAttribute("content",contentDto);
         model.addAttribute("comments",commentResponseDtos);
+        System.out.println("parentId = " + parentId);
         return "/content/content-page";
     }
     //글쓰기 화면 ㄱㄱ

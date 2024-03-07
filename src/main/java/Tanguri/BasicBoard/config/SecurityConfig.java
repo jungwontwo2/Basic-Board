@@ -40,7 +40,8 @@ public class SecurityConfig{
                 .loginProcessingUrl("/users/login")//포스트 보내면 어디로 가는지
                 .usernameParameter("loginId")
                 .failureHandler(CustomAuthFailureHandler)
-                .defaultSuccessUrl("/")
+//                .defaultSuccessUrl("/",true)
+                .defaultSuccessUrl("/",true)
                 .permitAll());
 
 

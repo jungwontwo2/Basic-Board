@@ -64,11 +64,13 @@ public class UserController {
 //    }
 
     @GetMapping("users/login")
-    public String loginForm(@ModelAttribute("user") LoginUserDto user,@RequestParam(value = "templates/error",required = false)String error,
+    public String loginForm(@ModelAttribute("user") LoginUserDto user,@RequestParam(value = "error",required = false)String error,
                             @RequestParam(value = "exception",required = false)String exception,
                             Model model) {
+        System.out.println("error = " + error);
+        System.out.println("exception = " + exception);
         if(error!=null){
-            model.addAttribute("templates/error", error);
+            model.addAttribute("error", error);
             model.addAttribute("exception", exception);
         }
         return "/users/login";
@@ -87,11 +89,11 @@ public class UserController {
             return "users/login";
         }
         //세션이 있으면 세션 반환, 없으면 신규 세션 생성
-        HttpSession session = request.getSession();
+        //HttpSession session = request.getSession();
         //쿠키 하나 생성 key:LOGIN_MEMBER(loginMember) , value:JESSIONID=12309ASDHFFKJH13290F9E UUID값
         //그 쿠키값인 JESSIONID를 key값으로 가지고 value값으로 loginUser를 가지도록 세션스토어에 저장한다
-        session.setAttribute(SessionConst.LOGIN_MEMBER, loginUser);
-        System.out.println("loginsuccess");
+        //session.setAttribute(SessionConst.LOGIN_MEMBER, loginUser);
+        //System.out.println("loginsuccess");
         return "redirect:/";
     }
 
