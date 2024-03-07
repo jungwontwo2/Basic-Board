@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -19,6 +21,7 @@ public class CommentResponseDto {
     private String comment;
     private String nickname;
     private String imageUrl;
+    private List<CommentResponseDto> children;
 
 
     //CommentEntity를 넣었을 때 Dto로 바꿔주는 역할
@@ -30,5 +33,6 @@ public class CommentResponseDto {
         this.comment = comment.getComment();
         this.nickname = comment.getUser().getNickname();
         this.imageUrl=comment.getUser().getImage().getUrl();
+        this.children=new ArrayList<>();
     }
 }

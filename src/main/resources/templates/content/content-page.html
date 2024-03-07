@@ -46,9 +46,23 @@
                   <p th:text="${comment.getComment()}" th:id="'comment-' + ${comment.getId()}">Comment content</p>
                   <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment
                     Date</small>
-                  <!--            <div th:if="${comment.getEmail() == #authentication.principal.username}">-->
-                  <!--              <button class="btn btn-sm btn-outline-warning" th:attr="data-id=${comment.getId()}" onclick="editComment(this)">Edit</button>-->
-                  <!--              <a th:href="@{/board/{id}/comment/{commentId}/remove(id=${id}, commentId=${comment.getId()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this comment?')">Delete</a>-->
+                  <!-- 대댓글을 표시하기 위한 HTML -->
+                  <div class="media mt-3" th:each="childComment : ${comment.getChildren()}">
+                    <div class="media-body">
+                      <img class="d-flex mr-3 rounded-circle" th:src="${childComment.getImageUrl()}" alt="User image" width="50"
+                           height="50">
+                      <h5 class="mt-0" th:text="${childComment.getNickname()}">User Name</h5>
+                      <p th:text="${childComment.getComment()}" th:id="'comment-' + ${childComment.getId()}">Comment content</p>
+                      <small class="text-muted" th:text="${#temporals.format(childComment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment
+                        Date</small>
+                    </div>
+                  </div>
+                  <!-- 대댓글 폼 -->
+                  <form th:action="@{|/boards/free/${content.id}/comment|}" method="post">
+                    <input type="hidden" name="parentId" th:value="${comment.id}">
+                    <textarea name="comment" class="comment"></textarea>
+                    <button type="submit" class="btn btn-primary">대댓글 작성</button>
+                  </form>
                 </div>
               </div>
             </div>
@@ -56,17 +70,38 @@
         </div>
         <!-- Comments Form -->
         <h3>댓글 작성</h3>
-        <form>
+        <form th:if="${parentId}"  method="post">
           <textarea name="comment" class="comment"></textarea>
           <!-- parentId를 전달하는 hidden input -->
           <input type="hidden" name="parentId" th:value="${parentId}">
           <div class="row select-btn">
             <div class="col" align="left">
-              <button th:formaction="@{|/boards/free/${content.id}/comment|}" class="select-btn">Submit
-              </button>
+              <button type="submit" class="select-btn" th:formaction="@{|/boards/free/${content.id}/comment|}">Submit</button>
             </div>
           </div>
         </form>
+
+        <form th:unless="${parentId}"  method="post">
+          <textarea name="comment" class="comment"></textarea>
+          <div class="row select-btn">
+            <div class="col" align="left">
+              <button type="submit" class="select-btn" th:formaction="@{|/boards/free/${content.id}/comment|}">Submit</button>
+            </div>
+          </div>
+        </form>
+
+
+<!--        <form>-->
+<!--          <textarea name="comment" class="comment"></textarea>-->
+<!--          &lt;!&ndash; parentId를 전달하는 hidden input &ndash;&gt;-->
+<!--          <input type="hidden" name="parentId" th:value="${parentId}">-->
+<!--          <div class="row select-btn">-->
+<!--            <div class="col" align="left">-->
+<!--              <button th:formaction="@{|/boards/free/${content.id}/comment|}" class="select-btn" type="submit">Submit-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </form>-->
 
 
 

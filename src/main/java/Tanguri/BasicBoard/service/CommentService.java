@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -26,6 +27,17 @@ public class CommentService {
         //사용자와 게시물을 찾음
         User user = userRepository.findByNickname(userNickname).orElse(null);
         Content content = contentRepository.findById(contentId).orElse(null);
+        System.out.println("parentId = " + parentId);
+        //부모 댓글을 찾는 과정
+        //일단 부모가 없다고 설정함
+        Comment parentComment = null;
+        //만약 parentId가 null이 아니면 부모 댓글이 있다는 뜻
+//        if(!Objects.equals(parentId, "")){
+        if(parentId!=null){
+            long parentIdLong = Long.parseLong(parentId);
+            //commentRepository에서 parentIdLong을 통해서 부모 댓글을 찾는다.
+            parentComment = commentRepository.findById(parentIdLong).orElse(null);
+        }
         //Comment.builder를 통해서 comment를 생성함
         //comment에는 commentRequestDto.getComment()를 통한 댓글내용
         //content에는 어떤 게시물에 관한건지에 대한 정보(content_id가 조인컬럼 되어있음)
@@ -34,6 +46,7 @@ public class CommentService {
                 .comment(commentRequestDto.getComment())
                 .content(content)
                 .user(user)
+                .parent(parentComment)//부모 댓글 설정
                 .build();
         //comment를 만들었다면 save함
         commentRepository.save(comment);

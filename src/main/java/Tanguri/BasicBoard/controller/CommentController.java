@@ -36,7 +36,6 @@ public class CommentController {
         }
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
         String parentId = request.getParameter("parentId");
-        System.out.println("parentId = " + parentId);
         commentService.writeComment(commentRequestDto,id,user.getNickname(),parentId);
         return "redirect:/boards/free/"+id;
     }
