@@ -22,6 +22,7 @@ public class CommentResponseDto {
     private String nickname;
     private String imageUrl;
     private List<CommentResponseDto> children;
+    private boolean hasChildren;
 
 
     //CommentEntity를 넣었을 때 Dto로 바꿔주는 역할
@@ -34,5 +35,6 @@ public class CommentResponseDto {
         this.nickname = comment.getUser().getNickname();
         this.imageUrl=comment.getUser().getImage().getUrl();
         this.children=new ArrayList<>();
+        this.hasChildren=!comment.getChildren().isEmpty();
     }
 }
