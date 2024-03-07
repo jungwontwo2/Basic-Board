@@ -39,8 +39,8 @@
           <div class="comment">
             <div th:each="comment : ${comments}">
               <div class="media mb-4">
-                <div class="media-body">
-                  <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50" height="50">
+                <div class="media-body" th:unless="${comment.hasParent==true}">
+                  <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="30" height="30">
                   <h5 class="mt-0" th:text="${comment.getNickname()}">User Name</h5>
                   <p th:text="${comment.getComment()}" th:id="'comment-' + ${comment.getId()}">Comment content</p>
                   <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>
@@ -50,58 +50,23 @@
                     <textarea name="comment" class="comment"></textarea>
                     <button type="submit" class="btn btn-primary" th:formaction="@{|/boards/free/${content.id}/comment|}">대댓글 작성</button>
                   </form>
-                  <!-- 대댓글을 댓글 바로 아래에 표시 -->
-                  <div class="media mt-3" th:each="childComment : ${comment.getChildren()}">
-                    <div class="media-body">
-                      <img class="d-flex mr-3 rounded-circle" th:src="${childComment.getImageUrl()}" alt="User image" width="50" height="50">
-                      <h5 class="mt-0" th:text="${childComment.getNickname()}">User Name</h5>
-                      <p th:text="${childComment.getComment()}" th:id="'comment-' + ${childComment.getId()}">Comment content</p>
-                      <small class="text-muted" th:text="${#temporals.format(childComment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>
-                    </div>
-                  </div>
+                </div>
+                <div class="media-body ml-auto" th:if="${comment.hasParent==true}">
+                  <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="30" height="30">
+                  <h5 class="mt-0" th:text="${comment.getNickname()}">User Name</h5>
+                  <p th:text="${comment.getComment()}" th:id="'comment-' + ${comment.getId()}">Comment content</p>
+                  <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>
+                  <!-- 대댓글 폼 -->
+                  <form th:if="${comment.hasChildren == false}" method="post">
+                    <input type="hidden" name="parentId" th:value="${comment.id}">
+                    <textarea name="comment" class="comment"></textarea>
+                    <button type="submit" class="btn btn-primary" th:formaction="@{|/boards/free/${content.id}/comment|}">대댓글 작성</button>
+                  </form>
                 </div>
               </div>
             </div>
-
           </div>
-
-
         </div>
-
-        <!--        <div class="card my-4" th:if="${comments.size()} != 0">-->
-<!--          <h4 class="card-header">댓글</h4>-->
-<!--          <div class="comment">-->
-<!--            <div th:each="comment : ${comments}">-->
-<!--              <div class="media mb-4">-->
-<!--                <div class="media-body">-->
-<!--                  <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50"-->
-<!--                       height="50">-->
-<!--                  <h5 class="mt-0" th:text="${comment.getNickname()}">User Name</h5>-->
-<!--                  <p th:text="${comment.getComment()}" th:id="'comment-' + ${comment.getId()}">Comment content</p>-->
-<!--                  <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment-->
-<!--                    Date</small>-->
-<!--                  &lt;!&ndash; 대댓글을 표시하기 위한 HTML &ndash;&gt;-->
-<!--                  <div class="media mt-3" th:each="childComment : ${comment.getChildren()}">-->
-<!--                    <div class="media-body">-->
-<!--                      <img class="d-flex mr-3 rounded-circle" th:src="${childComment.getImageUrl()}" alt="User image" width="50"-->
-<!--                           height="50">-->
-<!--                      <h5 class="mt-0" th:text="${childComment.getNickname()}">User Name</h5>-->
-<!--                      <p th:text="${childComment.getComment()}" th:id="'comment-' + ${childComment.getId()}">Comment content</p>-->
-<!--                      <small class="text-muted" th:text="${#temporals.format(childComment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment-->
-<!--                        Date</small>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                  &lt;!&ndash; 대댓글 폼 &ndash;&gt;-->
-<!--                  <form method="post">-->
-<!--                    <input type="hidden" name="parentId" th:value="${comment.id}">-->
-<!--                    <textarea name="comment" class="comment"></textarea>-->
-<!--                    <button type="submit" class="btn btn-primary" th:formaction="@{|/boards/free/${content.id}/comment|}">대댓글 작성</button>-->
-<!--                  </form>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
         <!-- Comments Form -->
         <h3>댓글 작성</h3>
         <form th:if="${parentId}"  method="post">

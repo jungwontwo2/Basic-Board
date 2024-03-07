@@ -332,3 +332,7 @@ textarea {
     text-align: center;
     margin-top: 150px;
 }
+/* 오른쪽으로 이동하는 스타일 */
+.ml-auto {
+    margin-left: 15px;
+}

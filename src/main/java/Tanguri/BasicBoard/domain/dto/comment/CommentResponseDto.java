@@ -23,6 +23,7 @@ public class CommentResponseDto {
     private String imageUrl;
     private List<CommentResponseDto> children;
     private boolean hasChildren;
+    private boolean hasParent;
 
 
     //CommentEntity를 넣었을 때 Dto로 바꿔주는 역할
@@ -36,5 +37,6 @@ public class CommentResponseDto {
         this.imageUrl=comment.getUser().getImage().getUrl();
         this.children=new ArrayList<>();
         this.hasChildren=!comment.getChildren().isEmpty();
+        this.hasParent= comment.getParent() != null;//comment.getParent가 null이 아니면 parent가 있다는 뜻(true반환)
     }
 }
