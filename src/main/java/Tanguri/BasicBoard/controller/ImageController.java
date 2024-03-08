@@ -5,6 +5,7 @@ import Tanguri.BasicBoard.domain.dto.image.ImageUploadDto;
 import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.ImageService;
+import Tanguri.BasicBoard.service.S3UploadService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +17,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import java.io.IOException;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/image")
 public class ImageController {
     private final ImageService imageService;
 
+    private final S3UploadService s3UploadService;
+
     @PostMapping("/upload")
     public String upload(@ModelAttribute ImageUploadDto imageUploadDTO, HttpServletRequest request,
-                         Authentication authentication) {
+                         Authentication authentication) throws IOException {
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
         HttpSession session = request.getSession(false);
@@ -34,7 +39,10 @@ public class ImageController {
             return "/common/messageRedirect";
         }
 
-        imageService.upload(imageUploadDTO, user.getUsername());
+        //imageService.upload(imageUploadDTO, user.getUsername());
+        String s = s3UploadService.saveFile(imageUploadDTO.getFile(), user.getUsername());
+        imageService.upload(imageUploadDTO,user.getUsername());
+        System.out.println("s = " + s);
 
         return "redirect:/users/my";
     }

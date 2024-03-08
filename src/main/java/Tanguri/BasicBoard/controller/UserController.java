@@ -176,6 +176,7 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
     Page<ContentDto> contentDtos = contentService.pagingByLoginId(pageable, loginId);
 
     ImageResponseDto image = imageService.findImage(loginId);
+    System.out.println("image.getUrl() = " + image.getUrl());
 
     model.addAttribute("image",image);
     int blockLimit = 3;

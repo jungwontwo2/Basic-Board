@@ -20,6 +20,7 @@ public class Image {
     private String url;
 
     @OneToOne(fetch = FetchType.LAZY)
+//    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
