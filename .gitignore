@@ -39,6 +39,7 @@ out/
 ### Example user template
 
 # IntelliJ project files
+*.yml
 .idea
 *.iml
 out
