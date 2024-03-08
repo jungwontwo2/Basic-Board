@@ -5,10 +5,7 @@ import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.image.ImageResponseDto;
 import Tanguri.BasicBoard.domain.dto.user.*;
 import Tanguri.BasicBoard.domain.entity.User;
-import Tanguri.BasicBoard.service.ContentService;
-import Tanguri.BasicBoard.service.ImageService;
-import Tanguri.BasicBoard.service.LoginService;
-import Tanguri.BasicBoard.service.UserService;
+import Tanguri.BasicBoard.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +32,8 @@ public class UserController {
     private final ImageService imageService;
 
     //private final AuthenticationManager authenticationManager;
+
+    private final S3UploadService s3UploadService;
 
 
     //회원가입 누름

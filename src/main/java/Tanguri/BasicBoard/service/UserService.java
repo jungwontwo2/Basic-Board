@@ -26,7 +26,7 @@ public class UserService {
     public void saveUser(JoinUserDto userDto){
         User user = JoinUserDto.toEntity(userDto.getLoginId(),bCryptPasswordEncoder.encode(userDto.getPassword()),userDto.getNickname());
         Image image = Image.builder()
-                .url("/profileImages/anonymous.png")
+                .url("https://basicboard-images.s3.ap-northeast-2.amazonaws.com/anonymous.png")
                 .user(user)
                 .build();
         userRepository.save(user);
