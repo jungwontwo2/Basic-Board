@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Getter
 @Builder
@@ -20,9 +21,9 @@ public class Image {
     private String url;
 
     @OneToOne(fetch = FetchType.LAZY)
-//    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
 
     public void updateUrl(String url){
         this.url=url;

@@ -174,9 +174,8 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
     EditUserDto member = userService.findMember(user.getUsername());
     String loginId = authentication.getName();
     Page<ContentDto> contentDtos = contentService.pagingByLoginId(pageable, loginId);
-
+    System.out.println(user.getImageUrl());
     ImageResponseDto image = imageService.findImage(loginId);
-    System.out.println("image.getUrl() = " + image.getUrl());
 
     model.addAttribute("image",image);
     int blockLimit = 3;

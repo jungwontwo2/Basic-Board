@@ -39,10 +39,7 @@ public class ImageController {
             return "/common/messageRedirect";
         }
 
-        //imageService.upload(imageUploadDTO, user.getUsername());
-        String s = s3UploadService.saveFile(imageUploadDTO.getFile(), user.getUsername());
-        imageService.upload(imageUploadDTO,user.getUsername());
-        System.out.println("s = " + s);
+        s3UploadService.saveProfileImage(imageUploadDTO.getFile(), user.getUsername());
 
         return "redirect:/users/my";
     }
