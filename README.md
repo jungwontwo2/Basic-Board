@@ -14,7 +14,8 @@
 
 자유게시판
 
-![image](https://github.com/jungwontwo2/Basic-Board/assets/65643842/4e8a4dce-f751-4943-8942-6f6406297f9f)
+![image](https://github.com/jungwontwo2/Basic-Board/assets/65643842/3be9990a-ed72-464e-81ab-0a992250644d)
+
 
 게시글화면
 
