@@ -2,6 +2,7 @@ package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
+import Tanguri.BasicBoard.domain.dto.user.AdminResponseDto;
 import Tanguri.BasicBoard.service.CommentService;
 import Tanguri.BasicBoard.service.ContentService;
 import Tanguri.BasicBoard.service.UserService;
@@ -49,8 +50,17 @@ public class AdminController {
             model.addAttribute("startPage", startPage);
             model.addAttribute("endPage", endPage);
             model.addAttribute("criteria",criteria);
-            System.out.println("comments");
         } else if (search.equals("users")) {
+            String criteria = "users";
+            Page<AdminResponseDto> adminResponseDtos = userService.paging(pageable);
+            int blockLimit = 3;
+            int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = Math.min((startPage + blockLimit - 1), adminResponseDtos.getTotalPages());
+
+            model.addAttribute("dtos", adminResponseDtos);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            model.addAttribute("criteria",criteria);
             System.out.println("users");
         }
 
@@ -65,5 +75,11 @@ public class AdminController {
     public String adminDeleteComment(@PathVariable Long id){
         commentService.deleteComment(id);
         return "redirect:/admin?search=comments";
+    }
+
+    @PostMapping("/admin/user/{id}/delete")
+    public String adminDeleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
+        return "redirect:/admin?search=users";
     }
 }

@@ -24,10 +24,10 @@ public class User {
 
     private String role;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)    //사용자가 쓴 게시물
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,orphanRemoval = true)    //사용자가 쓴 게시물
     private List<Content> contents;
 
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY,orphanRemoval = true)
     private Image image;
 
     public User(String loginId, String password, String nickname,String role) {
