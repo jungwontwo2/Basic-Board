@@ -17,7 +17,7 @@ public class HeartService {
     private final UserRepository userRepository;
     private final ContentRepository contentRepository;
 
-    public void addHeart(String loginId,Long contentId){
+    public void addHeart(String loginId,Long contentId) throws Exception {
         Content content = contentRepository.findById(contentId).get();
         User user = userRepository.findByLoginId(loginId).get();
         User boardUser = content.getUser();
@@ -31,7 +31,7 @@ public class HeartService {
                 heartRepository.save(heart);
             }
         }
-        System.out.println(content.getHeartCnt());
+        throw new Exception("본인의 게시물에 좋아요를 할 수 없습니다.");
     }
 
     public Boolean checkLike(String loginId, Long contentId) {
