@@ -3,6 +3,8 @@ package Tanguri.BasicBoard.service;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.Heart;
 import Tanguri.BasicBoard.domain.entity.User;
+import Tanguri.BasicBoard.error.CustomException;
+import Tanguri.BasicBoard.error.ErrorCode;
 import Tanguri.BasicBoard.repository.ContentRepository;
 import Tanguri.BasicBoard.repository.HeartRepository;
 import Tanguri.BasicBoard.repository.UserRepository;
@@ -31,7 +33,7 @@ public class HeartService {
                 heartRepository.save(heart);
             }
         }
-        throw new Exception("본인의 게시물에 좋아요를 할 수 없습니다.");
+        throw new CustomException(ErrorCode.BOARD_OWNER);
     }
 
     public Boolean checkLike(String loginId, Long contentId) {

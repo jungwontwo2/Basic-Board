@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @Controller
 @RequiredArgsConstructor
 public class HeartController {
-    @ExceptionHandler(Exception.class)
-    public String heartException(HttpServletRequest request){
-        String id = extractIdFromRequestUri(request.getRequestURI());
-        request.setAttribute("msg","본인의 게시물에 좋아요를 누를 수 없습니다");
-        //String redirectUrl = request.getRequestURI();
-        request.setAttribute("redirectUrl","/boards/free/"+id);
-        return "/common/messageRedirect";
-    }
+//    @ExceptionHandler(CustomEx.class)
+//    public String heartException(HttpServletRequest request){
+//        String id = extractIdFromRequestUri(request.getRequestURI());
+//        request.setAttribute("msg","본인의 게시물에 좋아요를 누를 수 없습니다");
+//        //String redirectUrl = request.getRequestURI();
+//        request.setAttribute("redirectUrl","/boards/free/"+id);
+//        return "/common/messageRedirect";
+//    }
 
     private String extractIdFromRequestUri(String requestUri) {
         // requestUri에서 id 추출하는 로직을 작성
