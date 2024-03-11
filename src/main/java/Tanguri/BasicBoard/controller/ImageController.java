@@ -9,13 +9,11 @@ import Tanguri.BasicBoard.service.S3UploadService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -26,6 +24,13 @@ public class ImageController {
     private final ImageService imageService;
 
     private final S3UploadService s3UploadService;
+
+    @ExceptionHandler(FileSizeLimitExceededException.class)
+    private String filesizelimit(HttpServletRequest request){
+        request.setAttribute("msg","이미지 크기는 1Mb 이하여야합니다");
+        request.setAttribute("redirectUrl","/users/my/edit/image");
+        return "/common/messageRedirect";
+    }
 
     @PostMapping("/upload")
     public String upload(@ModelAttribute ImageUploadDto imageUploadDTO, HttpServletRequest request,

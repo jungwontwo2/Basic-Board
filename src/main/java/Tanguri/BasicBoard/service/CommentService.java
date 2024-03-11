@@ -3,6 +3,7 @@ package Tanguri.BasicBoard.service;
 import Tanguri.BasicBoard.domain.dto.comment.CommentRequestDto;
 import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
+import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
 import Tanguri.BasicBoard.domain.entity.Comment;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,9 +31,10 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     //댓글작성
-    public Long writeComment(CommentRequestDto commentRequestDto, Long contentId, String userNickname,String parentId){
+    public Long writeComment(CommentRequestDto commentRequestDto, Long contentId, String parentId, Authentication authentication){
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = customUserDetails.getUserEntity();
         //사용자와 게시물을 찾음
-        User user = userRepository.findByNickname(userNickname).orElse(null);
         Content content = contentRepository.findById(contentId).orElse(null);
         //부모 댓글을 찾는 과정
         //일단 부모가 없다고 설정함
@@ -54,6 +58,7 @@ public class CommentService {
                 .build();
         //comment를 만들었다면 save함
         commentRepository.save(comment);
+        //contentRepository.save(content);
         return comment.getId();
     }
     //게시물에 대한 모든 댓글들 가져오기 위한 메서드

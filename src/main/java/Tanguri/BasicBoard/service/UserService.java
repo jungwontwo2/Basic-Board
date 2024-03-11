@@ -15,6 +15,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +33,8 @@ public class UserService {
     private final ImageRepository imageRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private AuthenticationManager authenticationManager;
 
     @Transactional
     public void saveUser(JoinUserDto userDto){
@@ -44,9 +51,20 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findByLoginId(userDto.getLoginId());
         User updateUser = optionalUser.get();
         updateUser.updateNickname(userDto.getNickname());
-        //userRepository.save(updateUser);
+        userRepository.save(updateUser);
+        upadteAutehnticationInSession(userDto.getNickname());
         return updateUser;
     }
+
+    private void upadteAutehnticationInSession(String username) {
+        Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
+        if (currentAuth.getName().equals(username)) {
+            UserDetails userDetails = userRepository.findByNickname(username);
+            Authentication newAuth = new UsernamePasswordAuthenticationToken(userDetails, currentAuth.getCredentials(), currentAuth.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+        }
+    }
+
     public EditUserDto findMember(String loginId){
         Optional<User> byLoginId = userRepository.findByLoginId(loginId);
         User user = byLoginId.get();

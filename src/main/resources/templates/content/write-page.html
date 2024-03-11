@@ -18,7 +18,7 @@
         <label for="texts">글 내용 : </label>
         <br/><br/>
         <textarea id="texts" name="texts" th:field="*{texts}"></textarea>
-        <input type="file" name="files" id="files" multiple>
+        <input type="file" name="files" id="files" accept="image/*" multiple>
         <label for="files">이미지</label>
       </div>
       <button type="submit">글 쓰기</button>

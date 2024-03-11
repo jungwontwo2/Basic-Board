@@ -13,12 +13,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @Slf4j
 @Controller
@@ -229,8 +234,9 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
     @PostMapping("/users/my/edit/info")
     public String postEditUserInfo(HttpServletRequest request,
                                    @Validated @ModelAttribute("user") UserNicknameUpdateDto userNicknameUpdateDto,
-                                   BindingResult bindingResult, Model model)
+                                   BindingResult bindingResult, Model model,Authentication authentication)
     {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         HttpSession session = request.getSession(false);
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
@@ -247,7 +253,12 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
             model.addAttribute("image",image);
             return "/users/user-info-edit";
         }
-        User user = userService.updateUserNickname(userNicknameUpdateDto);
+        userService.updateUserNickname(userNicknameUpdateDto);
+//        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),authorities);
+//        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//        CustomUserDetails user1 = (CustomUserDetails) authentication.getPrincipal();
+//        System.out.println("user1.getUsername() = " + user1.getNickname());
 //        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getLoginId(), user.getPassword()));
 //        SecurityContextHolder.getContext().setAuthentication(authentication);
 
