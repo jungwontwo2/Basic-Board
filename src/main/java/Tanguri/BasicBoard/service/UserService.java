@@ -8,6 +8,8 @@ import Tanguri.BasicBoard.domain.dto.user.UserNicknameUpdateDto;
 import Tanguri.BasicBoard.domain.entity.Comment;
 import Tanguri.BasicBoard.domain.entity.Image;
 import Tanguri.BasicBoard.domain.entity.User;
+import Tanguri.BasicBoard.error.CustomException;
+import Tanguri.BasicBoard.error.ErrorCode;
 import Tanguri.BasicBoard.repository.ImageRepository;
 import Tanguri.BasicBoard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,11 @@ public class UserService {
 
     @Transactional
     public void saveUser(JoinUserDto userDto,String role){
+        if(userRepository.existsByLoginId(userDto.getLoginId())){
+            throw new CustomException(ErrorCode.HAS_LOGIN_ID);
+        } else if (userRepository.existsByNickname(userDto.getNickname())) {
+            throw new CustomException(ErrorCode.HAS_NICKNAME);
+        }
         User user = JoinUserDto.toEntity(userDto.getLoginId(),bCryptPasswordEncoder.encode(userDto.getPassword()),userDto.getNickname(),role);
         Image image = Image.builder()
                 .url("https://basicboard-images.s3.ap-northeast-2.amazonaws.com/anonymous.png")

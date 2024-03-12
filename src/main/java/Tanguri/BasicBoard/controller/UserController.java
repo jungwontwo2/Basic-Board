@@ -55,7 +55,7 @@ public class UserController {
         }
         System.out.println(bindingResult);
         if (bindingResult.hasErrors()) {
-            return "/users/addMemberForm";
+            return "users/addMemberForm";
         }
         userService.saveUser(user,"ROLE_USER");
         return "redirect:/";
