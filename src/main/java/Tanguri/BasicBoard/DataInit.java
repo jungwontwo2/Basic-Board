@@ -26,7 +26,7 @@ public class DataInit {
     @PostConstruct
     public void dataInit(){
         JoinUserDto joinUserDto = new JoinUserDto("asdf", "asdfasdf", "asdfasdf", "Tanguri");
-        userService.saveUser(joinUserDto);
+        userService.saveUser(joinUserDto,"ROLE_ADMIN");
         //User user = JoinUserDto.toEntity(joinUserDto);
         //System.out.println(user.getImage().getUrl());
         //User user = new User("asdf","asdfasdf","asdf");

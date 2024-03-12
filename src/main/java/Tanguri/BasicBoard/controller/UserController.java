@@ -57,7 +57,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "/users/addMemberForm";
         }
-        userService.saveUser(user);
+        userService.saveUser(user,"ROLE_USER");
         return "redirect:/";
     }
 
@@ -71,13 +71,11 @@ public class UserController {
     public String loginForm(@ModelAttribute("user") LoginUserDto user,@RequestParam(value = "error",required = false)String error,
                             @RequestParam(value = "exception",required = false)String exception,
                             Model model) {
-        System.out.println("error = " + error);
-        System.out.println("exception = " + exception);
         if(error!=null){
             model.addAttribute("error", error);
             model.addAttribute("exception", exception);
         }
-        return "/users/login";
+        return "users/login";
     }
 
     @PostMapping("users/login")
@@ -139,32 +137,6 @@ public class UserController {
         return "redirect:/";
     }
 
-//    @GetMapping("users/my")
-//    public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletRequest request,
-//                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false)User user,
-//                         Model model){
-//        HttpSession session = request.getSession(false);
-//        if(session==null){
-//            request.setAttribute("msg","로그인 후 사용 가능합니다.");
-//            request.setAttribute("redirectUrl","/users/login");
-//            return "/common/messageRedirect";
-//        }
-//        Page<ContentDto> contentDtos = contentService.pagingByUserId(pageable, user.getId());
-//
-//        ImageResponseDto image = imageService.findImage(user.getLoginId());
-//
-//        model.addAttribute("image",image);
-//
-//        int blockLimit = 3;
-//        int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
-//        int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
-//        model.addAttribute("user",user);
-//
-//        model.addAttribute("contentDtos", contentDtos);
-//        model.addAttribute("startPage", startPage);
-//        model.addAttribute("endPage", endPage);
-//        return "/users/user-info";
-//    }
 @GetMapping("users/my")
 public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletRequest request,
                      Authentication authentication,
@@ -173,7 +145,7 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
     if(session==null){
         request.setAttribute("msg","로그인 후 사용 가능합니다.");
         request.setAttribute("redirectUrl","/users/login");
-        return "/common/messageRedirect";
+        return "common/messageRedirect";
     }
     CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
     EditUserDto member = userService.findMember(user.getUsername());
@@ -191,7 +163,7 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
     model.addAttribute("contentDtos", contentDtos);
     model.addAttribute("startPage", startPage);
     model.addAttribute("endPage", endPage);
-    return "/users/user-info";
+    return "users/user-info";
 }
     @GetMapping("/users/my/edit/image")
     public String editImagePage(HttpServletRequest request,
@@ -201,7 +173,7 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
+            return "common/messageRedirect";
         }
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
@@ -209,7 +181,7 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
 
         model.addAttribute("user",user);
         model.addAttribute("image",image);
-        return "/users/image-edit";
+        return "users/image-edit";
     }
     @GetMapping("/users/my/edit/info")
     public String getEditUserInfo(HttpServletRequest request,
@@ -220,7 +192,7 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
+            return "common/messageRedirect";
         }
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
@@ -229,7 +201,7 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
         System.out.println("userDto.getNickname() = " + userDto.getNickname());
         model.addAttribute("image",image);
         model.addAttribute("user", userDto);
-        return "/users/user-info-edit";
+        return "users/user-info-edit";
     }
     @PostMapping("/users/my/edit/info")
     public String postEditUserInfo(HttpServletRequest request,
@@ -241,7 +213,7 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
+            return "common/messageRedirect";
         }
         boolean checkNicknameDuplication = userService.checkNicknameDuplication(userNicknameUpdateDto.getNickname());
         if(checkNicknameDuplication){
@@ -251,24 +223,9 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
             System.out.println(bindingResult);
             ImageResponseDto image = imageService.findImage(userNicknameUpdateDto.getLoginId());
             model.addAttribute("image",image);
-            return "/users/user-info-edit";
+            return "users/user-info-edit";
         }
         userService.updateUserNickname(userNicknameUpdateDto);
-//        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
-//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),authorities);
-//        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-//        CustomUserDetails user1 = (CustomUserDetails) authentication.getPrincipal();
-//        System.out.println("user1.getUsername() = " + user1.getNickname());
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getLoginId(), user.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getNickname(), user.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-        //session.setAttribute(SessionConst.LOGIN_MEMBER,user);
-        //System.out.println(user.getContents().size());
-        //contentService.updateContentWriter(userNicknameUpdateDto.getNickname(),user);
-
-
         return "redirect:/users/my";
     }
 }

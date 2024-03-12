@@ -11,6 +11,8 @@ import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.repository.BoardImageRepository;
 import Tanguri.BasicBoard.repository.ContentRepository;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -29,6 +31,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+
 @Service
 @RequiredArgsConstructor
 public class ContentService {
@@ -40,6 +43,14 @@ public class ContentService {
 
     private final BoardImageRepository boardImageRepository;
 
+    private final AmazonS3 amazonS3;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
+    @Value("${cloud.aws.region.static}")
+    private String region;
+
     public BindingResult writeValid(ContentWriteDto content,BindingResult bindingResult){
         if(content.getTitle().isEmpty()){
             bindingResult.addError(new FieldError("content","title","제목이 비어있습니다"));
@@ -50,32 +61,59 @@ public class ContentService {
         return bindingResult;
     }
     //글 입력
-    public void writeContent(ContentWriteDto contentDto, CustomUserDetails user, BoardImageUploadDTO boardImageUploadDTO) {
+    public void writeContent(ContentWriteDto contentDto, CustomUserDetails user, BoardImageUploadDTO boardImageUploadDTO) throws IOException {
         Content content = ContentWriteDto.toEntity(contentDto, user);
         contentRepository.save(content);//일단 게시물 자체에 대한 내용은 저장.(제목 내용 글쓴이)
 
         //만약 이미지가 있는 상태로 등록된다면
         if (boardImageUploadDTO.getFiles() != null && !boardImageUploadDTO.getFiles().isEmpty()) {
             for (MultipartFile file : boardImageUploadDTO.getFiles()) {//iter를 돌려서
-                UUID uuid = UUID.randomUUID();//파일에 대해서 UUID 생성
-                String imageFileName = uuid + "_" + file.getOriginalFilename();//파일 이름을 uuid+파일의 원래 이름으로 변경
-
-                File destinationFile = new File(uploadFolder + imageFileName);//보드 이미지를 보드 이미지 저장 경로에 uuid붙인 이름으로 저장
-
-                try {//해당 경로로 파일 옮기기
-                    file.transferTo(destinationFile);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                if(file.isEmpty()){
+                    continue;
                 }
-
+                String saveImageUrl = saveBoardImage(file);
                 BoardImage image = BoardImage.builder()
-                        .url("/boardImages/" + imageFileName)
+                        .url(saveImageUrl)
                         .content(content)
                         .build();
-
                 boardImageRepository.save(image);
+//                UUID uuid = UUID.randomUUID();//파일에 대해서 UUID 생성
+//                String imageFileName = uuid + "_" + file.getOriginalFilename();//파일 이름을 uuid+파일의 원래 이름으로 변경
+//
+//                File destinationFile = new File(uploadFolder + imageFileName);//보드 이미지를 보드 이미지 저장 경로에 uuid붙인 이름으로 저장
+//
+//                try {//해당 경로로 파일 옮기기
+//                    file.transferTo(destinationFile);
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//
+//                BoardImage image = BoardImage.builder()
+//                        .url("/boardImages/" + imageFileName)
+//                        .content(content)
+//                        .build();
+//
+//                boardImageRepository.save(image);
             }
         }
+    }
+    private String saveBoardImage(MultipartFile multipartFile) throws IOException {
+        String filename = getUUIDFileName(multipartFile);
+        ObjectMetadata metadata = setObjectMetadata(multipartFile);
+        amazonS3.putObject(bucket, filename, multipartFile.getInputStream(), metadata);
+        return amazonS3.getUrl(bucket, filename).toString();
+    }
+    private static ObjectMetadata setObjectMetadata(MultipartFile multipartFile) {
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(multipartFile.getSize());
+        metadata.setContentType(multipartFile.getContentType());
+        return metadata;
+    }
+    private static String getUUIDFileName(MultipartFile multipartFile) {
+        String originalFilename = multipartFile.getOriginalFilename();
+        UUID uuid = UUID.randomUUID();
+        String filename = uuid+"_"+originalFilename;
+        return filename;
     }
     //페이징(가입인사)
     public Page<ContentDto> paging(Pageable pageable){

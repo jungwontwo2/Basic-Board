@@ -25,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -34,36 +35,7 @@ public class ContentController {
     private final ContentService contentService;
     private final CommentService commentService;
 
-//    @GetMapping("/boards/greeting")
-//    public String greetingsBoards(@PageableDefault(page = 1) Pageable pageable, Model model){
-////    public String greetingsBoards(HttpServletRequest request, @PageableDefault(page = 1) Pageable pageable, Model model){
-////        HttpSession session = request.getSession(false);
-////        if(session==null){
-////            request.setAttribute("msg","로그인 후 사용가능합니다.");
-////            request.setAttribute("redirectUrl","/users/login");
-////            return "/common/messageRedirect";
-////        }
-////        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
-////        if (loginUser == null) {
-////            request.setAttribute("msg","로그인 후 사용가능합니다.");
-////            request.setAttribute("redirectUrl","/users/login");
-////            return "/common/messageRedirect";
-////        }
-//        Page<ContentDto> contentDtos = contentService.paging(pageable);
-//        /**
-//         * blockLimit : page 개수 설정
-//         * 현재 사용자가 선택한 페이지 앞 뒤로 3페이지씩만 보여준다.
-//         * ex : 현재 사용자가 4페이지라면 2, 3, (4), 5, 6
-//         */
-//        int blockLimit = 3;
-//        int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
-//        int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
-//
-//        model.addAttribute("contentDtos", contentDtos);
-//        model.addAttribute("startPage", startPage);
-//        model.addAttribute("endPage", endPage);
-//        return "/content/greeting";
-//    }
+
     @GetMapping("/boards/free")
     public String greetingBoardsSearchword(@PageableDefault(page = 1) Pageable pageable,
                                            @RequestParam(name = "searchWord",required = false)String searchWord, Model model){
@@ -87,7 +59,7 @@ public class ContentController {
             model.addAttribute("startPage", startPage);
             model.addAttribute("endPage", endPage);
         }
-        return "/content/free";
+        return "content/free";
     }
 
     //글 보기 화면
@@ -100,7 +72,7 @@ public class ContentController {
         List<CommentResponseDto> commentResponseDtos = commentService.commentDtoList(id);
         model.addAttribute("content",contentDto);
         model.addAttribute("comments",commentResponseDtos);
-        return "/content/content-page";
+        return "content/content-page";
     }
     //글쓰기 화면 ㄱㄱ
     @GetMapping("/boards/free/write")
@@ -109,20 +81,20 @@ public class ContentController {
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
+            return "common/messageRedirect";
         }
-        return "/content/write-page";
+        return "content/write-page";
     }
     //글 등록
     @PostMapping("/boards/free/write")
     public String writeContent(ContentWriteDto content, HttpServletRequest request,
                                @ModelAttribute BoardImageUploadDTO boardImageUploadDTO,
-                               Authentication authentication, BindingResult bindingResult) {
+                               Authentication authentication, BindingResult bindingResult) throws IOException {
         HttpSession session = request.getSession(false);
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
+            return "common/messageRedirect";
         }
         //BindingResult bindingresult = contentService.writeValid(content, bindingResult);
         //System.out.println("bindingresult = " + bindingresult);
@@ -132,7 +104,7 @@ public class ContentController {
             return "common/messageRedirect.html";
         }
         if (bindingResult.hasErrors()) {
-            return "/users/addMemberForm";
+            return "users/addMemberForm";
         }
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
@@ -140,25 +112,7 @@ public class ContentController {
         return "redirect:/boards/free";
     }
 
-    //글 수정
-//    @GetMapping("/boards/greeting/edit/{id}")
-//    public String getEditPage(@PathVariable Long id,@RequestParam String password, HttpServletRequest request,Model model) {
-//        Content content = contentService.getContent(id);
-//        if(!content.getPassword().equals(password)){
-//            request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
-//            String redirectUrl = "/boards/greeting/"+id.toString();
-//            request.setAttribute("redirectUrl",redirectUrl);
-//            return "/common/messageRedirect";
-//        }
-//        ContentEditDto contentEditDto = Content.toEditDto(content);
-//        model.addAttribute("content",contentEditDto);
-////        ContentEditDto contentEditDto = new ContentEditDto();
-////        contentEditDto.setTitle(contentDto.getTitle());
-////        contentEditDto.setTexts(contentDto.getTexts());
-////        model.addAttribute("editContentDto",contentEditDto);
-//        //contentService.editContent(id, content.getTexts(), content.getPassword());
-//        return "/content/edit-page";
-//    }
+
     //글 수정하기
     //글 수정하기
     @PostMapping("/boards/free/edit/{id}")
@@ -175,13 +129,13 @@ public class ContentController {
             request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
             String redirectUrl = "/boards/free/"+id.toString();
             request.setAttribute("redirectUrl",redirectUrl);
-            return "/common/messageRedirect";
+            return "common/messageRedirect";
         }
         ContentEditDto contentEditDto1 = Content.toEditDto(content);
         contentEditDto.setTitle(contentEditDto1.getTitle());
         contentEditDto.setTexts(contentEditDto1.getTexts());
         //contentService.editContent(id, contentEditDto);
-        return "/content/edit-page";
+        return "content/edit-page";
     }
 
     //글 삭제
@@ -192,7 +146,7 @@ public class ContentController {
             request.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
             String redirectUrl = "/boards/free/"+id.toString();
             request.setAttribute("redirectUrl",redirectUrl);
-            return "/common/messageRedirect";
+            return "common/messageRedirect";
         }
         contentService.deleteContent(id);
         System.out.println("delete complete");

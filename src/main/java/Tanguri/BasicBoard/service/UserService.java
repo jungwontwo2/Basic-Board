@@ -37,8 +37,8 @@ public class UserService {
     private AuthenticationManager authenticationManager;
 
     @Transactional
-    public void saveUser(JoinUserDto userDto){
-        User user = JoinUserDto.toEntity(userDto.getLoginId(),bCryptPasswordEncoder.encode(userDto.getPassword()),userDto.getNickname());
+    public void saveUser(JoinUserDto userDto,String role){
+        User user = JoinUserDto.toEntity(userDto.getLoginId(),bCryptPasswordEncoder.encode(userDto.getPassword()),userDto.getNickname(),role);
         Image image = Image.builder()
                 .url("https://basicboard-images.s3.ap-northeast-2.amazonaws.com/anonymous.png")
                 .user(user)

@@ -33,9 +33,8 @@ public class JoinUserDto {
 
 
 
-    public static User toEntity(String loginId,String password,String nickname) {
-        User user = new User(loginId,password,nickname,"ROLE_ADMIN");
-        System.out.println("userDto->Entity success");
+    public static User toEntity(String loginId,String password,String nickname,String role) {
+        User user = new User(loginId,password,nickname,role);
         // 기타 필요한 필드 복사 작업 수행
         return user;
     }

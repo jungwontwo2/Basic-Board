@@ -32,7 +32,7 @@ public class CommentController {
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
+            return "common/messageRedirect";
         }
         String parentId = request.getParameter("parentId");
         commentService.writeComment(commentRequestDto,id,parentId,authentication);

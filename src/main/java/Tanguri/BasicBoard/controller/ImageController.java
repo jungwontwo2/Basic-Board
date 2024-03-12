@@ -29,7 +29,7 @@ public class ImageController {
     private String filesizelimit(HttpServletRequest request){
         request.setAttribute("msg","이미지 크기는 1Mb 이하여야합니다");
         request.setAttribute("redirectUrl","/users/my/edit/image");
-        return "/common/messageRedirect";
+        return "common/messageRedirect";
     }
 
     @PostMapping("/upload")
@@ -41,7 +41,7 @@ public class ImageController {
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
+            return "common/messageRedirect";
         }
 
         s3UploadService.saveProfileImage(imageUploadDTO.getFile(), user.getUsername());

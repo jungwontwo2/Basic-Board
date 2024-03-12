@@ -27,12 +27,12 @@ public class CustomError implements ErrorController {
                 model.addAttribute("code", status.toString());
                 model.addAttribute("msg", httpStatus.getReasonPhrase());
                 model.addAttribute("timeStamp", new Date());
-                return "/error/404";
+                return "error/404";
             }
             else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                return "/error/500";
+                return "error/500";
             }
         }
-        return "/error/error";
+        return "error/error";
     }
 }

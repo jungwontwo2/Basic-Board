@@ -44,7 +44,7 @@ public class HeartController {
         if(session==null){
             request.setAttribute("msg","로그인 후 사용 가능합니다.");
             request.setAttribute("redirectUrl","/users/login");
-            return "/common/messageRedirect";
+            return "common/messageRedirect";
         }
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
