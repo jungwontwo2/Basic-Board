@@ -24,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,6 +35,13 @@ public class ContentController {
 
     private final ContentService contentService;
     private final CommentService commentService;
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    private String maxUploadSizeExceeded(HttpServletRequest request){
+        request.setAttribute("msg","이미지 크기는 1Mb 이하여야합니다");
+        request.setAttribute("redirectUrl","/boards/free/write");
+        return "common/messageRedirect";
+    }
 
 
     @GetMapping("/boards/free")

@@ -48,7 +48,6 @@ public class HeartController {
         }
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
-        System.out.println(user.getUsername());
         heartService.addHeart(user.getUsername(),id);
         return "redirect:/boards/free/{id}";
     }

@@ -33,7 +33,9 @@ public class HeartService {
                 heartRepository.save(heart);
             }
         }
-        throw new CustomException(ErrorCode.BOARD_OWNER);
+        else {
+            throw new CustomException(ErrorCode.BOARD_OWNER);
+        }
     }
 
     public Boolean checkLike(String loginId, Long contentId) {

@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
 
@@ -31,6 +32,7 @@ public class ImageController {
         request.setAttribute("redirectUrl","/users/my/edit/image");
         return "common/messageRedirect";
     }
+
 
     @PostMapping("/upload")
     public String upload(@ModelAttribute ImageUploadDto imageUploadDTO, HttpServletRequest request,
