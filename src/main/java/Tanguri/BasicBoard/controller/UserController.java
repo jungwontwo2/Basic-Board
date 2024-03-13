@@ -8,6 +8,7 @@ import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Objects;
 
 @Slf4j
 @Controller
@@ -227,5 +229,31 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
         }
         userService.updateUserNickname(userNicknameUpdateDto);
         return "redirect:/users/my";
+    }
+
+    @GetMapping("/user/update/password")
+    public String getUpdatePassword(@ModelAttribute("user") PasswordUpdateDto user){
+        return "users/password-edit";
+    }
+
+    @PostMapping("user/update/password")
+    public String updatePassword(@Valid @ModelAttribute("user") PasswordUpdateDto user, BindingResult bindingResult,
+                                 Authentication authentication, HttpServletRequest request){
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String loginId = userDetails.getUsername();
+        if(!userService.checkPassword(loginId,user.getCurrentPassword())){
+            bindingResult.rejectValue("currentPassword","UnCorrectPassword","현재 비밀번호를 제대로 작성해주세요");
+        } else if (!Objects.equals(user.getChangePassword(), user.getCheckPassword())) {
+            bindingResult.rejectValue("checkPassword","NotSamePassword","변경할 비밀번호를 같게 입력해주세요");
+        }
+        if(bindingResult.hasErrors()){
+            return "users/password-edit";
+        }
+        else {
+            userService.changePassword(loginId,user.getChangePassword());
+            request.setAttribute("msg","비밀번호가 변경되었습니다");
+            request.setAttribute("redirectUrl","/users/my");
+            return "common/messageRedirect";
+        }
     }
 }

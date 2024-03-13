@@ -26,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -59,11 +60,11 @@ public class UserService {
         User updateUser = optionalUser.get();
         updateUser.updateNickname(userDto.getNickname());
         userRepository.save(updateUser);
-        upadteAutehnticationInSession(userDto.getNickname());
+        updateAutehnticationInSession(userDto.getNickname());
         return updateUser;
     }
 
-    private void upadteAutehnticationInSession(String username) {
+    private void updateAutehnticationInSession(String username) {
         Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
         if (currentAuth.getName().equals(username)) {
             UserDetails userDetails = userRepository.findByNickname(username);
@@ -97,5 +98,18 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void changePassword(String loginId,String changePassword){
+        User user = userRepository.findByLoginId(loginId).get();
+        user.updatePassword(bCryptPasswordEncoder.encode(changePassword));
+        userRepository.save(user);
+        updateAutehnticationInSession(user.getNickname());
+    }
+
+    public boolean checkPassword(String loginId,String currentPassword){
+        Optional<User> user = userRepository.findByLoginId(loginId);
+        return (bCryptPasswordEncoder.matches(currentPassword,user.get().getPassword()));
     }
 }
