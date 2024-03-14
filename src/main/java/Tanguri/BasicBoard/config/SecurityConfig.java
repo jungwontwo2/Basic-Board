@@ -12,9 +12,12 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
 @EnableWebSecurity
@@ -23,11 +26,11 @@ public class SecurityConfig{
 
     private final AuthenticationFailureHandler CustomAuthFailureHandler;
 
-    @Bean
+    @Bean//비밀번호 암호화
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    @Bean
+    @Bean//시큐리티 필터
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth.
                 requestMatchers("/", "/users/login", "/users/join").permitAll()//해당 사이트면 모두 허용
@@ -40,7 +43,6 @@ public class SecurityConfig{
                 .loginProcessingUrl("/users/login")//포스트 보내면 어디로 가는지
                 .usernameParameter("loginId")
                 .failureHandler(CustomAuthFailureHandler)
-//                .defaultSuccessUrl("/",true)
                 .defaultSuccessUrl("/",true)
                 .permitAll());
 
@@ -55,7 +57,11 @@ public class SecurityConfig{
         return http.build();
     }
 
-
+    @Bean
+    SessionRegistry sessionRegistry(){
+        SessionRegistryImpl registry = new SessionRegistryImpl();
+        return registry;
+    }
 
 
     @Bean

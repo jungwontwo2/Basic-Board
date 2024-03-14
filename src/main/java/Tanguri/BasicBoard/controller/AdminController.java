@@ -80,4 +80,14 @@ public class AdminController {
         userService.deleteUser(id);
         return "redirect:/admin?search=users";
     }
+    @PostMapping("admin/user/{id}/change/ROLE_ADMIN")
+    public String userUpdateRoleAdmin(@PathVariable Long id){
+        userService.changeRole(id,"ROLE_ADMIN");
+        return "redirect:/admin?search=users";
+    }
+    @PostMapping("admin/user/{id}/change/ROLE_USER")
+    public String userUpdateRoleUser(@PathVariable Long id){
+        userService.changeRole(id,"ROLE_USER");
+        return "redirect:/admin?search=users";
+    }
 }

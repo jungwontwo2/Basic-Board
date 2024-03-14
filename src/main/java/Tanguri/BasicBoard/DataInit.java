@@ -23,7 +23,7 @@ public class DataInit {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     //테스트용 데이터 추가
-    //@PostConstruct
+    @PostConstruct
     public void dataInit(){
         JoinUserDto joinUserDto = new JoinUserDto("asdf", "asdfasdf", "asdfasdf", "Tanguri");
         userService.saveUser(joinUserDto,"ROLE_ADMIN");

@@ -21,6 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private AuthenticationManager authenticationManager;
+    private final SessionRegistry sessionRegistry;
 
     @Transactional
     public void saveUser(JoinUserDto userDto,String role){
@@ -60,15 +61,17 @@ public class UserService {
         User updateUser = optionalUser.get();
         updateUser.updateNickname(userDto.getNickname());
         userRepository.save(updateUser);
-        updateAutehnticationInSession(userDto.getNickname());
+        updateAuthenticationInSession(userDto.getNickname());
         return updateUser;
     }
 
-    private void updateAutehnticationInSession(String username) {
+    private void updateAuthenticationInSession(String nickname) {
         Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
-        if (currentAuth.getName().equals(username)) {
-            UserDetails userDetails = userRepository.findByNickname(username);
-            Authentication newAuth = new UsernamePasswordAuthenticationToken(userDetails, currentAuth.getCredentials(), currentAuth.getAuthorities());
+        UserDetails principal = (UserDetails) currentAuth.getPrincipal();
+        //System.out.println("principal.getUsername() = " + principal.getUsername());
+        if (principal.getUsername().equals(nickname)) {
+            UserDetails userDetails = userRepository.findByNickname(nickname);
+            Authentication newAuth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(newAuth);
         }
     }
@@ -98,6 +101,11 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+        sessionRegistry.getAllPrincipals().stream()
+                .filter(user -> user instanceof UserDetails)
+                .filter(user -> ((UserDetails) user).getUsername().equals(id))
+                .forEach(user -> sessionRegistry.getAllSessions(user, false)
+                        .forEach(sessionInformation -> sessionInformation.expireNow()));
     }
 
     @Transactional
@@ -105,7 +113,7 @@ public class UserService {
         User user = userRepository.findByLoginId(loginId).get();
         user.updatePassword(bCryptPasswordEncoder.encode(changePassword));
         userRepository.save(user);
-        updateAutehnticationInSession(user.getNickname());
+        updateAuthenticationInSession(user.getNickname());
     }
 
     public boolean checkPassword(String loginId,String currentPassword){
@@ -119,6 +127,16 @@ public class UserService {
         User user = optionalUser.get();
         user.updateRole(changeRole);
         userRepository.save(user);
-        updateAutehnticationInSession(user.getNickname());
+        updateAuthenticationInSession(user.getNickname());
+        logoutUser(user.getNickname());
+    }
+
+    @Transactional
+    public void logoutUser(String username) {
+        // 사용자 이름으로 UserDetails를 찾습니다.
+        UserDetails userDetails = userRepository.findByNickname(username);
+        // 사용자의 모든 세션을 무효화합니다.
+        sessionRegistry.getAllSessions(userDetails, false)
+                .forEach(sessionInformation -> sessionInformation.expireNow());
     }
 }

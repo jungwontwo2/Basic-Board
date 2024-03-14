@@ -63,12 +63,6 @@ public class UserController {
         return "redirect:/";
     }
 
-    //로그인 누름
-//    @GetMapping("users/login")
-//    public String loginForm(@ModelAttribute("user") LoginUserDto user,HttpServletRequest request,Model model) {
-//        return "/users/login";
-//    }
-
     @GetMapping("users/login")
     public String loginForm(@ModelAttribute("user") LoginUserDto user,@RequestParam(value = "error",required = false)String error,
                             @RequestParam(value = "exception",required = false)String exception,
@@ -101,31 +95,19 @@ public class UserController {
         return "redirect:/";
     }
 
-    //@GetMapping("/")
-    public String homeLogin(HttpServletRequest request, Model model) {
-        //세션이 없으면 home
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return "home/home";
-        }
-        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        if (loginUser == null) {
-            return "home/home";
-        }
-        model.addAttribute("user", loginUser);
-
-        return "home/home-login";
-    }
-
+//    @GetMapping("/")
+//    public String loginSpring(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) User loginUser,Model model){
+//        if(loginUser==null){
+//
+//            return "home/home";
+//        }
+//
+//        model.addAttribute("user",loginUser);
+//        return "home/home-login";
+//    }
     @GetMapping("/")
-    public String loginSpring(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) User loginUser,Model model){
-        if(loginUser==null){
-
-            return "home/home";
-        }
-
-        model.addAttribute("user",loginUser);
-        return "home/home-login";
+    public String loginSpring(){
+      return "home/home";
     }
 
     @GetMapping("/users/logout")
@@ -139,34 +121,34 @@ public class UserController {
         return "redirect:/";
     }
 
-@GetMapping("users/my")
-public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletRequest request,
-                     Authentication authentication,
-                     Model model){
-    HttpSession session = request.getSession(false);
-    if(session==null){
-        request.setAttribute("msg","로그인 후 사용 가능합니다.");
-        request.setAttribute("redirectUrl","/users/login");
-        return "common/messageRedirect";
-    }
-    CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
-    EditUserDto member = userService.findMember(user.getUsername());
-    String loginId = authentication.getName();
-    Page<ContentDto> contentDtos = contentService.pagingByLoginId(pageable, loginId);
-    System.out.println(user.getImageUrl());
-    ImageResponseDto image = imageService.findImage(loginId);
+    @GetMapping("users/my")
+    public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletRequest request,
+                         Authentication authentication,
+                         Model model){
+        HttpSession session = request.getSession(false);
+        if(session==null){
+            request.setAttribute("msg","로그인 후 사용 가능합니다.");
+            request.setAttribute("redirectUrl","/users/login");
+            return "common/messageRedirect";
+        }
+        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+        EditUserDto member = userService.findMember(user.getUsername());
+        String loginId = authentication.getName();
+        Page<ContentDto> contentDtos = contentService.pagingByLoginId(pageable, loginId);
+        System.out.println(user.getImageUrl());
+        ImageResponseDto image = imageService.findImage(loginId);
 
-    model.addAttribute("image",image);
-    int blockLimit = 3;
-    int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
-    int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
-    model.addAttribute("user",user);
-    model.addAttribute("nickname",member.getNickname());
-    model.addAttribute("contentDtos", contentDtos);
-    model.addAttribute("startPage", startPage);
-    model.addAttribute("endPage", endPage);
-    return "users/user-info";
-}
+        model.addAttribute("image",image);
+        int blockLimit = 3;
+        int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+        int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
+        model.addAttribute("user",user);
+        model.addAttribute("nickname",member.getNickname());
+        model.addAttribute("contentDtos", contentDtos);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        return "users/user-info";
+    }
     @GetMapping("/users/my/edit/image")
     public String editImagePage(HttpServletRequest request,
                                 Authentication authentication,Model model)
@@ -255,15 +237,5 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
             request.setAttribute("redirectUrl","/users/my");
             return "common/messageRedirect";
         }
-    }
-    @PostMapping("admin/user/{id}/change/ROLE_ADMIN")
-    public String userUpdateRoleAdmin(@PathVariable Long id){
-        userService.changeRole(id,"ROLE_ADMIN");
-        return "redirect:/admin?search=users";
-    }
-    @PostMapping("admin/user/{id}/change/ROLE_USER")
-    public String userUpdateRoleUser(@PathVariable Long id){
-        userService.changeRole(id,"ROLE_USER");
-        return "redirect:/admin?search=users";
     }
 }
