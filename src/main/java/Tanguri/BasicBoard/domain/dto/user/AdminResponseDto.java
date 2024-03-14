@@ -15,9 +15,12 @@ public class AdminResponseDto {
 
     private Long Id;
 
+    private String userRole;
+
     public AdminResponseDto(User user){
         this.nickname=user.getNickname();
         this.loginId=user.getLoginId();
         this.Id=user.getId();
+        this.userRole=user.getRole();
     }
 }

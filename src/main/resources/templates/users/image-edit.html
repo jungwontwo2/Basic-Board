@@ -21,6 +21,9 @@
                 <input type="file" class="custom-file-input" name="file" accept="image/*" required>
             </div>
             <button type="submit" class="btn btn-primary btn-lg">저장</button>
+            <button class="btn btn-primary btn-lg"
+                    th:onclick="|location.href='@{/users/my}'|"
+                    type="button">취소</button>
         </form>
     </div>
   </div>

@@ -112,4 +112,13 @@ public class UserService {
         Optional<User> user = userRepository.findByLoginId(loginId);
         return (bCryptPasswordEncoder.matches(currentPassword,user.get().getPassword()));
     }
+
+    @Transactional
+    public void changeRole(Long Id,String changeRole){
+        Optional<User> optionalUser = userRepository.findById(Id);
+        User user = optionalUser.get();
+        user.updateRole(changeRole);
+        userRepository.save(user);
+        updateAutehnticationInSession(user.getNickname());
+    }
 }

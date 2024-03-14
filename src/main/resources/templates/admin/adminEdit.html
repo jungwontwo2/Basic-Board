@@ -75,6 +75,8 @@
             <tr>
                 <th scope="col" class="th-num">닉네임</th>
                 <th scope="col" class="th-title">로그인 id</th>
+                <th scope="col" class="th-role">사용자 Role</th>
+                <th scope="col" class="th-changeRole">Role 변경</th>
                 <th scope="col" class="th-heart">삭제</th>
             </tr>
             </thead>
@@ -85,6 +87,19 @@
                 </td>
                 <td>
                     <a th:text="${dto.loginId}"></a>
+                </td>
+                <td>
+                    <a th:text="${dto.userRole}"></a>
+                </td>
+                <td th:if="${dto.userRole=='ROLE_ADMIN'}">
+                    <form th:action="@{|/admin/user/${dto.Id}/change/ROLE_USER|}" method="post">
+                        <button type="submit">ROLE_USER로 변경</button>
+                    </form>
+                </td>
+                <td th:unless="${dto.userRole=='ROLE_ADMIN'}">
+                    <form th:action="@{|/admin/user/${dto.Id}/change/ROLE_ADMIN|}" method="post">
+                        <button type="submit">ROLE_ADMIN로 변경</button>
+                    </form>
                 </td>
                 <td>
                     <!--                    <form th:formaction="@{|/admin/${content.id}/delete|}">-->

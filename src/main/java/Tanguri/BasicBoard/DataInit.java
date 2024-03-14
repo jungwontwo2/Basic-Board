@@ -31,6 +31,8 @@ public class DataInit {
         //System.out.println(user.getImage().getUrl());
         //User user = new User("asdf","asdfasdf","asdf");
         //userRepository.save(user);
+        JoinUserDto joinUserDto2 = new JoinUserDto("qwer", "qwerqwer", "qwerqwer", "Tanguri1");
+        userService.saveUser(joinUserDto2,"ROLE_USER");
         Optional<User> optionalUser = userRepository.findByLoginId("asdf");
         User user = optionalUser.get();
         System.out.println("Init User Complete");

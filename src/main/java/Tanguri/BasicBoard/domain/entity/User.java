@@ -42,4 +42,6 @@ public class User {
     public void updatePassword(String password){
         this.password=password;
     }
+
+    public void updateRole(String role){this.role=role;}
 }

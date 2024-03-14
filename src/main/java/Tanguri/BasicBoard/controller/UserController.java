@@ -231,12 +231,12 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
         return "redirect:/users/my";
     }
 
-    @GetMapping("/user/update/password")
+    @GetMapping("/users/update/password")
     public String getUpdatePassword(@ModelAttribute("user") PasswordUpdateDto user){
         return "users/password-edit";
     }
 
-    @PostMapping("user/update/password")
+    @PostMapping("users/update/password")
     public String updatePassword(@Valid @ModelAttribute("user") PasswordUpdateDto user, BindingResult bindingResult,
                                  Authentication authentication, HttpServletRequest request){
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -255,5 +255,15 @@ public String myInfo(@PageableDefault(page = 1) Pageable pageable,HttpServletReq
             request.setAttribute("redirectUrl","/users/my");
             return "common/messageRedirect";
         }
+    }
+    @PostMapping("admin/user/{id}/change/ROLE_ADMIN")
+    public String userUpdateRoleAdmin(@PathVariable Long id){
+        userService.changeRole(id,"ROLE_ADMIN");
+        return "redirect:/admin?search=users";
+    }
+    @PostMapping("admin/user/{id}/change/ROLE_USER")
+    public String userUpdateRoleUser(@PathVariable Long id){
+        userService.changeRole(id,"ROLE_USER");
+        return "redirect:/admin?search=users";
     }
 }
