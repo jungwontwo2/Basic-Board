@@ -8,12 +8,10 @@ import Tanguri.BasicBoard.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,5 +35,12 @@ public class CommentController {
         String parentId = request.getParameter("parentId");
         commentService.writeComment(commentRequestDto,id,parentId,authentication);
         return "redirect:/boards/free/"+id;
+    }
+    @PostMapping("/comment/update/{id}")
+    public String updateComment(@PathVariable Long id,
+                                @RequestParam("text") String updatedComment,
+                                @RequestParam("boardId") Long boardId){
+        commentService.updateComment(updatedComment,id);
+        return "redirect:/boards/free/"+boardId;
     }
 }

@@ -2,7 +2,6 @@ package Tanguri.BasicBoard.service;
 
 import Tanguri.BasicBoard.domain.dto.comment.CommentRequestDto;
 import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
-import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
 import Tanguri.BasicBoard.domain.entity.Comment;
 import Tanguri.BasicBoard.domain.entity.Content;
@@ -16,11 +15,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -73,11 +71,20 @@ public class CommentService {
         return collect;
     }
 
-    public void updateComment(CommentResponseDto commentResponseDto, Long commentId){
-        Comment comment = commentRepository.findById(commentId).orElse(null);
-        assert comment != null;
-        comment.update(commentResponseDto.getComment());
-        commentRepository.save(comment);
+    @Transactional
+    public void updateComment(String updatedComment, Long commentId){
+        try{
+            Optional<Comment> optionalComment = commentRepository.findById(commentId);
+            Comment comment = optionalComment.get();
+            System.out.println("comment.getComment() = " + comment.getComment());
+
+            comment.update(updatedComment);
+            commentRepository.save(comment);
+        }catch (Exception e){
+            System.out.println("e.getMessage() = " + e.getMessage());
+        }
+        
+        System.out.println("comment update complete");
     }
     public void deleteComment(Long commentId){
         commentRepository.deleteById(commentId);

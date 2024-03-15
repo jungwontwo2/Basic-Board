@@ -33,6 +33,8 @@ public class CustomError implements ErrorController {
                 return "error/500";
             }
         }
+        System.out.println("httpStatus = " + httpStatus);
+        System.out.println("httpStatus.getReasonPhrase() = " + httpStatus.getReasonPhrase());
         return "error/error";
     }
 }

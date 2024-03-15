@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <title>게시판</title>
   <nav>게시글</nav>
 </head>
@@ -45,7 +46,7 @@
                   <p th:text="${comment.getComment()}" th:id="'comment-' + ${comment.getId()}">Comment content</p>
                   <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>
                   <div th:if="${comment.nickname == loggedInNickname}">
-                    <button type="button" onclick="editComment(${comment.id})">수정</button>
+                    <button type="button" class="edit-comment"  th:data-board-id="${content.id}" th:data-comment-id="${comment.getId()}" th:data-comment-text="${comment.getComment()}" >수정</button>
                   </div>
                   <!-- 대댓글 폼 -->
                   <form th:if="${comment.hasChildren == false}" method="post">
@@ -59,6 +60,9 @@
                   <h5 class="mt-0" th:text="${comment.getNickname()}">User Name</h5>
                   <p th:text="${comment.getComment()}" th:id="'comment-' + ${comment.getId()}">Comment content</p>
                   <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>
+                  <div th:if="${comment.nickname == loggedInNickname}">
+                    <button type="button" class="edit-comment"  th:data-board-id="${content.id}" th:data-comment-id="${comment.getId()}" th:data-comment-text="${comment.getComment()}" >수정</button>
+                  </div>
                   <!-- 대댓글 폼 -->
                   <form th:if="${comment.hasChildren == false}" method="post">
                     <input type="hidden" name="parentId" th:value="${comment.id}">
@@ -91,29 +95,6 @@
             </div>
           </div>
         </form>
-
-
-<!--        <form>-->
-<!--          <textarea name="comment" class="comment"></textarea>-->
-<!--          &lt;!&ndash; parentId를 전달하는 hidden input &ndash;&gt;-->
-<!--          <input type="hidden" name="parentId" th:value="${parentId}">-->
-<!--          <div class="row select-btn">-->
-<!--            <div class="col" align="left">-->
-<!--              <button th:formaction="@{|/boards/free/${content.id}/comment|}" class="select-btn" type="submit">Submit-->
-<!--              </button>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </form>-->
-
-
-
-<!--        <textarea name="comment" class="comment"></textarea>-->
-<!--        <div class="row select-btn">-->
-<!--          <div class="col" align="left">-->
-<!--            <button th:formaction="@{|/boards/free/${content.id}/comment|}" class="select-btn">Submit-->
-<!--            </button>-->
-<!--          </div>-->
-<!--        </div>-->
       </div>
         <div class="select-btn">
           <button th:formaction="@{|/boards/free/editPage/${content.id}|}">수정</button>
@@ -124,5 +105,41 @@
     </div>
   </div>
 </div>
+<script>
+  $('.edit-comment').click(function() {
+
+var commentId = $(this).data('comment-id');
+var commentText = $(this).data('comment-text'); // 변경된 부분
+var boardId = $(this).data('board-id'); // 추가된 부분
+
+// 수정을 위한 폼을 동적으로 생성합니다.
+var editFormHtml = '<input type="text" id="edit-text-' + commentId + '" value="' + commentText + '">';
+editFormHtml += '<button type="button" onclick="submitEdit(' + commentId + ', ' + boardId + ')">저장</button>'; // boardId 인자 추가
+
+    $('#comment-' + commentId).html(editFormHtml);
+});
+function submitEdit(commentId,boardId) {
+var updatedText = $('#edit-text-' + commentId).val(); // 수정된 댓글 내용을 가져옵니다.
+
+$.ajax({
+url: '/comment/update/' + commentId, // 댓글 수정 API URL
+type: 'POST', // HTTP 메소드
+data: {
+text: updatedText, // 서버로 보낼 데이터
+boardId: boardId
+},
+success: function(response) {
+// 성공적으로 수정되었을 때의 처리
+alert('댓글 수정에 성공했습니다.');
+},
+error: function() {
+// 오류 처리
+alert('댓글 수정에 실패했습니다.');
+}
+});
+}
+</script>
 </body>
 </html>
+
+
