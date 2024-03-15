@@ -44,6 +44,9 @@
                   <h5 class="mt-0" th:text="${comment.getNickname()}">User Name</h5>
                   <p th:text="${comment.getComment()}" th:id="'comment-' + ${comment.getId()}">Comment content</p>
                   <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>
+                  <div th:if="${comment.nickname == loggedInNickname}">
+                    <button type="button" onclick="editComment(${comment.id})">수정</button>
+                  </div>
                   <!-- 대댓글 폼 -->
                   <form th:if="${comment.hasChildren == false}" method="post">
                     <input type="hidden" name="parentId" th:value="${comment.id}">

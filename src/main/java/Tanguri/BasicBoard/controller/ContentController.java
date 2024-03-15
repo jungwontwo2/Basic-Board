@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -46,12 +47,15 @@ public class ContentController {
 
     @GetMapping("/boards/free")
     public String greetingBoardsSearchword(@PageableDefault(page = 1) Pageable pageable,
-                                           @RequestParam(name = "searchWord",required = false)String searchWord, Model model){
+                                           @RequestParam(name = "searchWord",required = false)String searchWord,
+                                           Model model){
         if(searchWord==null){
             Page<ContentDto> contentDtos = contentService.paging(pageable);
             int blockLimit = 3;
             int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
             int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
+
+
 
             model.addAttribute("contentDtos", contentDtos);
             model.addAttribute("startPage", startPage);
@@ -74,10 +78,17 @@ public class ContentController {
     @GetMapping("/boards/free/{id}")
     public String showContent(@PathVariable Long id,
                               @RequestParam(required = false,name = "parentId")Long parentId,
-                              Model model){
+                              Model model,Authentication authentication){
+
         Content content = contentService.getContent(id);
         ContentDto contentDto = ContentDto.builder().content(content).build();
         List<CommentResponseDto> commentResponseDtos = commentService.commentDtoList(id);
+
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String loggedInNickname = userDetails.getNickname();
+
+        model.addAttribute("loggedInNickname",loggedInNickname);
+
         model.addAttribute("content",contentDto);
         model.addAttribute("comments",commentResponseDtos);
         return "content/content-page";

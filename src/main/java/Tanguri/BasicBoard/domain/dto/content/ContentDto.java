@@ -36,6 +36,8 @@ public class ContentDto {
 
     private List<String> imageUrls;
 
+    private String loginId;
+
     public static Content toEntity(ContentDto contentDto, @SessionAttribute(name = SessionConst.LOGIN_MEMBER)User user){
         Content content = Content.builder()
                 .title(contentDto.getTitle())
