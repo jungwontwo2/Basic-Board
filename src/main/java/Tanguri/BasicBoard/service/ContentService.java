@@ -77,23 +77,25 @@ public class ContentService {
                         .content(content)
                         .build();
                 boardImageRepository.save(image);
-//                UUID uuid = UUID.randomUUID();//파일에 대해서 UUID 생성
-//                String imageFileName = uuid + "_" + file.getOriginalFilename();//파일 이름을 uuid+파일의 원래 이름으로 변경
-//
-//                File destinationFile = new File(uploadFolder + imageFileName);//보드 이미지를 보드 이미지 저장 경로에 uuid붙인 이름으로 저장
-//
-//                try {//해당 경로로 파일 옮기기
-//                    file.transferTo(destinationFile);
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//
-//                BoardImage image = BoardImage.builder()
-//                        .url("/boardImages/" + imageFileName)
-//                        .content(content)
-//                        .build();
-//
-//                boardImageRepository.save(image);
+            }
+        }
+    }
+    public void writeImportantContent(ContentWriteDto contentDto, CustomUserDetails user, BoardImageUploadDTO boardImageUploadDTO) throws IOException {
+        Content content = ContentWriteDto.toImportantEntity(contentDto, user);
+        contentRepository.save(content);//일단 게시물 자체에 대한 내용은 저장.(제목 내용 글쓴이)
+
+        //만약 이미지가 있는 상태로 등록된다면
+        if (boardImageUploadDTO.getFiles() != null && !boardImageUploadDTO.getFiles().isEmpty()) {
+            for (MultipartFile file : boardImageUploadDTO.getFiles()) {//iter를 돌려서
+                if(file.isEmpty()){
+                    continue;
+                }
+                String saveImageUrl = saveBoardImage(file);
+                BoardImage image = BoardImage.builder()
+                        .url(saveImageUrl)
+                        .content(content)
+                        .build();
+                boardImageRepository.save(image);
             }
         }
     }
@@ -120,7 +122,8 @@ public class ContentService {
         int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
         int pageLimit = 8;//한페이지에 보여줄 글 개수
         //System.out.println("zz");
-        Page<Content> contents = contentRepository.findAll(PageRequest.of(page, pageLimit, Sort.Direction.DESC,"id"));
+        PageRequest pageRequest = PageRequest.of(page, pageLimit, Sort.by(Sort.Order.desc("isImportant"), Sort.Order.desc("id")));
+        Page<Content> contents = contentRepository.findAll(pageRequest);
         Page<ContentDto> contentsDto = contents.map(content -> new ContentDto(content));
         return contentsDto;
     }
@@ -165,7 +168,10 @@ public class ContentService {
     public Page<ContentDto> getBoardListBySearchword(Pageable pageable,String searchword){
         int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
         int pageLimit = 5;//한페이지에 보여줄 글 개수
-        Page<Content> contents = contentRepository.findByTitleContaining(PageRequest.of(page, pageLimit, Sort.Direction.DESC, "id"), searchword);
+        //Page<Content> contents = contentRepository.findByTitleContaining(PageRequest.of(page, pageLimit, Sort.Direction.DESC, "id"), searchword);
+        PageRequest pageRequest = PageRequest.of(page, pageLimit, Sort.by(Sort.Order.desc("isImportant"), Sort.Order.desc("id")));
+        //Page<Content> contents = contentRepository.findByTitleContaining(pageRequest, searchword);
+        Page<Content> contents = contentRepository.findByTitleContainingOrderByIsImportantDescAndContentIdDesc(pageRequest, searchword);
         Page<ContentDto> contentDtos = contents.map(content -> new ContentDto(content));
         return contentDtos;
     }

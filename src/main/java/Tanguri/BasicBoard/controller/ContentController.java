@@ -62,6 +62,7 @@ public class ContentController {
             model.addAttribute("endPage", endPage);
         }
         else {
+            //Page<ContentDto> contentDtos = contentService.getBoardListBySearchword(pageable, searchWord);
             Page<ContentDto> contentDtos = contentService.getBoardListBySearchword(pageable, searchWord);
             int blockLimit = 3;
             int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;

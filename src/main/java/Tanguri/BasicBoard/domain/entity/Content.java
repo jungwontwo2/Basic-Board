@@ -42,16 +42,8 @@ public class Content extends BaseEntity{
     @OneToMany(mappedBy = "content",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     private List<BoardImage> boardImages;
 
-//    public static ContentDto toDto(Content content){
-//        ContentDto contentDto = ContentDto.builder()
-//                .id(content.getId())
-//                .title(content.getTitle())
-//                .texts(content.getTexts())
-//                .writer(content.getUser().getNickname())
-//                .heartCnt(content.getHeartCnt())
-//                .build();
-//        return contentDto;
-//    }
+    private boolean isImportant;
+
     public static ContentEditDto toEditDto(Content content){
         ContentEditDto contentEditDto = ContentEditDto.builder()
                 .title(content.getTitle())

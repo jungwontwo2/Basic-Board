@@ -2,7 +2,11 @@ package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
+import Tanguri.BasicBoard.domain.dto.image.BoardImageUploadDTO;
 import Tanguri.BasicBoard.domain.dto.user.AdminResponseDto;
+import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
+import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.CommentService;
 import Tanguri.BasicBoard.service.ContentService;
 import Tanguri.BasicBoard.service.UserService;
@@ -11,9 +15,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -89,5 +96,17 @@ public class AdminController {
     public String userUpdateRoleUser(@PathVariable Long id){
         userService.changeRole(id,"ROLE_USER");
         return "redirect:/admin?search=users";
+    }
+    @GetMapping("admin/board/write")
+    public String adminGetWriteImportantBoard(@ModelAttribute("content")ContentWriteDto content){
+        return "admin/admin-content";
+    }
+
+    @PostMapping("admin/board/write")
+    public String adminWriteImportantBoard(@ModelAttribute("content")ContentWriteDto content, Authentication authentication,
+                                           @ModelAttribute BoardImageUploadDTO boardImageUploadDTO) throws IOException {
+        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+        contentService.writeImportantContent(content,user,boardImageUploadDTO);
+        return "redirect:/boards/free";
     }
 }

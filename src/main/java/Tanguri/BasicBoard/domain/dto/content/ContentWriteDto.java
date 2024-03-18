@@ -27,16 +27,25 @@ public class ContentWriteDto {
 
 
     public static Content toEntity(ContentWriteDto contentDto, CustomUserDetails user){
-        System.out.println(contentDto.title);
-        System.out.println(contentDto.texts);
         Content content = Content.builder()
                 .title(contentDto.getTitle())
                 .texts(contentDto.getTexts())
                 .user(user.getUserEntity())
                 .writer(user.getNickname())
                 .password(user.getPassword())
+                .isImportant(false)
                 .build();
         return content;
     }
-
+    public static Content toImportantEntity(ContentWriteDto contentDto, CustomUserDetails user){
+        Content content = Content.builder()
+                .title(contentDto.getTitle())
+                .texts(contentDto.getTexts())
+                .user(user.getUserEntity())
+                .writer(user.getNickname())
+                .password(user.getPassword())
+                .isImportant(true)
+                .build();
+        return content;
+    }
 }
