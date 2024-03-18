@@ -10,7 +10,9 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -49,5 +51,16 @@ public class DataInit {
         System.out.println("Init content Complete");
     }
 
+    //댓글 개수 초기화 작업
+    //@PostConstruct
+    @Transactional
+    public void setCommentCnt(){
+        List<Content> contents = contentRepository.findAll();
+        for (Content content : contents) {
+            int commentCnt = content.getComments().size();
+            content.setCommentCnt(commentCnt);
+            contentRepository.save(content);
+        }
+    }
 
 }
