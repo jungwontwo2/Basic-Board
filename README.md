@@ -19,7 +19,8 @@
 
 게시글화면
 
-![image](https://github.com/jungwontwo2/Basic-Board/assets/65643842/7f8b703c-cb1c-4108-8e24-b8460404a081)
+![image](https://github.com/jungwontwo2/Basic-Board/assets/65643842/256c2bea-f974-458e-b9a9-abff61298043)
+
 
 댓글 대댓글
 
