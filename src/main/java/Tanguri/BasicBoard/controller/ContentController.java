@@ -48,9 +48,10 @@ public class ContentController {
     @GetMapping("/boards/free")
     public String greetingBoardsSearchword(@PageableDefault(page = 1) Pageable pageable,
                                            @RequestParam(name = "searchWord",required = false)String searchWord,
+                                           @RequestParam(value = "orderby",required = false,defaultValue = "id") String orderCriteria,
                                            Model model){
         if(searchWord==null){
-            Page<ContentDto> contentDtos = contentService.paging(pageable);
+            Page<ContentDto> contentDtos = contentService.paging(pageable,orderCriteria);
             int blockLimit = 3;
             int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
             int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());

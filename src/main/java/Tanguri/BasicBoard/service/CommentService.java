@@ -44,6 +44,7 @@ public class CommentService {
             //commentRepository에서 parentIdLong을 통해서 부모 댓글을 찾는다.
             parentComment = commentRepository.findById(parentIdLong).orElse(null);
         }
+        content.addCommentCnt();
         //Comment.builder를 통해서 comment를 생성함
         //comment에는 commentRequestDto.getComment()를 통한 댓글내용
         //content에는 어떤 게시물에 관한건지에 대한 정보(content_id가 조인컬럼 되어있음)

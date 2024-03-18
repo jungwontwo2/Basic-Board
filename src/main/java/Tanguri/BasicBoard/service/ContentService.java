@@ -118,11 +118,11 @@ public class ContentService {
         return filename;
     }
     //페이징(가입인사)
-    public Page<ContentDto> paging(Pageable pageable){
+    public Page<ContentDto> paging(Pageable pageable,String criteria){
         int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
         int pageLimit = 8;//한페이지에 보여줄 글 개수
         //System.out.println("zz");
-        PageRequest pageRequest = PageRequest.of(page, pageLimit, Sort.by(Sort.Order.desc("isImportant"), Sort.Order.desc("id")));
+        PageRequest pageRequest = PageRequest.of(page, pageLimit, Sort.by(Sort.Order.desc("isImportant"), Sort.Order.desc(criteria),Sort.Order.desc("id")));
         Page<Content> contents = contentRepository.findAll(pageRequest);
         Page<ContentDto> contentsDto = contents.map(content -> new ContentDto(content));
         return contentsDto;

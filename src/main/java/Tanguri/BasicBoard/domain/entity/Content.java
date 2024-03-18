@@ -37,12 +37,17 @@ public class Content extends BaseEntity{
     private List<Comment> comments;
 
     @Column(columnDefinition = "integer default 0")
+    private Integer commentCnt;
+
+    @Column(columnDefinition = "integer default 0")
     private Integer heartCnt;
+
 
     @OneToMany(mappedBy = "content",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     private List<BoardImage> boardImages;
 
     private boolean isImportant;
+
 
     public static ContentEditDto toEditDto(Content content){
         ContentEditDto contentEditDto = ContentEditDto.builder()
@@ -57,4 +62,5 @@ public class Content extends BaseEntity{
     public void heartChange(Integer heartCnt){
         this.heartCnt=heartCnt;
     }
+    public void addCommentCnt(){this.commentCnt=this.commentCnt+1;}
 }

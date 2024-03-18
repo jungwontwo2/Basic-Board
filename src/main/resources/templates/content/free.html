@@ -6,7 +6,11 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/custom.css">
   <link rel="stylesheet" href="/style.css">
-
+  <style>
+    .notice{
+    background-color: orange;
+}
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg" style="margin-bottom: 60px;">
@@ -60,6 +64,14 @@
             <label for="search" class="blind">공지사항 내용 검색</label>
             <input id="search" type="text" name="searchWord" placeholder="검색어를 입력해주세요." value="">
             <button type="submit" class="btn btn-dark">검색</button>
+          </div>
+          <div class="col-auto">
+            <a class="btn"
+               th:href="@{/boards/free?orderby=id}">최신 순</a>
+            <a class="btn"
+               th:href="@{/boards/free?orderby=commentCnt}">댓글 순</a>
+            <a class="btn"
+               th:href="@{/boards/free?orderby=heartCnt}">좋아요 순</a>
           </div>
         </form>
       </div>

@@ -32,10 +32,11 @@ public class AdminController {
     @GetMapping("/admin")
     public String admin(@RequestParam(name = "search",required = false)String search,
                         @PageableDefault(page = 1) Pageable pageable,
+                        @RequestParam(value = "orderby",required = false,defaultValue = "id") String orderCriteria,
                         Model model){
         if(search==null||search.equals("contents")){
             String criteria = "contents";
-            Page<ContentDto> contentDtos = contentService.paging(pageable);
+            Page<ContentDto> contentDtos = contentService.paging(pageable,orderCriteria);
             int blockLimit = 3;
             int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
             int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
