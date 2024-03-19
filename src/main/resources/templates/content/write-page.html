@@ -17,7 +17,8 @@
         <br/><br/>
         <label for="texts">글 내용 : </label>
         <br/><br/>
-        <textarea id="texts" name="texts" th:field="*{texts}"></textarea>
+        <div id="byteCounter">0 바이트</div>
+        <textarea id="texts" name="texts" th:field="*{texts}" placeholder="0~500바이트 입력이 가능합니다."></textarea>
         <input type="file" name="files" id="files" accept="image/*" multiple>
         <label for="files">이미지</label>
       </div>
@@ -26,4 +27,18 @@
   </div>
 </div>
 </body>
+<script>
+  function updateByteCount() {
+  var textInput = document.getElementById('texts').value;
+
+  // 텍스트를 UTF-8로 인코딩한 후 바이트 수 계산
+  var byteCount = new TextEncoder().encode(textInput).length;
+
+  // 바이트 수를 화면에 표시
+  document.getElementById('byteCounter').innerText = "500/"+ byteCount + " 바이트";
+}
+
+// 'input' 이벤트 리스너를 추가하여 사용자 입력 시마다 updateByteCount 함수를 호출
+document.getElementById('texts').addEventListener('input', updateByteCount);
+</script>
 </html>

@@ -108,7 +108,7 @@ public class ContentController {
     }
     //글 등록
     @PostMapping("/boards/free/write")
-    public String writeContent(ContentWriteDto content, HttpServletRequest request,
+    public String writeContent(@ModelAttribute(name = "content") ContentWriteDto content, HttpServletRequest request,
                                @ModelAttribute BoardImageUploadDTO boardImageUploadDTO,
                                Authentication authentication, BindingResult bindingResult) throws IOException {
         HttpSession session = request.getSession(false);
@@ -122,6 +122,11 @@ public class ContentController {
         if(content.getTexts().isEmpty() || content.getTitle().isEmpty()){
             request.setAttribute("msg","게시글의 제목이나 내용이 비어있습니다.");
             request.setAttribute("redirectUrl","/boards/free");
+            return "common/messageRedirect.html";
+        }
+        if(content.getTexts().getBytes("UTF-8").length>500){
+            request.setAttribute("msg", "게시글 내용이 너무 깁니다. 500바이트를 초과할 수 없습니다.");
+            request.setAttribute("redirectUrl", "/boards/free/write");
             return "common/messageRedirect.html";
         }
         if (bindingResult.hasErrors()) {

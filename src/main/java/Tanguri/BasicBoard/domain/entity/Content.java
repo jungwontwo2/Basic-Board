@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Content extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Column(length = 500)
     private String texts;
 
     @ManyToOne(fetch = FetchType.LAZY)
