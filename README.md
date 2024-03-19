@@ -14,12 +14,13 @@
 
 자유게시판
 
-![image](https://github.com/jungwontwo2/Basic-Board/assets/65643842/3be9990a-ed72-464e-81ab-0a992250644d)
+![image](https://github.com/jungwontwo2/Basic-Board/assets/65643842/d606fbe8-b818-418d-97ac-5854384b434c)
 
 
 게시글화면
 
-![image](https://github.com/jungwontwo2/Basic-Board/assets/65643842/7f8b703c-cb1c-4108-8e24-b8460404a081)
+![image](https://github.com/jungwontwo2/Basic-Board/assets/65643842/256c2bea-f974-458e-b9a9-abff61298043)
+
 
 댓글 대댓글
 
