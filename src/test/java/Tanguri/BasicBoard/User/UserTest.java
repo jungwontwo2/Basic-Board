@@ -33,8 +33,7 @@ public class UserTest {
         userService.saveUser(joinUserDto,"ROLE_USER");
         CustomException exception = assertThrows(CustomException.class,
                 ()->{userService.saveUser(joinUserDto,"ROLE_USER");});
-        System.out.println("exception.getMessage() = " + exception.getMessage());
-        assertEquals("해당 ID가 중복됩니다.",exception.getMessage());
+        assertEquals("해당 ID가 중복됩니다.",exception.getErrorCode().getMessage());
     }
     @Test
     public void findById(){
