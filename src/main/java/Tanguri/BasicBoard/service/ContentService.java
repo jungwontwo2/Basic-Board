@@ -61,7 +61,7 @@ public class ContentService {
         return bindingResult;
     }
     //글 입력
-    public void writeContent(ContentWriteDto contentDto, CustomUserDetails user, BoardImageUploadDTO boardImageUploadDTO) throws IOException {
+    public Long writeContent(ContentWriteDto contentDto, CustomUserDetails user, BoardImageUploadDTO boardImageUploadDTO) throws IOException {
         Content content = ContentWriteDto.toEntity(contentDto, user);
         contentRepository.save(content);//일단 게시물 자체에 대한 내용은 저장.(제목 내용 글쓴이)
 
@@ -79,6 +79,7 @@ public class ContentService {
                 boardImageRepository.save(image);
             }
         }
+        return content.getId();
     }
     public void writeImportantContent(ContentWriteDto contentDto, CustomUserDetails user, BoardImageUploadDTO boardImageUploadDTO) throws IOException {
         Content content = ContentWriteDto.toImportantEntity(contentDto, user);

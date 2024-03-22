@@ -5,6 +5,7 @@ import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
 import Tanguri.BasicBoard.domain.entity.Comment;
 import Tanguri.BasicBoard.domain.entity.Content;
 import Tanguri.BasicBoard.domain.entity.User;
+import Tanguri.BasicBoard.validator.ByteSize;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -19,11 +20,11 @@ import java.util.List;
 @Builder
 public class ContentWriteDto {
 
-    //@NotBlank(message = "제목을 입력해주세요.")
+    @NotBlank(message = "제목을 입력해주세요.")
     private String title;
 
-    //@NotBlank(message = "내용을 입력해주세요")
-
+    @NotBlank(message = "내용을 입력해주세요.")
+    @ByteSize(max = 500,message = "내용은 500바이트를 넘길 수 없습니다.")
     private String texts;
 
 
