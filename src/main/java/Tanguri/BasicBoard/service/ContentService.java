@@ -3,6 +3,7 @@ package Tanguri.BasicBoard.service;
 import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentPagingDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
 import Tanguri.BasicBoard.domain.dto.image.BoardImageUploadDTO;
 import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
@@ -119,13 +120,13 @@ public class ContentService {
         return filename;
     }
     //페이징(가입인사)
-    public Page<ContentDto> paging(Pageable pageable,String criteria){
+    public Page<ContentPagingDto> paging(Pageable pageable,String criteria){
         int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
         int pageLimit = 8;//한페이지에 보여줄 글 개수
         //System.out.println("zz");
         PageRequest pageRequest = PageRequest.of(page, pageLimit, Sort.by(Sort.Order.desc("isImportant"), Sort.Order.desc(criteria),Sort.Order.desc("id")));
         Page<Content> contents = contentRepository.findAll(pageRequest);
-        Page<ContentDto> contentsDto = contents.map(content -> new ContentDto(content));
+        Page<ContentPagingDto> contentsDto = contents.map(content -> new ContentPagingDto(content));
         return contentsDto;
     }
     //페이징(user가 쓴 글)

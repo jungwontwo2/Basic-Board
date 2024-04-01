@@ -4,6 +4,7 @@ import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentPagingDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
 import Tanguri.BasicBoard.domain.dto.image.BoardImageUploadDTO;
 import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
@@ -51,7 +52,7 @@ public class ContentController {
                                            @RequestParam(value = "orderby",required = false,defaultValue = "id") String orderCriteria,
                                            Model model){
         if(searchWord==null){
-            Page<ContentDto> contentDtos = contentService.paging(pageable,orderCriteria);
+            Page<ContentPagingDto> contentDtos = contentService.paging(pageable,orderCriteria);
             int blockLimit = 3;
             int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
             int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());

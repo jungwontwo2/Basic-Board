@@ -2,6 +2,7 @@ package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentPagingDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
 import Tanguri.BasicBoard.domain.dto.image.BoardImageUploadDTO;
 import Tanguri.BasicBoard.domain.dto.user.AdminResponseDto;
@@ -36,7 +37,7 @@ public class AdminController {
                         Model model){
         if(search==null||search.equals("contents")){
             String criteria = "contents";
-            Page<ContentDto> contentDtos = contentService.paging(pageable,orderCriteria);
+            Page<ContentPagingDto> contentDtos = contentService.paging(pageable,orderCriteria);
             int blockLimit = 3;
             int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
             int endPage = Math.min((startPage + blockLimit - 1), contentDtos.getTotalPages());
