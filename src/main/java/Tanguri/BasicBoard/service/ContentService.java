@@ -193,11 +193,11 @@ public class ContentService {
         }
     }
 
-    public Page<ContentDto> pagingByLoginId(Pageable pageable, String loginId) {
+    public Page<ContentPagingDto> pagingByLoginId(Pageable pageable, String loginId) {
         int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
         int pageLimit = 5;//한페이지에 보여줄 글 개수
         Page<Content> contents = contentRepository.findByUserLoginId(PageRequest.of(page, pageLimit, Sort.Direction.DESC,"id"), loginId);
-        Page<ContentDto> contentDtos = contents.map(content -> new ContentDto(content));
+        Page<ContentPagingDto> contentDtos = contents.map(content -> new ContentPagingDto(content));
         return contentDtos;
     }
 

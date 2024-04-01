@@ -2,8 +2,10 @@ package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
+import Tanguri.BasicBoard.domain.dto.content.ContentPagingDto;
 import Tanguri.BasicBoard.domain.dto.image.ImageResponseDto;
 import Tanguri.BasicBoard.domain.dto.user.*;
+import Tanguri.BasicBoard.domain.entity.Image;
 import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -134,10 +136,10 @@ public class UserController {
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
         EditUserDto member = userService.findMember(user.getUsername());
         String loginId = authentication.getName();
-        Page<ContentDto> contentDtos = contentService.pagingByLoginId(pageable, loginId);
-        System.out.println(user.getImageUrl());
-        ImageResponseDto image = imageService.findImage(loginId);
-
+        Page<ContentPagingDto> contentDtos = contentService.pagingByLoginId(pageable, loginId);
+        //System.out.println(user.getImageUrl());
+        //ImageResponseDto image = imageService.findImage(loginId);
+        Image image = member.getImage();
         model.addAttribute("image",image);
         int blockLimit = 3;
         int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;

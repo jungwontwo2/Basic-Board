@@ -49,8 +49,10 @@ public class ImageService {
     }
 
     public ImageResponseDto findImage(String loginId){
-        User user = userRepository.findByLoginId(loginId).orElse(null);
-        Image image = imageRepository.findByUser(user);
+//        User user = userRepository.findByLoginId(loginId).orElse(null);
+//        Image image = imageRepository.findByUser(user);
+        User user = userRepository.findImageByLoginId(loginId);
+        Image image = user.getImage();
         //System.out.println("image.getUrl() = " + image.getUrl());
         String defaultImageUrl="/profileImages/anonymous.png";
         if(image==null){

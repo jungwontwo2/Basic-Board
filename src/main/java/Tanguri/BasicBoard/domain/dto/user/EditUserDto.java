@@ -1,5 +1,6 @@
 package Tanguri.BasicBoard.domain.dto.user;
 
+import Tanguri.BasicBoard.domain.entity.Image;
 import Tanguri.BasicBoard.domain.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -16,9 +17,12 @@ public class EditUserDto {
 
     private String nickname;
 
+    private Image image;
+
     @Builder
     public EditUserDto(User user){
         this.loginId=user.getLoginId();
         this.nickname=user.getNickname();
+        this.image=user.getImage();
     }
 }
