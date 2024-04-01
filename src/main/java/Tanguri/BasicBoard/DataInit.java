@@ -43,7 +43,6 @@ public class DataInit {
                     .title(Integer.toString(i+1))
                     .texts(Integer.toString(i+1))
                     .user(user)
-                    .writer(user.getNickname())
                     .password(user.getPassword())
                     .build();
             contentRepository.save(content);

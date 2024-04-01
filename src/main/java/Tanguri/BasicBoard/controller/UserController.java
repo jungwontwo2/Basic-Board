@@ -135,6 +135,7 @@ public class UserController {
         }
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
         EditUserDto member = userService.findMember(user.getUsername());
+        System.out.println("member.getNickname() = " + member.getNickname());
         String loginId = authentication.getName();
         Page<ContentPagingDto> contentDtos = contentService.pagingByLoginId(pageable, loginId);
         //System.out.println(user.getImageUrl());
@@ -181,10 +182,8 @@ public class UserController {
             return "common/messageRedirect";
         }
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
-
-        ImageResponseDto image = imageService.findImage(user.getUsername());
         EditUserDto userDto = userService.findMember(user.getUsername());
-        System.out.println("userDto.getNickname() = " + userDto.getNickname());
+        Image image = userDto.getImage();
         model.addAttribute("image",image);
         model.addAttribute("user", userDto);
         return "users/user-info-edit";

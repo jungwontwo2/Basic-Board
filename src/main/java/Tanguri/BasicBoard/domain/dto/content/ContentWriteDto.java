@@ -33,7 +33,6 @@ public class ContentWriteDto {
                 .title(contentDto.getTitle())
                 .texts(contentDto.getTexts())
                 .user(user.getUserEntity())
-                .writer(user.getNickname())
                 .password(user.getPassword())
                 .isImportant(false)
                 .build();
@@ -44,7 +43,6 @@ public class ContentWriteDto {
                 .title(contentDto.getTitle())
                 .texts(contentDto.getTexts())
                 .user(user.getUserEntity())
-                .writer(user.getNickname())
                 .password(user.getPassword())
                 .isImportant(true)
                 .build();

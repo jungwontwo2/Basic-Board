@@ -18,8 +18,8 @@ public class ContentPagingDto {
         id=content.getId();
         title=content.getTitle();
         heartCnt=content.getHeartCnt();
-        writer=content.getWriter();
         isImportant=content.isImportant();
+        writer=content.getUser().getNickname();
         commentCnt=content.getCommentCnt();
     }
 }

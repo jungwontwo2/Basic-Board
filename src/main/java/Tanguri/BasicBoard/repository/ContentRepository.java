@@ -15,7 +15,6 @@ import java.util.List;
 @Transactional
 public interface ContentRepository extends JpaRepository<Content, Long> {
     Page<Content> findAll(Pageable pageable);
-    Page<Content> findByWriter(Pageable pageable,String writer);
     Page<Content> findByUserId(Pageable pageable,Long id);
     @Query("select c from Content c join fetch c.user u where u.loginId =:loginId")
     Page<Content> findByUserLoginId(Pageable pageable,@Param("loginId") String loginId);

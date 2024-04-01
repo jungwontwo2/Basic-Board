@@ -163,10 +163,6 @@ public class ContentService {
         Optional<Content> sample = contentRepository.findById(id);
         return sample.orElseGet(sample::get);
     }
-
-    public Page<Content> getBoardByWriter(Pageable pageable,String writer){
-        return contentRepository.findByWriter(pageable,writer);
-    }
     public Page<ContentDto> getBoardListBySearchword(Pageable pageable,String searchword){
         int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
         int pageLimit = 5;//한페이지에 보여줄 글 개수
@@ -181,16 +177,6 @@ public class ContentService {
         List<Content> allById = contentRepository.findAllById(id);
         System.out.println(allById.size());
         return allById;
-    }
-
-    public void updateContentWriter(String writer,User user){
-        List<Content> contents = user.getContents();
-        for (Content content : contents) {
-
-            content.updateWriter(writer);
-            contentRepository.save(content);
-            System.out.println(content.getWriter());
-        }
     }
 
     public Page<ContentPagingDto> pagingByLoginId(Pageable pageable, String loginId) {

@@ -1,12 +1,9 @@
 package Tanguri.BasicBoard.domain.entity;
 
-import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
@@ -31,7 +28,6 @@ public class Content extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String writer;
     private String password;
 
     @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -57,9 +53,6 @@ public class Content extends BaseEntity{
                 .texts(content.getTexts())
                 .build();
         return contentEditDto;
-    }
-    public void updateWriter(String writer){
-        this.writer=writer;
     }
     public void heartChange(Integer heartCnt){
         this.heartCnt=heartCnt;
