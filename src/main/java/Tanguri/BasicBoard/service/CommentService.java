@@ -66,7 +66,8 @@ public class CommentService {
         Optional<Content> optionalContent = contentRepository.findById(boardId);
         Content content = optionalContent.get();
         //findByContent를 통해서 content를 넣어 해당 게시물의 댓글들을 comments에 넣는다.
-        List<Comment> comments = commentRepository.findByContent(content);
+//        List<Comment> comments = commentRepository.findByContent(content);
+        List<Comment> comments = commentRepository.findByContentWithUserImage(content);
         //해당 댓글들은 entity이기 때문에 CommentResponseDto로 바꿔준다(comment를 넣으면 commentResponseDto로 변환시켜줌).
         List<CommentResponseDto> collect = comments.stream().map(comment -> new CommentResponseDto(comment)).toList();
         return collect;
