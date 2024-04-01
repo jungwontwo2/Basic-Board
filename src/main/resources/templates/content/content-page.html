@@ -131,6 +131,7 @@ boardId: boardId
 success: function(response) {
 // 성공적으로 수정되었을 때의 처리
 alert('댓글 수정에 성공했습니다.');
+window.location.href = "/boards/free/" + boardId;
 },
 error: function() {
 // 오류 처리
