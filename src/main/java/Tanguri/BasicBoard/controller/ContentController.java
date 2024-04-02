@@ -1,6 +1,5 @@
 package Tanguri.BasicBoard.controller;
 
-import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentEditDto;
@@ -9,12 +8,10 @@ import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
 import Tanguri.BasicBoard.domain.dto.image.BoardImageUploadDTO;
 import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
 import Tanguri.BasicBoard.domain.entity.Content;
-import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.CommentService;
 import Tanguri.BasicBoard.service.ContentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,12 +20,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 
 @Controller

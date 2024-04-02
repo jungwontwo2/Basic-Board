@@ -1,14 +1,10 @@
 package Tanguri.BasicBoard.controller;
 
-import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.comment.CommentRequestDto;
-import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
-import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

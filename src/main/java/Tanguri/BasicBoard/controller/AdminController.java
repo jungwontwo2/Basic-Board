@@ -1,17 +1,14 @@
 package Tanguri.BasicBoard.controller;
 
 import Tanguri.BasicBoard.domain.dto.comment.CommentResponseDto;
-import Tanguri.BasicBoard.domain.dto.content.ContentDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentPagingDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentWriteDto;
 import Tanguri.BasicBoard.domain.dto.image.BoardImageUploadDTO;
 import Tanguri.BasicBoard.domain.dto.user.AdminResponseDto;
 import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
-import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.CommentService;
 import Tanguri.BasicBoard.service.ContentService;
 import Tanguri.BasicBoard.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

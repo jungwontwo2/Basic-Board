@@ -1,20 +1,15 @@
 package Tanguri.BasicBoard.controller;
 
-import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
-import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.HeartService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 @RequiredArgsConstructor

@@ -1,9 +1,7 @@
 package Tanguri.BasicBoard.controller;
 
-import Tanguri.BasicBoard.domain.SessionConst;
 import Tanguri.BasicBoard.domain.dto.image.ImageUploadDto;
 import Tanguri.BasicBoard.domain.dto.user.CustomUserDetails;
-import Tanguri.BasicBoard.domain.entity.User;
 import Tanguri.BasicBoard.service.ImageService;
 import Tanguri.BasicBoard.service.S3UploadService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
 
