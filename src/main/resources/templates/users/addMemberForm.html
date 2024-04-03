@@ -69,9 +69,12 @@
 </body>
 </html>
 <script>
-  let loginIdCheck = false;
-  let nickNameCheck = false;
+  var loginIdCheck = false;
+  var nickNameCheck = false;
   function valid() {
+      console.log(loginIdCheck);
+      console.log(nickNameCheck);
+
       if (loginIdCheck & nickNameCheck) { // true 가 되면 회원가입 버튼 동작함
           document.getElementById('signupForm').submit();
       } else {
