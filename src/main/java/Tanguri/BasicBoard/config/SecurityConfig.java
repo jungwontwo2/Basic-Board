@@ -1,14 +1,9 @@
 package Tanguri.BasicBoard.config;
 
-import Tanguri.BasicBoard.service.CustomUserDetailsService;
-import Tanguri.BasicBoard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -17,7 +12,6 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
 @EnableWebSecurity
@@ -33,11 +27,12 @@ public class SecurityConfig{
     @Bean//시큐리티 필터
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth.
-                requestMatchers("/", "/users/login", "/users/join").permitAll()//해당 사이트면 모두 허용
+                requestMatchers("/", "/users/login", "/users/join","join/loginIdCheck").permitAll()//해당 사이트면 모두 허용
                 .requestMatchers("/admin").hasRole("ADMIN")//admin페이지에는 ADMIN이라는 Role을 가지고 있어야 가능
                 .requestMatchers("/users/my/**").hasAnyRole("ADMIN", "USER")//여기는 ADMIN이나 USER 둘중 아무거나 있으면 가능
                 .anyRequest().authenticated()//나머지는 로그인 했으면 가능
         );
+        //http.formLogin((auth) -> auth.loginPage("/users/login")//로그인 페이지
 
         http.formLogin((auth) -> auth.loginPage("/users/login")//로그인 페이지
                 .loginProcessingUrl("/users/login")//포스트 보내면 어디로 가는지

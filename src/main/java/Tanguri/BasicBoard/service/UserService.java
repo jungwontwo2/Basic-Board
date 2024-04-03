@@ -139,4 +139,8 @@ public class UserService {
         sessionRegistry.getAllSessions(userDetails, false)
                 .forEach(sessionInformation -> sessionInformation.expireNow());
     }
+
+    public User getUser(String loginId) {
+        return userRepository.findByLoginId(loginId).orElse(null);
+    }
 }

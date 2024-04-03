@@ -165,7 +165,7 @@ public class ContentService {
     }
     public Page<ContentDto> getBoardListBySearchword(Pageable pageable,String searchword){
         int page=pageable.getPageNumber()-1;//page위치에 있는 값은 0부터 시작한다.
-        int pageLimit = 5;//한페이지에 보여줄 글 개수
+        int pageLimit = 8;//한페이지에 보여줄 글 개수
         //Page<Content> contents = contentRepository.findByTitleContaining(PageRequest.of(page, pageLimit, Sort.Direction.DESC, "id"), searchword);
         PageRequest pageRequest = PageRequest.of(page, pageLimit, Sort.by(Sort.Order.desc("isImportant"), Sort.Order.desc("id")));
         //Page<Content> contents = contentRepository.findByTitleContaining(pageRequest, searchword);

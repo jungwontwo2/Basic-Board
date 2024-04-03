@@ -1,5 +1,6 @@
 package Tanguri.BasicBoard.controller;
 
+import Tanguri.BasicBoard.domain.dto.ResponseDto;
 import Tanguri.BasicBoard.domain.dto.content.ContentPagingDto;
 import Tanguri.BasicBoard.domain.dto.image.ImageResponseDto;
 import Tanguri.BasicBoard.domain.dto.user.*;
@@ -61,10 +62,23 @@ public class UserController {
         return "redirect:/";
     }
 
+    @RequestMapping(value = "/join/loginIdCheck")
+    public @ResponseBody ResponseDto<?> check(@RequestBody String loginId)  {
+        if(loginId==null || loginId.isEmpty()){
+            return new ResponseDto<>(-1,"아이디를 입력해주세요.",null);
+        }
+        User user = userService.getUser(loginId);
+        if(user==null){
+            return new ResponseDto<>(1,"사용 가능한 ID입니다.",false);
+        }
+        else {
+            return new ResponseDto<>(1,"중복된 아이디입니다.",true);
+        }
+    }
     @GetMapping("users/login")
-    public String loginForm(@ModelAttribute("user") LoginUserDto user,@RequestParam(value = "error",required = false)String error,
+    public String loginForm(@RequestParam(value = "error",required = false)String error,
                             @RequestParam(value = "exception",required = false)String exception,
-                            Model model) {
+                            Model model,@ModelAttribute("user") LoginUserDto user) {
         if(error!=null){
             model.addAttribute("error", error);
             model.addAttribute("exception", exception);
