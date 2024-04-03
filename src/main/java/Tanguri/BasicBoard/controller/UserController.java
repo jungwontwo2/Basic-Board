@@ -67,12 +67,31 @@ public class UserController {
         if(loginId==null || loginId.isEmpty()){
             return new ResponseDto<>(-1,"아이디를 입력해주세요.",null);
         }
-        User user = userService.getUser(loginId);
+        if(!loginId.matches("^[a-z0-9]+$") || loginId.length()<4 || loginId.length()>10) {
+            return new ResponseDto<>(-1, "아이디는 알파벳 소문자와 숫자만 포함할 수 있습니다. 4글자 이상 10글자 이하로 입력해주세요.", null);
+        }
+        User user = userService.getUserByLoginId(loginId);
         if(user==null){
             return new ResponseDto<>(1,"사용 가능한 ID입니다.",false);
         }
         else {
             return new ResponseDto<>(1,"중복된 아이디입니다.",true);
+        }
+    }
+    @RequestMapping(value = "/join/nickNameCheck")
+    public @ResponseBody ResponseDto<?> checkNickname(@RequestBody(required = false) String nickName)  {
+        if(nickName==null || nickName.isEmpty()){
+            return new ResponseDto<>(-1,"닉네임을 입력해주세요.",null);
+        }
+        if(!nickName.matches("^[a-zA-Z0-9가-힣]+$") || nickName.length()<2 || nickName.length()>10) {
+            return new ResponseDto<>(-1, "닉네임은 알파벳 대,소문자와 한글과 숫자만 포함할 수 있습니다. 2글자 이상 10글자 이하로 입력해주세요.", null);
+        }
+        User user = userService.getUserByNickName(nickName);
+        if(user==null){
+            return new ResponseDto<>(1,"사용 가능한 닉네임입니다.",false);
+        }
+        else {
+            return new ResponseDto<>(1,"중복된 닉네임입니다.",true);
         }
     }
     @GetMapping("users/login")

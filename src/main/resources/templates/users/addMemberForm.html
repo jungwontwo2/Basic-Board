@@ -20,7 +20,7 @@
     <h2>회원 가입</h2>
   </div>
   <h4 class="mb-3">회원 정보 입력</h4>
-  <form action="" th:action th:object="${user}" method="post">
+  <form id="signupForm" action="" th:action th:object="${user}" method="post">
     <div th:if="${#fields.hasGlobalErrors()}">
       <p class="field-error" th:each="err : ${#fields.globalErrors()}"
          th:text="${err}">전체 오류 메시지</p>
@@ -28,7 +28,7 @@
     <div>
         <label for="loginId">로그인 ID</label>
         <input type="text" id="loginId" th:field="*{loginId}" class="form-control"
-               th:errorclass="field-error">
+               th:errorclass="field-error" placeholder="알파벳 소문자, 숫자로 최소 4자 이상 최대 10자 이하">
       <button id="idCheck" type="button" onclick="loginIdSameCheck()">중복확인</button>
       <div class="field-error" th:errors="*{loginId}" />
     </div>
@@ -36,27 +36,27 @@
       <label for="password">비밀번호</label>
       <input type="password" id="password" th:field="*{password}"
              class="form-control"
-             th:errorclass="field-error">
+             th:errorclass="field-error" placeholder="알파벳 대소문자, 숫자로 최소 8자 이상 최대 20글자 이하">
       <div class="field-error" th:errors="*{password}" />
     </div>
     <div>
       <label for="passwordCheck">비밀번호 확인</label>
       <input type="password" id="passwordCheck" th:field="*{passwordCheck}"
              class="form-control"
-             th:errorclass="field-error">
+             th:errorclass="field-error" placeholder="비밀번호와 동일하게 입력해주세요">
       <div class="field-error" th:errors="*{passwordCheck}" />
     </div>
     <div>
-      <label for="name">닉네임</label>
-      <input type="text" id="name" th:field="*{nickname}" class="form-control"
-             th:errorclass="field-error">
-      <button>중복확인</button>
+      <label for="nickname">닉네임</label>
+      <input type="text" id="nickname" th:field="*{nickname}" class="form-control"
+             th:errorclass="field-error" placeholder="알파벳 소문자 대문자, 한글, 숫자로 최소 2자 최대 10자 이하" >
+      <button id="nickNameCheck" type="button" onclick="nickNameSameCheck()">중복확인</button>
       <div class="field-error" th:errors="*{nickname}" />
     </div>
     <hr class="my-4">
     <div class="row">
       <div class="col">
-        <button class="w-100 btn btn-primary btn-lg" type="submit">회원가입</button> </div>
+        <button class="w-100 btn btn-primary btn-lg" type="button" onclick="valid()">회원가입</button> </div>
       <div class="col">
         <button class="w-100 btn btn-secondary btn-lg"
                 onclick="location.href='items.html'"
@@ -69,13 +69,13 @@
 </body>
 </html>
 <script>
-  let submitCheck = false;
-
+  let loginIdCheck = false;
+  let nickNameCheck = false;
   function valid() {
-      if (submitCheck) { // true 가 되면 회원가입 버튼 동작함
-          return true;
+      if (loginIdCheck & nickNameCheck) { // true 가 되면 회원가입 버튼 동작함
+          document.getElementById('signupForm').submit();
       } else {
-          alert('유저네임 중복체크를 먼저 하세요');
+          alert('로그인ID, 닉네임 중복체크를 해주세요.');
         				// 회원가입 버튼누르면 뜬다
           return false; // 회원가입 버튼을 막는다
       }
@@ -93,6 +93,7 @@
           console.log(response)
             // 성공적으로 응답 받았을 때의 처리
             if(response.data) {
+                loginIdCheck=true;
                 alert(response.msg);
             } else {
                 alert(response.msg);
@@ -103,5 +104,29 @@
             alert('에러 발생: ' + error);
         }
     });
+  }
+  function nickNameSameCheck() {
+    let nickname = $('#nickname').val()
+    $.ajax({
+        type: "POST",
+        url: "/join/nickNameCheck",
+        datatype:'json',
+        data: nickname,
+        contentType: "application/json; charset=UTF-8",
+        success: function(response) {
+        console.log(response)
+          // 성공적으로 응답 받았을 때의 처리
+          if(response.data) {
+          nickNameCheck=true;
+              alert(response.msg);
+          } else {
+              alert(response.msg);
+          }
+      },
+      error: function(xhr, status, error) {
+          // 에러 발생 시 처리
+          alert('에러 발생: ' + error);
+      }
+  });
 }
 </script>

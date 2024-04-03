@@ -140,7 +140,10 @@ public class UserService {
                 .forEach(sessionInformation -> sessionInformation.expireNow());
     }
 
-    public User getUser(String loginId) {
+    public User getUserByLoginId(String loginId) {
         return userRepository.findByLoginId(loginId).orElse(null);
+    }
+    public User getUserByNickName(String nickName) {
+        return userRepository.findByNickNameCheck(nickName).orElse(null);
     }
 }
