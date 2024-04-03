@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/join/loginIdCheck")
-    public @ResponseBody ResponseDto<?> check(@RequestBody String loginId)  {
+    public @ResponseBody ResponseDto<?> check(@RequestBody(required = false) String loginId)  {
         if(loginId==null || loginId.isEmpty()){
             return new ResponseDto<>(-1,"아이디를 입력해주세요.",null);
         }
