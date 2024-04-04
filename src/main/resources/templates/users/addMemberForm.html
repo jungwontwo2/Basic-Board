@@ -72,9 +72,6 @@
   var loginIdCheck = false;
   var nickNameCheck = false;
   function valid() {
-      console.log(loginIdCheck);
-      console.log(nickNameCheck);
-
       if (loginIdCheck & nickNameCheck) { // true 가 되면 회원가입 버튼 동작함
           document.getElementById('signupForm').submit();
       } else {
@@ -85,7 +82,6 @@
   }
   function loginIdSameCheck() {
       let loginId = $('#loginId').val()
-      console.log(loginId);
       $.ajax({
           type: "POST",
           url: "/join/loginIdCheck",
@@ -93,11 +89,18 @@
           data: loginId,
           contentType: "application/json; charset=UTF-8",
           success: function(response) {
-          console.log(response)
             // 성공적으로 응답 받았을 때의 처리
             if(response.data) {
-                loginIdCheck=true;
-                alert(response.msg);
+                var useLoginId = confirm(response.msg + ' 해당 로그인 ID를 사용하시겠습니까?');
+                if(useLoginId) {
+                    // 사용자가 '예'를 선택했을 경우
+                    loginIdCheck = true;
+                    $('#loginId').prop('readonly', true); // 입력 필드 비활성화
+                } else {
+                    // 사용자가 '아니오'를 선택했을 경우
+                    $('#loginId').val(''); // 입력 필드 초기화
+                    $('#loginId').focus(); // 입력 필드에 다시 포커스
+                }
             } else {
                 alert(response.msg);
             }
@@ -120,8 +123,16 @@
         console.log(response)
           // 성공적으로 응답 받았을 때의 처리
           if(response.data) {
-          nickNameCheck=true;
-              alert(response.msg);
+                var useNickname = confirm(response.msg + ' 해당 닉네임을 사용하시겠습니까?');
+                if(useNickname) {
+                    // 사용자가 '예'를 선택했을 경우
+                    nickNameCheck = true;
+                    $('#nickname').prop('readonly', true); // 입력 필드 비활성화
+                } else {
+                    // 사용자가 '아니오'를 선택했을 경우
+                    $('#nickname').val(''); // 입력 필드 초기화
+                    $('#nickname').focus(); // 입력 필드에 다시 포커스
+                }
           } else {
               alert(response.msg);
           }

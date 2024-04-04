@@ -72,10 +72,10 @@ public class UserController {
         }
         User user = userService.getUserByLoginId(loginId);
         if(user==null){
-            return new ResponseDto<>(1,"사용 가능한 ID입니다.",false);
+            return new ResponseDto<>(1,"사용 가능한 ID입니다.",true);
         }
         else {
-            return new ResponseDto<>(1,"중복된 아이디입니다.",true);
+            return new ResponseDto<>(1,"중복된 아이디입니다.",false);
         }
     }
     @RequestMapping(value = "/join/nickNameCheck")
@@ -88,10 +88,10 @@ public class UserController {
         }
         User user = userService.getUserByNickName(nickName);
         if(user==null){
-            return new ResponseDto<>(1,"사용 가능한 닉네임입니다.",false);
+            return new ResponseDto<>(1,"사용 가능한 닉네임입니다.",true);
         }
         else {
-            return new ResponseDto<>(1,"중복된 닉네임입니다.",true);
+            return new ResponseDto<>(1,"중복된 닉네임입니다.",false);
         }
     }
     @GetMapping("users/login")
